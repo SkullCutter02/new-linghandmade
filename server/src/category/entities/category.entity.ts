@@ -6,7 +6,7 @@ import { CategoryRepository } from "../repositories/category.repository";
 
 @Entity({ tableName: "categories", customRepository: () => CategoryRepository })
 export class Category extends BaseEntity {
-  @Property()
+  @Property({ unique: true })
   @Length(1, 25)
   name: string;
 
