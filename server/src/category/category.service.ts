@@ -8,6 +8,10 @@ import { Category } from "./entities/category.entity";
 export class CategoryService {
   constructor(private readonly em: EntityManager) {}
 
+  async findOne(id: string) {
+    return this.em.getRepository(Category).findOneOrFail({ id });
+  }
+
   async find() {
     return this.em.getRepository(Category).findAll();
   }

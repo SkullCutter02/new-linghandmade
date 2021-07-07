@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 
 import { CategoryService } from "./category.service";
 import { AdminAuthGuard } from "../auth/guards/adminAuth.guard";
@@ -9,7 +9,10 @@ import { Category } from "./entities/category.entity";
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  async findOne() {}
+  @Get("/:id")
+  async findOne(@Param("id") id: string) {
+    return this.categoryService.findOne(id);
+  }
 
   @Get()
   async find() {
