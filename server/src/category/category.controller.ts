@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 
 import { CategoryService } from "./category.service";
 import { AdminAuthGuard } from "../auth/guards/adminAuth.guard";
@@ -11,12 +11,12 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get("/:id")
-  async findOne(@Param("id") id: string) {
+  async findOne(@Param("id") id: string): Promise<Category> {
     return this.categoryService.findOne(id);
   }
 
   @Get()
-  async find() {
+  async find(): Promise<Category[]> {
     return this.categoryService.find();
   }
 
@@ -28,9 +28,13 @@ export class CategoryController {
 
   @Patch("/:id")
   @UseGuards(AdminAuthGuard)
-  async update(@Param("id") id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+  async update(@Param("id") id: string, @Body() updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     return this.categoryService.update(id, updateCategoryDto);
   }
 
-  async delete() {}
+  @Delete("/:id")
+  @UseGuards(AdminAuthGuard)
+  async delete(@Param("id") id: string): Promise<Category> {
+    return this.categoryService.delete(id);
+  }
 }

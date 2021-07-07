@@ -9,11 +9,11 @@ import { Category } from "./entities/category.entity";
 export class CategoryService {
   constructor(private readonly em: EntityManager) {}
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Category> {
     return this.em.getRepository(Category).findOneOrFail({ id });
   }
 
-  async find() {
+  async find(): Promise<Category[]> {
     return this.em.getRepository(Category).findAll();
   }
 
@@ -24,12 +24,19 @@ export class CategoryService {
     return category;
   }
 
-  async update(id: string, { name }: UpdateCategoryDto) {
+  async update(id: string, { name }: UpdateCategoryDto): Promise<Category> {
     const category = await this.em.getRepository(Category).findOneOrFail({ id });
 
     category.name = name || category.name;
 
     await this.em.getRepository(Category).persistAndFlush(category);
+    return category;
+  }
+
+  async delete(id: string): Promise<Category> {
+    const category = await this.em.getRepository(Category).findOneOrFail({ id });
+
+    await this.em.getRepository(Category).removeAndFlush(category);
     return category;
   }
 }
