@@ -8,7 +8,11 @@ import { Category } from "./entities/category.entity";
 export class CategoryService {
   constructor(private readonly em: EntityManager) {}
 
-  async create({ name }: CreateCategoryDto) {
+  async find() {
+    return this.em.getRepository(Category).findAll();
+  }
+
+  async create({ name }: CreateCategoryDto): Promise<Category> {
     const category = this.em.getRepository(Category).create({ name });
 
     await this.em.getRepository(Category).persistAndFlush(category);
