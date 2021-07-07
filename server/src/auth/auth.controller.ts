@@ -34,6 +34,17 @@ export class AuthController {
     return { token };
   }
 
+  @Post("/admin/login")
+  adminLogin(
+    @Body("username") username: string,
+    @Body("password") password: string,
+    @Res({ passthrough: true }) res: Response,
+  ): { token: string } {
+    const token = this.authService.adminLogin(username, password);
+    res.cookie("adminToken", token, { httpOnly: true });
+    return { token };
+  }
+
   @Post("/logout")
   @UseGuards(JwtAuthGuard)
   logout(@Res({ passthrough: true }) res: Response): Message {

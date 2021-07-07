@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { EntityManager } from "@mikro-orm/core";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
@@ -34,6 +39,13 @@ export class AuthService {
 
   async login(user: User): Promise<string> {
     return this.jwtService.sign({ id: user.id });
+  }
+
+  adminLogin(username: string, password: string): string {
+    if (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD)
+      return this.jwtService.sign({ username });
+
+    throw new UnauthorizedException("Invalid credentials");
   }
 
   async forgotPassword(email: string): Promise<Message> {

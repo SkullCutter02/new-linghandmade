@@ -1,10 +1,10 @@
 import { Entity, EntityRepositoryType, Property } from "@mikro-orm/core";
 
-import { BaseEntityEntity } from "../../shared/baseEntity.entity";
+import { BaseEntity } from "../../shared/baseEntity.entity";
 import { ResetEmailRepository } from "../repositories/resetEmail.repository";
 
 @Entity({ tableName: "reset_emails", customRepository: () => ResetEmailRepository })
-export class ResetEmail extends BaseEntityEntity {
+export class ResetEmail extends BaseEntity {
   @Property()
   userId: string;
 
