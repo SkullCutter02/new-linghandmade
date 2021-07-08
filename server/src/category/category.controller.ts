@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
 
 import { CategoryService } from "./category.service";
 import { AdminAuthGuard } from "../auth/guards/adminAuth.guard";
@@ -22,12 +33,14 @@ export class CategoryController {
 
   @Post()
   @UseGuards(AdminAuthGuard)
+  @UsePipes(ValidationPipe)
   async create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     return this.categoryService.create(createCategoryDto);
   }
 
   @Patch("/:id")
   @UseGuards(AdminAuthGuard)
+  @UsePipes(ValidationPipe)
   async update(@Param("id") id: string, @Body() updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     return this.categoryService.update(id, updateCategoryDto);
   }
