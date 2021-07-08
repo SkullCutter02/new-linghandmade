@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -12,6 +13,7 @@ import {
 
 import { ProductService } from "./product.service";
 import { AdminAuthGuard } from "../auth/guards/adminAuth.guard";
+import { UpdateProductDto } from "./dto/updateProduct.dto";
 import { CreateProductDto } from "./dto/createProduct.dto";
 import { Product } from "./entities/product.entity";
 import { PaginationDto } from "../shared/pagination.dto";
@@ -38,5 +40,12 @@ export class ProductController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return this.productService.create(createProductDto);
+  }
+
+  @Patch("/:id")
+  @UseGuards(AdminAuthGuard)
+  @UsePipes(ValidationPipe)
+  async update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
+    return this.productService.update(id, updateProductDto);
   }
 }
