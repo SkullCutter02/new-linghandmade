@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -47,5 +48,11 @@ export class ProductController {
   @UsePipes(ValidationPipe)
   async update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productService.update(id, updateProductDto);
+  }
+
+  @Delete("/:id")
+  @UseGuards(AdminAuthGuard)
+  async delete(@Param("id") id: string): Promise<Product> {
+    return this.productService.delete(id);
   }
 }

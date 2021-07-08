@@ -94,4 +94,11 @@ export class ProductService {
     await this.em.getRepository(Product).persistAndFlush(product);
     return product;
   }
+
+  async delete(id: string): Promise<Product> {
+    const product = await this.em.getRepository(Product).findOneOrFail({ id });
+
+    await this.em.getRepository(Product).removeAndFlush(product);
+    return product;
+  }
 }
