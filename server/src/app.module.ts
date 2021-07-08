@@ -6,10 +6,14 @@ import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { EmailModule } from "./email/email.module";
 import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
+import { ServiceModule } from './service/service.module';
+import { ControllerModule } from './controller/controller.module';
+import { ProductModule } from './product/product.module';
 import ormconfig from "./config/ormconfig";
 
 @Module({
-  imports: [MikroOrmModule.forRoot(ormconfig), AuthModule, EmailModule, CategoryModule],
+  imports: [MikroOrmModule.forRoot(ormconfig), AuthModule, EmailModule, CategoryModule, ProductModule, ControllerModule, ServiceModule],
   controllers: [AppController],
   providers: [AppService],
 })
