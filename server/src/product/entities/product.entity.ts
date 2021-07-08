@@ -18,8 +18,8 @@ export class Product extends BaseEntity {
   @Property()
   mainImgUrl: string;
 
-  @Property()
-  carouselImgUrls: string[];
+  @Property({ nullable: true })
+  carouselImgUrls?: string[];
 
   @Property()
   amtLeft: number = 0;
@@ -27,7 +27,7 @@ export class Product extends BaseEntity {
   @Property()
   featured: boolean = false;
 
-  @Property()
+  @Property({ nullable: true })
   remarks?: string;
 
   @ManyToOne(() => Category)
