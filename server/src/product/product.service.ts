@@ -9,6 +9,10 @@ import { Product } from "./entities/product.entity";
 export class ProductService {
   constructor(private readonly em: EntityManager) {}
 
+  async findOne(id: string) {
+    return this.em.getRepository(Product).findOneOrFail({ id }, ["category"]);
+  }
+
   async create({
     name,
     description,
