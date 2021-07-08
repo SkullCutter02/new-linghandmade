@@ -4,13 +4,20 @@ import { EntityManager } from "@mikro-orm/core";
 import { CreateProductDto } from "./dto/createProduct.dto";
 import { Category } from "../category/entities/category.entity";
 import { Product } from "./entities/product.entity";
+import { PaginationDto } from "../shared/pagination.dto";
 
 @Injectable()
 export class ProductService {
   constructor(private readonly em: EntityManager) {}
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Product> {
     return this.em.getRepository(Product).findOneOrFail({ id }, ["category"]);
+  }
+
+  async find({ filter, page, limit }: PaginationDto): Promise<Product[]> {
+    return this.em
+      .getRepository(Product)
+      .find({ name: { $ilike: `%${filter}%` } }, { limit, offset: (page - 1) * limit });
   }
 
   async create({
@@ -23,7 +30,7 @@ export class ProductService {
     featured,
     remarks,
     categoryId,
-  }: CreateProductDto) {
+  }: CreateProductDto): Promise<Product> {
     const category = await this.em.getRepository(Category).findOneOrFail({ id: categoryId });
     const product = this.em.getRepository(Product).create({
       name,
