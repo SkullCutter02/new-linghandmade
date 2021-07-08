@@ -30,7 +30,7 @@ export class Product extends BaseEntity {
   @Property({ nullable: true })
   remarks?: string;
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, { onDelete: "cascade" })
   category: Category;
 
   [EntityRepositoryType]?: ProductRepository;

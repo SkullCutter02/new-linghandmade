@@ -1,4 +1,4 @@
-import { Cascade, Collection, Entity, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
+import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
 import { Length } from "class-validator";
 
 import { BaseEntity } from "../../shared/baseEntity.entity";
@@ -11,7 +11,7 @@ export class Category extends BaseEntity {
   @Length(1, 25)
   name: string;
 
-  @OneToMany(() => Product, (product) => product.category, { cascade: [Cascade.REMOVE] })
+  @OneToMany(() => Product, (product) => product.category)
   products: Collection<Product> = new Collection<Product>(this);
 
   [EntityRepositoryType]?: CategoryRepository;
