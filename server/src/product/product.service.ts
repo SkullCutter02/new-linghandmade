@@ -14,10 +14,23 @@ export class ProductService {
     return this.em.getRepository(Product).findOneOrFail({ id }, ["category"]);
   }
 
-  async find({ filter, page, limit }: PaginationDto): Promise<Product[]> {
-    return this.em
-      .getRepository(Product)
-      .find({ name: { $ilike: `%${filter}%` } }, { limit, offset: (page - 1) * limit });
+  async find({ filter, page, limit }: PaginationDto, categoryId: string): Promise<Product[]> {
+    const category = await this.em.getRepository(Category).findOne({ id: categoryId });
+
+    if (!category)
+      return this.em
+        .getRepository(Product)
+        .find(
+          { name: { $ilike: `%${filter}%` } },
+          { limit, offset: (page - 1) * limit, populate: ["category"] },
+        );
+    else
+      return this.em
+        .getRepository(Product)
+        .find(
+          { name: { $ilike: `%${filter}%` }, category },
+          { limit, offset: (page - 1) * limit, populate: ["category"] },
+        );
   }
 
   async create({

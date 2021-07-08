@@ -26,8 +26,11 @@ export class ProductController {
   }
 
   @Get()
-  async find(@Query() paginationDto: PaginationDto): Promise<Product[]> {
-    return this.productService.find(paginationDto);
+  async find(
+    @Query() paginationDto: PaginationDto,
+    @Query("category") categoryId: string,
+  ): Promise<Product[]> {
+    return this.productService.find(paginationDto, categoryId);
   }
 
   @Post()
