@@ -1,37 +1,36 @@
 import { Injectable } from "@nestjs/common";
-import { EntityManager } from "@mikro-orm/core";
 
 import { CreateProductDto } from "./dto/createProduct.dto";
 import { UpdateProductDto } from "./dto/updateProduct.dto";
-import { Category } from "../category/entities/category.entity";
 import { Product } from "./entities/product.entity";
 import { PaginationDto } from "../shared/pagination.dto";
+import { ProductRepository } from "./repositories/product.repository";
+import { CategoryRepository } from "../category/repositories/category.repository";
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly em: EntityManager) {}
+  constructor(
+    private readonly productRepository: ProductRepository,
+    private readonly categoryRepository: CategoryRepository,
+  ) {}
 
   async findOne(id: string): Promise<Product> {
-    return this.em.getRepository(Product).findOneOrFail({ id }, ["category"]);
+    return this.productRepository.findOneOrFail({ id }, ["category"]);
   }
 
   async find({ filter, page, limit }: PaginationDto, categoryId: string): Promise<Product[]> {
-    const category = await this.em.getRepository(Category).findOne({ id: categoryId });
+    const category = await this.categoryRepository.findOne({ id: categoryId });
 
     if (!category)
-      return this.em
-        .getRepository(Product)
-        .find(
-          { name: { $ilike: `%${filter}%` } },
-          { limit, offset: (page - 1) * limit, populate: ["category"] },
-        );
+      return this.productRepository.find(
+        { name: { $ilike: `%${filter}%` } },
+        { limit, offset: (page - 1) * limit, populate: ["category"] },
+      );
     else
-      return this.em
-        .getRepository(Product)
-        .find(
-          { name: { $ilike: `%${filter}%` }, category },
-          { limit, offset: (page - 1) * limit, populate: ["category"] },
-        );
+      return this.productRepository.find(
+        { name: { $ilike: `%${filter}%` }, category },
+        { limit, offset: (page - 1) * limit, populate: ["category"] },
+      );
   }
 
   async create({
@@ -45,8 +44,8 @@ export class ProductService {
     remarks,
     categoryId,
   }: CreateProductDto): Promise<Product> {
-    const category = await this.em.getRepository(Category).findOneOrFail({ id: categoryId });
-    const product = this.em.getRepository(Product).create({
+    const category = await this.categoryRepository.findOneOrFail({ id: categoryId });
+    const product = this.productRepository.create({
       name,
       description,
       price,
@@ -58,7 +57,7 @@ export class ProductService {
       category,
     });
 
-    await this.em.getRepository(Product).persistAndFlush(product);
+    await this.productRepository.persistAndFlush(product);
     return product;
   }
 
@@ -76,10 +75,8 @@ export class ProductService {
       categoryId,
     }: UpdateProductDto,
   ): Promise<Product> {
-    const product = await this.em.getRepository(Product).findOneOrFail({ id });
-    const category = categoryId
-      ? await this.em.getRepository(Category).findOneOrFail({ id: categoryId })
-      : null;
+    const product = await this.productRepository.findOneOrFail({ id });
+    const category = categoryId ? await this.categoryRepository.findOneOrFail({ id: categoryId }) : null;
 
     product.name = name || product.name;
     product.description = description || product.description;
@@ -91,14 +88,14 @@ export class ProductService {
     product.remarks = remarks || product.remarks;
     product.category = category || product.category;
 
-    await this.em.getRepository(Product).persistAndFlush(product);
+    await this.productRepository.persistAndFlush(product);
     return product;
   }
 
   async delete(id: string): Promise<Product> {
-    const product = await this.em.getRepository(Product).findOneOrFail({ id });
+    const product = await this.productRepository.findOneOrFail({ id });
 
-    await this.em.getRepository(Product).removeAndFlush(product);
+    await this.productRepository.removeAndFlush(product);
     return product;
   }
 }
