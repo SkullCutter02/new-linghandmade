@@ -13,7 +13,7 @@ export abstract class BaseEntity {
 
   assign(values: object) {
     for (const key in values) {
-      if (values[key]) this[key] = values[key];
+      this[key] = values[key] ?? this[key];
     }
   }
 }

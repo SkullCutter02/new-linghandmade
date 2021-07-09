@@ -1,4 +1,4 @@
-import { IsOptional, IsPositive, IsString, IsUrl, IsUUID, Min } from "class-validator";
+import { IsOptional, IsString, IsUrl, IsUUID, Min } from "class-validator";
 
 export class UpdateProductDto {
   @IsOptional()
@@ -10,7 +10,7 @@ export class UpdateProductDto {
   description?: string;
 
   @IsOptional()
-  @IsPositive()
+  @Min(0)
   price?: number;
 
   @IsOptional()
