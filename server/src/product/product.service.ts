@@ -78,15 +78,17 @@ export class ProductService {
     const product = await this.productRepository.findOneOrFail({ id });
     const category = categoryId ? await this.categoryRepository.findOneOrFail({ id: categoryId }) : null;
 
-    product.name = name || product.name;
-    product.description = description || product.description;
-    product.price = price || product.price;
-    product.mainImgUrl = mainImgUrl || product.mainImgUrl;
-    product.carouselImgUrls = carouselImgUrls || product.carouselImgUrls;
-    product.amtLeft = amtLeft || product.amtLeft;
-    product.featured = featured || product.featured;
-    product.remarks = remarks || product.remarks;
-    product.category = category || product.category;
+    product.assign({
+      name,
+      description,
+      price,
+      mainImgUrl,
+      carouselImgUrls,
+      amtLeft,
+      featured,
+      remarks,
+      category,
+    });
 
     await this.productRepository.persistAndFlush(product);
     return product;

@@ -27,7 +27,7 @@ export class CategoryService {
   async update(id: string, { name }: UpdateCategoryDto): Promise<Category> {
     const category = await this.categoryRepository.findOneOrFail({ id });
 
-    category.name = name || category.name;
+    category.assign({ name });
 
     await this.categoryRepository.persistAndFlush(category);
     return category;

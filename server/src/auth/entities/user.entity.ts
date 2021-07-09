@@ -1,7 +1,7 @@
 import { Entity, EntityRepositoryType, Property } from "@mikro-orm/core";
 import { IsEmail, Matches } from "class-validator";
 
-import { BaseEntity } from "../../shared/baseEntity.entity";
+import { BaseEntity } from "../../shared/base.entity";
 import { usernameRegex } from "../../shared/regexes";
 import { UserRepository } from "../repositories/user.repository";
 

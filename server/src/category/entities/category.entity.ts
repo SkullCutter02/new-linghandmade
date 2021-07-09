@@ -1,7 +1,7 @@
 import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
 import { Length } from "class-validator";
 
-import { BaseEntity } from "../../shared/baseEntity.entity";
+import { BaseEntity } from "../../shared/base.entity";
 import { CategoryRepository } from "../repositories/category.repository";
 import { Product } from "../../product/entities/product.entity";
 

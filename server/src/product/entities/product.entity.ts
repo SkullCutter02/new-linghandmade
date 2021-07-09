@@ -1,6 +1,6 @@
 import { Entity, EntityRepositoryType, ManyToOne, Property } from "@mikro-orm/core";
 
-import { BaseEntity } from "../../shared/baseEntity.entity";
+import { BaseEntity } from "../../shared/base.entity";
 import { ProductRepository } from "../repositories/product.repository";
 import { Category } from "../../category/entities/category.entity";
 

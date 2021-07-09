@@ -10,4 +10,10 @@ export abstract class BaseEntity {
 
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date();
+
+  assign(values: object) {
+    for (const key in values) {
+      if (values[key]) this[key] = values[key];
+    }
+  }
 }

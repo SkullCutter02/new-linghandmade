@@ -85,7 +85,7 @@ export class AuthService {
 
     if (!user) throw new NotFoundException("User not found");
 
-    user.hash = await argon2.hash(password);
+    user.assign({ hash: await argon2.hash(password) });
 
     await this.userRepository.persistAndFlush(user);
     await this.resetEmailRepository.removeAndFlush(email);
