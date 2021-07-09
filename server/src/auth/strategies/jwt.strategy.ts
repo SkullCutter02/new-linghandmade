@@ -1,15 +1,15 @@
 import { PassportStrategy } from "@nestjs/passport";
-import { EntityManager } from "@mikro-orm/core";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { Request } from "express";
 
 import { JwtPayload } from "../../shared/types/JwtPayload";
 import { User } from "../entities/user.entity";
+import { UserRepository } from "../repositories/user.repository";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly em: EntityManager) {
+  constructor(private readonly userRepository: UserRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
@@ -23,8 +23,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate({ id }: JwtPayload) {
-    const user = await this.em.getRepository(User).findOne(id);
+  async validate({ id }: JwtPayload): Promise<User> {
+    const user = await this.userRepository.findOne(id);
 
     if (!user) throw new UnauthorizedException("User not found");
 

@@ -1,14 +1,14 @@
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { EntityManager } from "@mikro-orm/core";
 import * as argon2 from "argon2";
 
 import { User } from "../entities/user.entity";
+import { UserRepository } from "../repositories/user.repository";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly em: EntityManager) {
+  constructor(private readonly userRepository: UserRepository) {
     super({
       usernameField: "credentials",
       passwordField: "password",
@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(credentials: string, password: string): Promise<User> {
-    const user = await this.em.getRepository(User).findByCredentials(credentials);
+    const user = await this.userRepository.findByCredentials(credentials);
 
     if (!user) throw new UnauthorizedException("Invalid credentials");
 
