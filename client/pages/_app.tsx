@@ -1,6 +1,10 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 
+import Navbar from "../components/layout/Navbar";
+
+import "../styles/global.css";
+
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
 
@@ -20,6 +24,7 @@ export default function App(props: AppProps) {
         />
       </Head>
 
+      <Navbar />
       <Component {...pageProps} />
     </>
   );
