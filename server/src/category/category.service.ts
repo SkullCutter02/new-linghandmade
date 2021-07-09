@@ -1,42 +1,42 @@
 import { Injectable } from "@nestjs/common";
-import { EntityManager } from "@mikro-orm/core";
 
 import { CreateCategoryDto } from "./dto/createCategory.dto";
 import { UpdateCategoryDto } from "./dto/updateCategory.dto";
 import { Category } from "./entities/category.entity";
+import { CategoryRepository } from "./repositories/category.repository";
 
 @Injectable()
 export class CategoryService {
-  constructor(private readonly em: EntityManager) {}
+  constructor(private readonly categoryRepository: CategoryRepository) {}
 
   async findOne(id: string): Promise<Category> {
-    return this.em.getRepository(Category).findOneOrFail({ id });
+    return this.categoryRepository.findOneOrFail({ id });
   }
 
   async find(): Promise<Category[]> {
-    return this.em.getRepository(Category).findAll();
+    return this.categoryRepository.findAll();
   }
 
   async create({ name }: CreateCategoryDto): Promise<Category> {
-    const category = this.em.getRepository(Category).create({ name });
+    const category = this.categoryRepository.create({ name });
 
-    await this.em.getRepository(Category).persistAndFlush(category);
+    await this.categoryRepository.persistAndFlush(category);
     return category;
   }
 
   async update(id: string, { name }: UpdateCategoryDto): Promise<Category> {
-    const category = await this.em.getRepository(Category).findOneOrFail({ id });
+    const category = await this.categoryRepository.findOneOrFail({ id });
 
     category.name = name || category.name;
 
-    await this.em.getRepository(Category).persistAndFlush(category);
+    await this.categoryRepository.persistAndFlush(category);
     return category;
   }
 
   async delete(id: string): Promise<Category> {
-    const category = await this.em.getRepository(Category).findOneOrFail({ id });
+    const category = await this.categoryRepository.findOneOrFail({ id });
 
-    await this.em.getRepository(Category).removeAndFlush(category);
+    await this.categoryRepository.removeAndFlush(category);
     return category;
   }
 }
