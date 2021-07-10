@@ -39,10 +39,11 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
           position: relative;
           transition: color 0.3s;
           cursor: pointer;
+          z-index: 4;
         }
         
         li.active {
-          color: var(--primaryColor);
+          color: var(--primaryColor) !important;
         }
 
         li::after {
@@ -62,7 +63,7 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
         }
 
         li:hover {
-          color: var(--primaryColor);
+          color: var(--primaryColor) !important;
         }
 
         li:hover::after {
@@ -71,7 +72,9 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
         
         ul.mobile li {
           margin: 15px 0;
-          transition: transform 0.6s;
+          transition: all 0.6s;
+          font-size: 24px;
+          color: #fff;
         }
         
         ul.mobile li:nth-child(odd) {
@@ -87,7 +90,7 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
         }
         
         @media screen and (max-width: ${hamburgerRevealWidth}px) {
-          ul {
+          ul:not(.mobile) {
             display: none;
           }
         }

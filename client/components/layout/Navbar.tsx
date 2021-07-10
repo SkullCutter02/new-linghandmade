@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
               height={15}
               width={30}
               strokeWidth={3}
-              color={"#0da3d6"}
+              color={isMenuOpen ? "#0da3d6" : "#000"}
               animationDuration={0.4}
             />
           </div>
