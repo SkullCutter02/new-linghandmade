@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { HamburgerButton } from "react-hamburger-button";
+
+import MobileNavbar from "./MobileNavbar";
+import NavbarTabs from "./NavbarTabs";
 
 const Navbar: React.FC = () => {
+  const hamburgerRevealWidth = 650;
+
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
   return (
     <>
       <nav>
         <div className="left-content">
-          <ul>
-            <li className={"active"}>All Products</li>
-            <li>Categories</li>
-          </ul>
+          <NavbarTabs hamburgerRevealWidth={hamburgerRevealWidth} />
+          <div className="hamburger">
+            <HamburgerButton
+              open={isMenuOpen}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              height={15}
+              width={30}
+              strokeWidth={3}
+              color={"#0da3d6"}
+              animationDuration={0.4}
+            />
+          </div>
+          <MobileNavbar
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+            hamburgerRevealWidth={hamburgerRevealWidth}
+          />
         </div>
         <div className="right-content">
           <button className="login-btn">Log in</button>
@@ -24,46 +45,18 @@ const Navbar: React.FC = () => {
           font-size: 18px;
         }
 
-        ul {
+        .left-content {
           display: flex;
+          align-items: center;
         }
 
-        li {
-          margin-left: 30px;
-          font-weight: 500;
+        .hamburger {
+          margin-left: 15px;
+          display: none;
           position: relative;
-          transition: color 0.3s;
-          cursor: pointer;
-        }
-        
-        li.active {
-          color: var(--primaryColor);
+          z-index: 4;
         }
 
-        li::after {
-          content: "";
-          position: absolute;
-          left: 50%;
-          top: 120%;
-          width: 100%;
-          height: 2px;
-          background: var(--primaryColor);
-          transform: translateX(-50%) scaleX(0);
-          transition: all 0.3s;
-        }
-        
-        li.active::after {
-          transform: translateX(-50%); scaleX(1);
-        }
-
-        li:hover {
-          color: var(--primaryColor);
-        }
-
-        li:hover::after {
-          transform: translateX(-50%) scaleX(1);
-        }
-        
         .right-content button {
           margin-right: 30px;
           padding: 7px 13px;
@@ -72,18 +65,28 @@ const Navbar: React.FC = () => {
           font-weight: 500;
           border-radius: 6px;
         }
-        
+
         .login-btn {
           background: #fff;
         }
-        
+
         .login-btn:hover {
           color: var(--primaryColor);
         }
-        
+
         .signup-btn {
           background: var(--primaryColor);
           color: #fff;
+        }
+
+        @media screen and (max-width: ${hamburgerRevealWidth}px) {
+          ul {
+            display: none;
+          }
+
+          .hamburger {
+            display: block;
+          }
         }
       `}</style>
     </>
