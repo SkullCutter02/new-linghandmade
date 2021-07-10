@@ -103,6 +103,13 @@ const FrontPageInfo: React.FC = () => {
 
         p {
           text-align: justify;
+          line-height: 1.5em;
+        }
+
+        @media screen and (max-width: 600px) {
+          p {
+            font-size: 0.9rem;
+          }
         }
       `}</style>
     </>
