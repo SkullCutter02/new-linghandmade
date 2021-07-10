@@ -3,6 +3,7 @@
   --primaryTextColor: #555555;
   --primaryColor: #0da3d6;
   --secondaryColor: #af9b7d;
+  --navbarHeight: 80px;
 }
 
 * {
@@ -15,7 +16,6 @@
 
 body {
   background: var(--bg);
-  height: 200vh;
 }
 
 button {
@@ -24,4 +24,9 @@ button {
 
 ul {
   list-style: none;
+}
+
+.err-msg {
+  color: #ff0000;
+  font-size: 0.75rem;
 }

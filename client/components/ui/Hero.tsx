@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
       <style jsx>{`
         .hero-container {
           width: 100%;
-          height: calc(100vh - 100px);
+          height: calc(100vh - var(--navbarHeight));
           position: relative;
         }
 

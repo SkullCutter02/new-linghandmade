@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import { HamburgerButton } from "react-hamburger-button";
 
 import MobileNavbar from "./MobileNavbar";
@@ -32,8 +33,12 @@ const Navbar: React.FC = () => {
           />
         </div>
         <div className="right-content" onClick={() => console.log("dd")}>
-          <button className="login-btn">Log in</button>
-          <button className="signup-btn">Sign Up</button>
+          <Link href={"/auth/login"}>
+            <button className="login-btn">Log in</button>
+          </Link>
+          <Link href={"/auth/signup"}>
+            <button className="signup-btn">Sign Up</button>
+          </Link>
         </div>
       </nav>
 
@@ -41,7 +46,8 @@ const Navbar: React.FC = () => {
         nav {
           display: flex;
           justify-content: space-between;
-          padding: 30px 10px;
+          align-items: center;
+          height: var(--navbarHeight);
           font-size: 18px;
         }
 
