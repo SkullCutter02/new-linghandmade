@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -6,6 +7,7 @@ import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import AuthForm from "../../components/ui/AuthForm";
 import IconInput from "../../components/widgets/IconInput";
+import HOST from "../../constants/host";
 
 interface FormInput {
   credentials: string;
@@ -13,6 +15,10 @@ interface FormInput {
 }
 
 const LoginPage: React.FC = () => {
+  const router = useRouter();
+
+  const errMsgRef = useRef<HTMLParagraphElement>(null);
+
   const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
 
   const {
@@ -29,7 +35,25 @@ const LoginPage: React.FC = () => {
     ),
   });
 
-  const login = () => {};
+  const login = async ({ credentials, password }: FormInput) => {
+    errMsgRef.current.innerText = "";
+
+    const res = await fetch(`${HOST}/auth/login`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ credentials, password }),
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      await router.push("/");
+    } else {
+      errMsgRef.current.innerText = data.message;
+    }
+  };
 
   return (
     <>
@@ -38,6 +62,7 @@ const LoginPage: React.FC = () => {
         handleSubmit={handleSubmit}
         submitFn={login}
         setIsPasswordShown={setIsPasswordShown}
+        errMsgRef={errMsgRef}
       >
         <IconInput
           name={"credentials"}

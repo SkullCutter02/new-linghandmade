@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -14,6 +14,8 @@ interface FormInput {
 }
 
 const SignupPage: React.FC = () => {
+  const errMsgRef = useRef<HTMLParagraphElement>(null);
+
   const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
 
   const {
@@ -52,6 +54,7 @@ const SignupPage: React.FC = () => {
         handleSubmit={handleSubmit}
         submitFn={signup}
         setIsPasswordShown={setIsPasswordShown}
+        errMsgRef={errMsgRef}
       >
         <IconInput
           name={"username"}

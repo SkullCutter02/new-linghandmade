@@ -7,7 +7,10 @@ const PORT = 5000 || process.env.PORT;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: true,
+    cors: {
+      origin: [process.env.FRONTEND_URL || "http://localhost:3000"],
+      credentials: true,
+    },
   });
 
   app.use(cookieParser());

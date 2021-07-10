@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
 
 interface Props {
   authType: "login" | "signup";
   handleSubmit: any;
   submitFn: (...any) => void;
   setIsPasswordShown: Dispatch<SetStateAction<boolean>>;
+  errMsgRef: MutableRefObject<HTMLParagraphElement>;
 }
 
 const AuthForm: React.FC<Props> = ({
@@ -13,6 +14,7 @@ const AuthForm: React.FC<Props> = ({
   handleSubmit,
   submitFn,
   setIsPasswordShown,
+  errMsgRef,
 }) => {
   return (
     <>
@@ -31,6 +33,7 @@ const AuthForm: React.FC<Props> = ({
           <button className="auth-btn" type={"submit"}>
             {authType === "login" ? "Login" : "Sign Up"}
           </button>
+          <p className="err-msg" ref={errMsgRef} />
         </form>
       </main>
 
@@ -80,6 +83,10 @@ const AuthForm: React.FC<Props> = ({
           padding: 8px 12px;
           border-radius: 50px;
           text-transform: uppercase;
+        }
+
+        .err-msg {
+          margin-top: 15px;
         }
       `}</style>
     </>
