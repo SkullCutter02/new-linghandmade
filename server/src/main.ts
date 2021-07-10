@@ -6,7 +6,9 @@ import { AppModule } from "./app.module";
 const PORT = 5000 || process.env.PORT;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+  });
 
   app.use(cookieParser());
 
