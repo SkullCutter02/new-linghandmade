@@ -24,7 +24,7 @@ const AuthForm: React.FC<Props> = ({
     <>
       <main>
         <form onSubmit={handleSubmit(submitFn)}>
-          <h2>{authType}</h2>
+          <h2>{authType === "signup" ? "Sign Up" : "Login"}</h2>
           {children}
           <div className="show-password-container">
             <input

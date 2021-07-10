@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -6,6 +7,7 @@ import { faEnvelope, faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 
 import AuthForm from "../../components/ui/AuthForm";
 import IconInput from "../../components/widgets/IconInput";
+import HOST from "../../constants/host";
 
 interface FormInput {
   username: string;
@@ -14,6 +16,8 @@ interface FormInput {
 }
 
 const SignupPage: React.FC = () => {
+  const router = useRouter();
+
   const errMsgRef = useRef<HTMLParagraphElement>(null);
 
   const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
@@ -46,7 +50,27 @@ const SignupPage: React.FC = () => {
     ),
   });
 
-  const signup = () => {};
+  const signup = async ({ username, email, password }: FormInput) => {
+    setIsLoading(true);
+    errMsgRef.current.innerText = "";
+
+    const res = await fetch(`${HOST}/auth/signup`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, email, password }),
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      await router.push("/");
+    } else {
+      errMsgRef.current.innerText = data.message;
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
