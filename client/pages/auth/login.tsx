@@ -20,6 +20,7 @@ const LoginPage: React.FC = () => {
   const errMsgRef = useRef<HTMLParagraphElement>(null);
 
   const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -36,6 +37,7 @@ const LoginPage: React.FC = () => {
   });
 
   const login = async ({ credentials, password }: FormInput) => {
+    setIsLoading(true);
     errMsgRef.current.innerText = "";
 
     const res = await fetch(`${HOST}/auth/login`, {
@@ -52,6 +54,7 @@ const LoginPage: React.FC = () => {
       await router.push("/");
     } else {
       errMsgRef.current.innerText = data.message;
+      setIsLoading(false);
     }
   };
 
@@ -63,6 +66,7 @@ const LoginPage: React.FC = () => {
         submitFn={login}
         setIsPasswordShown={setIsPasswordShown}
         errMsgRef={errMsgRef}
+        isLoading={isLoading}
       >
         <IconInput
           name={"credentials"}

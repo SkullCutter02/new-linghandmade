@@ -17,6 +17,7 @@ const SignupPage: React.FC = () => {
   const errMsgRef = useRef<HTMLParagraphElement>(null);
 
   const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -55,6 +56,7 @@ const SignupPage: React.FC = () => {
         submitFn={signup}
         setIsPasswordShown={setIsPasswordShown}
         errMsgRef={errMsgRef}
+        isLoading={isLoading}
       >
         <IconInput
           name={"username"}

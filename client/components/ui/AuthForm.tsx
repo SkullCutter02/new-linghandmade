@@ -1,11 +1,14 @@
 import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
 
+import Spinner from "../widgets/Spinner";
+
 interface Props {
   authType: "login" | "signup";
   handleSubmit: any;
   submitFn: (...any) => void;
   setIsPasswordShown: Dispatch<SetStateAction<boolean>>;
   errMsgRef: MutableRefObject<HTMLParagraphElement>;
+  isLoading: boolean;
 }
 
 const AuthForm: React.FC<Props> = ({
@@ -15,6 +18,7 @@ const AuthForm: React.FC<Props> = ({
   submitFn,
   setIsPasswordShown,
   errMsgRef,
+  isLoading,
 }) => {
   return (
     <>
@@ -30,8 +34,8 @@ const AuthForm: React.FC<Props> = ({
             />
             <label htmlFor={"show-password"}>Show Password</label>
           </div>
-          <button className="auth-btn" type={"submit"}>
-            {authType === "login" ? "Login" : "Sign Up"}
+          <button className="auth-btn" type={"submit"} disabled={isLoading}>
+            {isLoading ? <Spinner size={10} /> : authType === "login" ? "Login" : "Sign Up"}
           </button>
           <p className="err-msg" ref={errMsgRef} />
         </form>
@@ -80,9 +84,11 @@ const AuthForm: React.FC<Props> = ({
           border: none;
           background: var(--primaryColor);
           color: #fff;
-          padding: 8px 12px;
+          padding: 0 12px;
+          height: 33px;
           border-radius: 50px;
           text-transform: uppercase;
+          position: relative;
         }
 
         .err-msg {
