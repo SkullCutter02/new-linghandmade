@@ -21,10 +21,16 @@ const AuthForm: React.FC<Props> = ({
           <h2>{authType}</h2>
           {children}
           <div className="show-password-container">
-            <input type="checkbox" onChange={(e) => setIsPasswordShown(e.target.checked)} />
-            <p>Show Password</p>
+            <input
+              type="checkbox"
+              id={"show-password"}
+              onChange={(e) => setIsPasswordShown(e.target.checked)}
+            />
+            <label htmlFor={"show-password"}>Show Password</label>
           </div>
-          <button className="auth-btn">{authType === "login" ? "Login" : "Sign Up"}</button>
+          <button className="auth-btn" type={"submit"}>
+            {authType === "login" ? "Login" : "Sign Up"}
+          </button>
         </form>
       </main>
 
@@ -60,7 +66,7 @@ const AuthForm: React.FC<Props> = ({
           display: flex;
         }
 
-        .show-password-container p {
+        .show-password-container label {
           font-size: 0.75rem;
           margin-left: 7px;
         }
