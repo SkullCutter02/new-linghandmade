@@ -31,7 +31,7 @@ const Navbar: React.FC = () => {
             hamburgerRevealWidth={hamburgerRevealWidth}
           />
         </div>
-        <div className="right-content">
+        <div className="right-content" onClick={() => console.log("dd")}>
           <button className="login-btn">Log in</button>
           <button className="signup-btn">Sign Up</button>
         </div>
@@ -64,6 +64,8 @@ const Navbar: React.FC = () => {
           font-size: 14px;
           font-weight: 500;
           border-radius: 6px;
+          position: relative;
+          z-index: ${isMenuOpen ? "initial" : "3"};
         }
 
         .login-btn {
