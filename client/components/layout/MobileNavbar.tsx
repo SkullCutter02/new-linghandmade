@@ -41,8 +41,8 @@ const MobileNavbar: React.FC<Props> = ({ isMenuOpen, setIsMenuOpen, hamburgerRev
         .overlay {
           width: 100%;
           height: 100%;
-          background: #000;
-          opacity: 40%;
+          background: #fff;
+          opacity: 80%;
         }
 
         @media screen and (max-width: ${hamburgerRevealWidth}px) {

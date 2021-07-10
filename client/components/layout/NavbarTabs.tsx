@@ -74,7 +74,6 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
           margin: 15px 0;
           transition: all 0.6s;
           font-size: 24px;
-          color: #fff;
         }
         
         ul.mobile li:nth-child(odd) {
