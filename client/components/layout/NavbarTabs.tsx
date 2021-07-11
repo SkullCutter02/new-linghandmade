@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface Props {
   hamburgerRevealWidth?: number;
@@ -7,12 +9,32 @@ interface Props {
 }
 
 const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, isMenuOpen }) => {
+  const router = useRouter();
+  const path = router.asPath.split("/");
+  console.log(path);
+
+  useEffect(() => {
+    const tabs = document.getElementsByClassName("tab");
+
+    for (let i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+
+    if (path[1] === "products") tabs[1].classList.add("active");
+    else if (path[1] === "categories") tabs[2].classList.add("active");
+    else tabs[0].classList.add("active");
+  }, [path]);
+
   return (
     <>
       <ul className={(isMobile ? "mobile" : "") + (isMenuOpen ? " enabled" : "")}>
-        <li className="active">Home</li>
-        <li>All Products</li>
-        <li>Categories</li>
+        <Link href={"/"}>
+          <li className="tab">Home</li>
+        </Link>
+        <Link href={"/products"}>
+          <li className="tab">All Products</li>
+        </Link>
+        <Link href={"/categories"}>
+          <li className="tab">Categories</li>
+        </Link>
       </ul>
 
       <style jsx>{`
