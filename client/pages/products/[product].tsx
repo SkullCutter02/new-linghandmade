@@ -15,7 +15,13 @@ const ProductPage: React.FC = () => {
     getProduct(productId as string)
   );
 
-  return <></>;
+  return (
+    <>
+      <div className="product">
+        <h1>{product.name}</h1>
+      </div>
+    </>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

@@ -9,7 +9,7 @@ export class Product extends BaseEntity {
   @Property()
   name: string;
 
-  @Property()
+  @Property({ type: "text" })
   description: string;
 
   @Property()
