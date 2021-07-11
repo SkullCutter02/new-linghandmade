@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 interface Props {
   product: Product;
@@ -10,13 +11,17 @@ const ProductPreview: React.FC<Props> = ({ product }) => {
       <div className="product">
         <div className="product-img">
           <div className="overlay" />
-          <p className="learn-more">Learn More</p>
+          <Link href={`/products/${product.id}`}>
+            <p className="learn-more">Learn More</p>
+          </Link>
           <img src={product.mainImgUrl} alt={product.name} />
         </div>
-        <div className="product-info">
-          <h3>{product.name}</h3>
-          <p>${product.price}</p>
-        </div>
+        <Link href={`/products/${product.id}`}>
+          <div className="product-info">
+            <h3>{product.name}</h3>
+            <p>${product.price}</p>
+          </div>
+        </Link>
       </div>
 
       <style jsx>{`
@@ -87,6 +92,7 @@ const ProductPreview: React.FC<Props> = ({ product }) => {
         .product-info h3,
         .product-info p {
           text-align: center;
+          cursor: pointer;
         }
 
         .product-info p {
