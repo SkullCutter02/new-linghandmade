@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import NavbarTabs from "./NavbarTabs";
 
@@ -9,6 +9,17 @@ interface Props {
 }
 
 const MobileNavbar: React.FC<Props> = ({ isMenuOpen, setIsMenuOpen, hamburgerRevealWidth }) => {
+  const [zIndex, setZIndex] = useState<number>(-1);
+
+  useEffect(() => {
+    if (isMenuOpen) setZIndex(2);
+    else {
+      setTimeout(() => {
+        setZIndex(-1);
+      }, 600);
+    }
+  }, [isMenuOpen]);
+
   return (
     <>
       <div
@@ -27,7 +38,7 @@ const MobileNavbar: React.FC<Props> = ({ isMenuOpen, setIsMenuOpen, hamburgerRev
           opacity: 0;
           transition: opacity 0.6s;
           position: fixed;
-          z-index: 2;
+          z-index: ${zIndex};
           top: 0;
           left: 0;
           width: 100vw;

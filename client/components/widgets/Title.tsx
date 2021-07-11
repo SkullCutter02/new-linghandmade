@@ -3,9 +3,10 @@ import React from "react";
 interface Props {
   text: string;
   marginBottom?: number;
+  marginTop?: number;
 }
 
-const Title: React.FC<Props> = ({ text, marginBottom = 20 }) => {
+const Title: React.FC<Props> = ({ text, marginBottom = 20, marginTop = 0 }) => {
   return (
     <>
       <h1>{text}</h1>
@@ -15,6 +16,7 @@ const Title: React.FC<Props> = ({ text, marginBottom = 20 }) => {
           text-align: center;
           text-transform: capitalize;
           font-size: 2.2rem;
+          margin-top: ${marginTop}px;
         }
 
         h1::after {
