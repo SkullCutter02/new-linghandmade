@@ -37,7 +37,7 @@ export class ProductController {
   async find(
     @Query() paginationDto: PaginationDto,
     @Query("category") categoryId: string,
-  ): Promise<Product[]> {
+  ): Promise<{ products: Product[]; hasMore: boolean }> {
     return this.productService.find(paginationDto, categoryId);
   }
 

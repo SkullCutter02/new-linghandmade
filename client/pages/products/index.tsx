@@ -18,8 +18,9 @@ const ProductsPage: React.FC = () => {
 
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const { data: products } = useQuery<Product[]>(["products", page, filter], () =>
-    getProducts(parseInt(page as string), filter as string, category as string)
+  const { data: productsData } = useQuery<{ products: Product[]; hasMore: boolean }>(
+    ["products", page, filter],
+    () => getProducts(parseInt(page as string), filter as string, category as string)
   );
 
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
@@ -73,7 +74,7 @@ const ProductsPage: React.FC = () => {
         </div>
 
         <div className="products">
-          {products.map((product) => (
+          {productsData.products.map((product) => (
             <ProductPreview product={product} key={product.id} />
           ))}
         </div>
@@ -87,6 +88,7 @@ const ProductsPage: React.FC = () => {
                 }${category ? `&category=${category}` : ""}`
               )
             }
+            disabled={parseInt(page as string) === 1}
           >
             Previous Page
           </button>
@@ -98,6 +100,7 @@ const ProductsPage: React.FC = () => {
                 }`
               )
             }
+            disabled={!productsData.hasMore}
           >
             Next Page
           </button>
@@ -140,6 +143,10 @@ const ProductsPage: React.FC = () => {
           border: none;
           padding: 4px 7px;
           border-radius: 8px;
+        }
+
+        .pagination-buttons button:disabled {
+          display: none;
         }
 
         @media screen and (max-width: 900px) {

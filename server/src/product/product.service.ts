@@ -22,19 +22,25 @@ export class ProductService {
     return this.productRepository.findOneOrFail({ id }, ["category"]);
   }
 
-  async find({ filter, page, limit }: PaginationDto, categoryId: string): Promise<Product[]> {
+  async find(
+    { filter, page, limit }: PaginationDto,
+    categoryId: string,
+  ): Promise<{ products: Product[]; hasMore: boolean }> {
     const category = await this.categoryRepository.findOne({ id: categoryId });
 
-    if (!category)
-      return this.productRepository.find(
+    if (!category) {
+      const [products, count] = await this.productRepository.findAndCount(
         { name: { $ilike: `%${filter}%` } },
         { limit, offset: (page - 1) * limit, populate: ["category"] },
       );
-    else
-      return this.productRepository.find(
+      return { products, hasMore: count > page * limit };
+    } else {
+      const [products, count] = await this.productRepository.findAndCount(
         { name: { $ilike: `%${filter}%` }, category },
         { limit, offset: (page - 1) * limit, populate: ["category"] },
       );
+      return { products, hasMore: count > page * limit };
+    }
   }
 
   async create({
