@@ -17,9 +17,9 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
 
     for (let i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
 
-    if (path[1] === "products") tabs[1].classList.add("active");
+    if (path[1].includes("products")) tabs[1].classList.add("active");
     else if (path[1] === "blog") tabs[2].classList.add("active");
-    else tabs[0].classList.add("active");
+    else if (path[1] === "") tabs[0].classList.add("active");
   }, [path]);
 
   return (
