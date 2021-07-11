@@ -11,7 +11,6 @@ interface Props {
 const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, isMenuOpen }) => {
   const router = useRouter();
   const path = router.asPath.split("/");
-  console.log(path);
 
   useEffect(() => {
     const tabs = document.getElementsByClassName("tab");
@@ -19,7 +18,7 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
     for (let i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
 
     if (path[1] === "products") tabs[1].classList.add("active");
-    else if (path[1] === "categories") tabs[2].classList.add("active");
+    else if (path[1] === "blog") tabs[2].classList.add("active");
     else tabs[0].classList.add("active");
   }, [path]);
 
@@ -32,8 +31,8 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
         <Link href={"/products"}>
           <li className="tab">All Products</li>
         </Link>
-        <Link href={"/categories"}>
-          <li className="tab">Categories</li>
+        <Link href={"/blog"}>
+          <li className="tab">Blog</li>
         </Link>
       </ul>
 
