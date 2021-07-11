@@ -8,6 +8,7 @@ import { Hydrate } from "react-query/hydration";
 import Navbar from "../components/layout/Navbar";
 
 import "../styles/global.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
