@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEventHandler, MutableRefObject } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-regular-svg-icons";
 
@@ -14,6 +14,9 @@ interface Props {
   error?: {
     message?: string;
   };
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  defaultValue?: string;
+  inputRef?: MutableRefObject<HTMLInputElement>;
 }
 
 const IconInput: React.FC<Props> = ({
@@ -26,6 +29,9 @@ const IconInput: React.FC<Props> = ({
   required = true,
   register,
   error,
+  onChange,
+  defaultValue,
+  inputRef,
 }) => {
   return (
     <>
@@ -41,6 +47,9 @@ const IconInput: React.FC<Props> = ({
             placeholder={placeholder}
             required={required}
             {...(register && register(name))}
+            onChange={onChange}
+            defaultValue={defaultValue}
+            ref={inputRef}
           />
         </div>
         <p className="err-msg">{error?.message}</p>
