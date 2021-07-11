@@ -24,8 +24,12 @@ const ProductsPage: React.FC = () => {
 
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
 
-  const search: ChangeEventHandler<HTMLInputElement> = async (e) => {
-    await router.push(`/products?page=${page}&filter=${e.target.value}`);
+  const search: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setTimeout(async () => {
+      await router.push(
+        `/products?page=${page}&filter=${e.target.value}${category ? `&category=${category}` : ""}`
+      );
+    }, 400);
   };
 
   const searchByCategory = async (v: SelectOptions) => {
@@ -41,28 +45,31 @@ const ProductsPage: React.FC = () => {
       <div className="products-container">
         <div className="products-topbar">
           <h2>Products</h2>
-          <Select
-            placeholder={"Search by Category"}
-            options={categories.map((c) => {
-              return { label: capitalise(c.name), value: c.id };
-            })}
-            defaultValue={categories
-              .filter((c) => c.id === category)
-              .map((c) => {
+          <div className="products-filters">
+            <Select
+              placeholder={"Search by Category"}
+              options={categories.map((c) => {
                 return { label: capitalise(c.name), value: c.id };
               })}
-            onChange={searchByCategory}
-            isClearable
-            isSearchable
-          />
-          <IconInput
-            name={""}
-            icon={faSearch}
-            placeholder={"Search"}
-            onChange={search}
-            defaultValue={filter as string}
-            inputRef={searchRef}
-          />
+              defaultValue={categories
+                .filter((c) => c.id === category)
+                .map((c) => {
+                  return { label: capitalise(c.name), value: c.id };
+                })}
+              onChange={searchByCategory}
+              className="category-filter"
+              isClearable
+              isSearchable
+            />
+            <IconInput
+              name={""}
+              icon={faSearch}
+              placeholder={"Search"}
+              onChange={search}
+              defaultValue={filter as string}
+              inputRef={searchRef}
+            />
+          </div>
         </div>
 
         <div className="products">
@@ -103,6 +110,16 @@ const ProductsPage: React.FC = () => {
           margin: 30px auto;
         }
 
+        .products-topbar {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .products-filters {
+          display: flex;
+          justify-content: space-between;
+        }
+
         .products {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -111,9 +128,33 @@ const ProductsPage: React.FC = () => {
           margin-top: 20px;
         }
 
+        .pagination-buttons {
+          margin-top: 30px;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .pagination-buttons button {
+          margin-right: 30px;
+          background: #d7d7d7;
+          border: none;
+          padding: 4px 7px;
+          border-radius: 8px;
+        }
+
         @media screen and (max-width: 900px) {
           .products {
             grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        @media screen and (max-width: 790px) {
+          .products-topbar {
+            flex-direction: column;
+          }
+
+          .products-filters {
+            margin-top: 30px;
           }
         }
 
