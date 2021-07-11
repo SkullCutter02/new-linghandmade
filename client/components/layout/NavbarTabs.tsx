@@ -28,7 +28,7 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
         <Link href={"/"}>
           <li className="tab">Home</li>
         </Link>
-        <Link href={"/products"}>
+        <Link href={"/products?page=1&filter="}>
           <li className="tab">All Products</li>
         </Link>
         <Link href={"/blog"}>
