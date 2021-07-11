@@ -1,14 +1,20 @@
 import React, { useState } from "react";
+import { useQuery } from "react-query";
 import Link from "next/link";
 import { HamburgerButton } from "react-hamburger-button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 import MobileNavbar from "./MobileNavbar";
 import NavbarTabs from "./NavbarTabs";
+import getMe from "../../queries/getMe";
 
 const Navbar: React.FC = () => {
   const hamburgerRevealWidth = 650;
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  const { isLoading, isError, data: user } = useQuery<User>("user", getMe);
 
   return (
     <>
@@ -32,13 +38,22 @@ const Navbar: React.FC = () => {
             hamburgerRevealWidth={hamburgerRevealWidth}
           />
         </div>
-        <div className="right-content" onClick={() => console.log("dd")}>
-          <Link href={"/auth/login"}>
-            <button className="login-btn">Log in</button>
-          </Link>
-          <Link href={"/auth/signup"}>
-            <button className="signup-btn">Sign Up</button>
-          </Link>
+        <div className="right-content">
+          {isLoading || isError || !user?.username ? (
+            <>
+              <Link href={"/auth/login"}>
+                <button className="login-btn">Log in</button>
+              </Link>
+              <Link href={"/auth/signup"}>
+                <button className="signup-btn">Sign Up</button>
+              </Link>
+            </>
+          ) : (
+            <div className="username">
+              <FontAwesomeIcon icon={faUser} />
+              <p>{user.username}</p>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -85,6 +100,15 @@ const Navbar: React.FC = () => {
         .signup-btn {
           background: var(--primaryColor);
           color: #fff;
+        }
+
+        .username {
+          display: flex;
+          align-items: center;
+        }
+
+        .username p {
+          margin: 0 10px;
         }
 
         @media screen and (max-width: ${hamburgerRevealWidth}px) {
