@@ -14,6 +14,10 @@ export class ProductService {
     private readonly categoryRepository: CategoryRepository,
   ) {}
 
+  async findFeatured(): Promise<Product[]> {
+    return this.productRepository.find({ featured: true }, { limit: 3, populate: ["category"] });
+  }
+
   async findOne(id: string): Promise<Product> {
     return this.productRepository.findOneOrFail({ id }, ["category"]);
   }

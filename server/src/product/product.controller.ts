@@ -23,6 +23,11 @@ import { PaginationDto } from "../shared/pagination.dto";
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Get("/featured")
+  async findFeatured(): Promise<Product[]> {
+    return this.productService.findFeatured();
+  }
+
   @Get("/:id")
   async findOne(@Param("id") id: string): Promise<Product> {
     return this.productService.findOne(id);
