@@ -1,6 +1,6 @@
 import React from "react";
 
-import Title from "../widgets/Title";
+import Title from "../../widgets/Title";
 
 const FrontPageInfo: React.FC = () => {
   return (

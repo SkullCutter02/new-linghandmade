@@ -1,6 +1,6 @@
 import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
 
-import Spinner from "../widgets/Spinner";
+import Spinner from "../../widgets/Spinner";
 
 interface Props {
   authType: "login" | "signup";

@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import heroPic from "../../public/hero.jpg";
+import heroPic from "../../../public/hero.jpg";
 
 const Hero: React.FC = () => {
   return (

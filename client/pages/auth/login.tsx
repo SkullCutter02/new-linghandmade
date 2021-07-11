@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 
-import AuthForm from "../../components/ui/AuthForm";
+import AuthForm from "../../components/ui/authpage/AuthForm";
 import IconInput from "../../components/widgets/IconInput";
 import HOST from "../../constants/host";
 import getMe from "../../queries/getMe";
