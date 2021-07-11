@@ -43,9 +43,14 @@ const ProductsPage: React.FC = () => {
           <h2>Products</h2>
           <Select
             placeholder={"Search by Category"}
-            options={categories.map((category) => {
-              return { label: capitalise(category.name), value: category.id };
+            options={categories.map((c) => {
+              return { label: capitalise(c.name), value: c.id };
             })}
+            defaultValue={categories
+              .filter((c) => c.id === category)
+              .map((c) => {
+                return { label: capitalise(c.name), value: c.id };
+              })}
             onChange={searchByCategory}
             isClearable
             isSearchable
@@ -64,6 +69,31 @@ const ProductsPage: React.FC = () => {
           {products.map((product) => (
             <ProductPreview product={product} key={product.id} />
           ))}
+        </div>
+
+        <div className="pagination-buttons">
+          <button
+            onClick={() =>
+              router.push(
+                `/products?page=${Math.max(1, parseInt(page as string) - 1)}&filter=${
+                  searchRef.current.value
+                }${category ? `&category=${category}` : ""}`
+              )
+            }
+          >
+            Previous Page
+          </button>
+          <button
+            onClick={() =>
+              router.push(
+                `/products?page=${parseInt(page as string) + 1}&filter=${searchRef.current.value}${
+                  category ? `&category=${category}` : ""
+                }`
+              )
+            }
+          >
+            Next Page
+          </button>
         </div>
       </div>
 
