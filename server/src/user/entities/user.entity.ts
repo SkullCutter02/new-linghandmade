@@ -1,9 +1,10 @@
-import { Entity, EntityRepositoryType, Property } from "@mikro-orm/core";
+import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
 import { IsEmail, Matches } from "class-validator";
 
 import { BaseEntity } from "../../shared/base.entity";
 import { usernameRegex } from "../../shared/regexes";
 import { UserRepository } from "../repositories/user.repository";
+import { UserInCartProducts } from "./userInCartProducts.entity";
 
 @Entity({ tableName: "users", customRepository: () => UserRepository })
 export class User extends BaseEntity {
@@ -17,6 +18,9 @@ export class User extends BaseEntity {
 
   @Property()
   hash: string;
+
+  @OneToMany(() => UserInCartProducts, (userInCartProducts) => userInCartProducts.user)
+  userInCartProducts = new Collection<UserInCartProducts>(this);
 
   [EntityRepositoryType]?: UserRepository;
 

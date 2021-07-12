@@ -1,8 +1,9 @@
-import { Entity, EntityRepositoryType, ManyToOne, Property } from "@mikro-orm/core";
+import { Collection, Entity, EntityRepositoryType, ManyToOne, OneToMany, Property } from "@mikro-orm/core";
 
 import { BaseEntity } from "../../shared/base.entity";
 import { ProductRepository } from "../repositories/product.repository";
 import { Category } from "../../category/entities/category.entity";
+import { UserInCartProducts } from "../../user/entities/userInCartProducts.entity";
 
 @Entity({ tableName: "products", customRepository: () => ProductRepository })
 export class Product extends BaseEntity {
@@ -32,6 +33,9 @@ export class Product extends BaseEntity {
 
   @ManyToOne(() => Category, { onDelete: "cascade" })
   category: Category;
+
+  @OneToMany(() => UserInCartProducts, (userInCartProducts) => userInCartProducts.product)
+  userInCartProducts = new Collection<UserInCartProducts>(this);
 
   [EntityRepositoryType]?: ProductRepository;
 }
