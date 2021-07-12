@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -6,9 +6,15 @@ interface Props {
   hamburgerRevealWidth?: number;
   isMobile?: boolean;
   isMenuOpen?: boolean;
+  setIsMenuOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
-const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, isMenuOpen }) => {
+const NavbarTabs: React.FC<Props> = ({
+  hamburgerRevealWidth,
+  isMobile = false,
+  isMenuOpen,
+  setIsMenuOpen,
+}) => {
   const router = useRouter();
   const path = router.asPath.split("/");
 
@@ -26,13 +32,34 @@ const NavbarTabs: React.FC<Props> = ({ hamburgerRevealWidth, isMobile = false, i
     <>
       <ul className={(isMobile ? "mobile" : "") + (isMenuOpen ? " enabled" : "")}>
         <Link href={"/"}>
-          <li className="tab">Home</li>
+          <li
+            className="tab"
+            onClick={() => {
+              if (isMobile) setIsMenuOpen(false);
+            }}
+          >
+            Home
+          </li>
         </Link>
         <Link href={"/products?page=1&filter="}>
-          <li className="tab">All Products</li>
+          <li
+            className="tab"
+            onClick={() => {
+              if (isMobile) setIsMenuOpen(false);
+            }}
+          >
+            All Products
+          </li>
         </Link>
         <Link href={"/blog"}>
-          <li className="tab">Blog</li>
+          <li
+            className="tab"
+            onClick={() => {
+              if (isMobile) setIsMenuOpen(false);
+            }}
+          >
+            Blog
+          </li>
         </Link>
       </ul>
 

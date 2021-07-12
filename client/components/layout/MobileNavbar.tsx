@@ -29,7 +29,7 @@ const MobileNavbar: React.FC<Props> = ({ isMenuOpen, setIsMenuOpen, hamburgerRev
         }}
       >
         <div className="overlay" />
-        <NavbarTabs isMobile={true} isMenuOpen={isMenuOpen} />
+        <NavbarTabs isMobile={true} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       </div>
 
       <style jsx>{`
