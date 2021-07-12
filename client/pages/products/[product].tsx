@@ -29,56 +29,129 @@ const ProductPage: React.FC = () => {
   return (
     <>
       <div className="product">
-        <div className="product-upper">
-          <div className="carousel-container">
-            <Carousel
-              showArrows={false}
-              showIndicators={false}
-              thumbWidth={150}
-              renderArrowPrev={(clickHandler) => (
-                <FontAwesomeIcon
-                  icon={faChevronCircleLeft}
-                  onClick={clickHandler}
-                  style={{ ...carouselArrowStyle, left: "10px" }}
-                />
-              )}
-              renderArrowNext={(clickHandler) => (
-                <FontAwesomeIcon
-                  icon={faChevronCircleRight}
-                  onClick={clickHandler}
-                  style={{ ...carouselArrowStyle, right: "10px" }}
-                />
-              )}
-            >
-              {[product.mainImgUrl].concat(product.carouselImgUrls).map((image, index) => (
-                <img
-                  src={image}
-                  alt={product.name}
-                  key={index + Date.now()}
-                  style={{ height: "90%", objectFit: "cover" }}
-                />
-              ))}
-            </Carousel>
-          </div>
-          <div className="text-content">
+        <div className="carousel-container">
+          <Carousel
+            showArrows={false}
+            showIndicators={false}
+            thumbWidth={150}
+            renderArrowPrev={(clickHandler) => (
+              <FontAwesomeIcon
+                icon={faChevronCircleLeft}
+                onClick={clickHandler}
+                style={{ ...carouselArrowStyle, left: "10px" }}
+              />
+            )}
+            renderArrowNext={(clickHandler) => (
+              <FontAwesomeIcon
+                icon={faChevronCircleRight}
+                onClick={clickHandler}
+                style={{ ...carouselArrowStyle, right: "10px" }}
+              />
+            )}
+          >
+            {[product.mainImgUrl].concat(product.carouselImgUrls).map((image, index) => (
+              <img
+                src={image}
+                alt={product.name}
+                key={index + Date.now()}
+                style={{ height: "90%", objectFit: "cover" }}
+              />
+            ))}
+          </Carousel>
+        </div>
+        <div className="text-content">
+          <div className="left">
             <h1>{product.name}</h1>
-            <p>${product.price}</p>
-            <p>{product.amtLeft} left</p>
+            <p className="secondary-text description">{product.description}</p>
+            <p className="secondary-text remarks">
+              {product.remarks && `Remarks: ${product.remarks}`}
+            </p>
+          </div>
+          <div className="right">
+            <p>Price: HK${product.price}</p>
+            <button className="add-cart-btn" disabled={product.amtLeft <= 0}>
+              {product.amtLeft ? "Add to Cart" : "Sold Out"}
+            </button>
+            <p className="secondary-text amt-left">{product.amtLeft} left</p>
           </div>
         </div>
       </div>
 
       <style jsx>{`
         .product {
-          padding: 50px 5%;
-        }
-
-        .product-upper {
+          padding: 50px 3%;
           display: flex;
         }
 
-        .product-upper > * {
-          width: 50%;
+        .carousel-container {
+          width: 45%;
+        }
+
+        .product .text-content {
+          margin-left: 40px;
+          width: 55%;
+          display: flex;
+        }
+
+        .text-content .left {
+          width: 75%;
+          margin-right: 40px;
+        }
+
+        .text-content .left * {
+          margin-bottom: 20px;
+          line-height: 1.3em;
+        }
+
+        .text-content .right {
+          padding: 20px 25px;
+          background: #eeeeee;
+          width: 35%;
+          height: max-content;
+        }
+
+        .right > * {
+          margin-bottom: 15px;
+        }
+
+        .right-flex {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .product .text-content h1 {
+          font-size: 2.5rem;
+        }
+
+        .add-cart-btn {
+          width: 100%;
+          height: 30px;
+          background: var(--primaryColor);
+          border: none;
+          border-radius: 10px;
+          font-size: 1rem;
+          color: #fff;
+          box-shadow: inset 0 0 0 0.09px #fff;
+          transition: all 0.4s;
+        }
+
+        .add-cart-btn:hover:not(:disabled) {
+          box-shadow: inset 300px 0 0 0.09px #fff;
+          color: var(--primaryColor);
+        }
+
+        .add-cart-btn:disabled {
+          background: #de0d0d;
+          cursor: initial;
+        }
+
+        .secondary-text {
+          color: var(--secondaryTextColor);
+        }
+
+        .remarks {
+          font-size: 0.85rem;
         }
       `}</style>
     </>
