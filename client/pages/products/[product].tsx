@@ -1,9 +1,11 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useQuery } from "react-query";
-import { QueryClient } from "react-query";
+import { useQuery, QueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
+import { Carousel } from "react-responsive-carousel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
 
 import getProduct from "../../queries/getProduct";
 
@@ -15,11 +17,70 @@ const ProductPage: React.FC = () => {
     getProduct(productId as string)
   );
 
+  const carouselArrowStyle: CSSProperties = {
+    position: "absolute",
+    top: "45%",
+    zIndex: 1,
+    cursor: "pointer",
+    height: "25px",
+    width: "25px",
+  };
+
   return (
     <>
       <div className="product">
-        <h1>{product.name}</h1>
+        <div className="product-upper">
+          <div className="carousel-container">
+            <Carousel
+              showArrows={false}
+              showIndicators={false}
+              thumbWidth={150}
+              renderArrowPrev={(clickHandler) => (
+                <FontAwesomeIcon
+                  icon={faChevronCircleLeft}
+                  onClick={clickHandler}
+                  style={{ ...carouselArrowStyle, left: "10px" }}
+                />
+              )}
+              renderArrowNext={(clickHandler) => (
+                <FontAwesomeIcon
+                  icon={faChevronCircleRight}
+                  onClick={clickHandler}
+                  style={{ ...carouselArrowStyle, right: "10px" }}
+                />
+              )}
+            >
+              {[product.mainImgUrl].concat(product.carouselImgUrls).map((image, index) => (
+                <img
+                  src={image}
+                  alt={product.name}
+                  key={index + Date.now()}
+                  style={{ height: "90%", objectFit: "cover" }}
+                />
+              ))}
+            </Carousel>
+          </div>
+          <div className="text-content">
+            <h1>{product.name}</h1>
+            <p>${product.price}</p>
+            <p>{product.amtLeft} left</p>
+          </div>
+        </div>
       </div>
+
+      <style jsx>{`
+        .product {
+          padding: 50px 5%;
+        }
+
+        .product-upper {
+          display: flex;
+        }
+
+        .product-upper > * {
+          width: 50%;
+        }
+      `}</style>
     </>
   );
 };

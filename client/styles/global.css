@@ -35,3 +35,15 @@ ul {
   width: 300px;
   margin-right: 30px;
 }
+
+.carousel .slide img {
+  height: 95% !important;
+}
+
+.carousel .thumb {
+  height: 100px !important;
+}
+
+.carousel .thumb img {
+  height: 100% !important;
+}

@@ -9,6 +9,7 @@ import Navbar from "../components/layout/Navbar";
 
 import "../styles/global.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
