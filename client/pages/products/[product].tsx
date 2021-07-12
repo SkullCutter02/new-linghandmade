@@ -7,10 +7,9 @@ import { Carousel } from "react-responsive-carousel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
 import Zoom from "react-medium-image-zoom";
-import Modal, { Styles } from "react-modal";
-import Select from "react-select";
 
 import getProduct from "../../queries/getProduct";
+import AddToCartModal from "../../components/ui/products/AddToCartModal";
 
 const ProductPage: React.FC = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState<boolean>(false);
@@ -32,42 +31,15 @@ const ProductPage: React.FC = () => {
     width: "25px",
   };
 
-  const modalStyle: Styles = {
-    content: {
-      height: "max-content",
-      width: "300px",
-      maxWidth: "95%",
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      padding: "25px",
-      overflow: "initial",
-    },
-  };
-
   return (
     <>
-      <Modal
-        isOpen={isCartModalOpen}
-        onRequestClose={() => setIsCartModalOpen(false)}
-        style={modalStyle}
-        closeTimeoutMS={200}
-        appElement={process.browser && document.getElementById("__next")}
-      >
-        <div className="modal-select-amt">
-          <p>Amount: </p>
-          <Select
-            defaultValue={{ label: 1, value: 1 }}
-            options={[...Array(product.amtLeft + 1).keys()].slice(1).map((n) => {
-              return { label: n, value: n };
-            })}
-            className="select-amt"
-            onChange={(value) => setAmt(value)}
-          />
-        </div>
-        <button className="modal-btn">Add to Cart</button>
-      </Modal>
+      <AddToCartModal
+        isCartModalOpen={isCartModalOpen}
+        setIsCartModalOpen={setIsCartModalOpen}
+        amtLeft={product.amtLeft}
+        setAmt={setAmt}
+        amt={amt}
+      />
       <div className="product">
         <div className="carousel-container">
           <Carousel
@@ -161,8 +133,7 @@ const ProductPage: React.FC = () => {
           font-size: 2.5rem;
         }
 
-        .add-cart-btn,
-        .modal-btn {
+        .add-cart-btn {
           width: 100%;
           height: 30px;
           background: var(--primaryColor);
@@ -190,19 +161,6 @@ const ProductPage: React.FC = () => {
 
         .remarks {
           font-size: 0.85rem;
-        }
-
-        .modal-select-amt {
-          display: flex;
-          align-items: center;
-        }
-
-        .modal-select-amt p {
-          margin-right: 20px;
-        }
-
-        .modal-btn {
-          margin-top: 30px;
         }
 
         @media screen and (max-width: 1000px) {
