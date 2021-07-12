@@ -4,6 +4,7 @@ import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Hydrate } from "react-query/hydration";
+import { ToastContainer } from "react-toastify";
 
 import Navbar from "../components/layout/Navbar";
 
@@ -11,6 +12,7 @@ import "../styles/global.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-medium-image-zoom/dist/styles.css";
+import "react-toastify/dist/ReactToastify.min.css";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -31,6 +33,8 @@ export default function App(props: AppProps) {
               rel="stylesheet"
             />
           </Head>
+
+          <ToastContainer />
 
           <Navbar />
           <Component {...pageProps} />

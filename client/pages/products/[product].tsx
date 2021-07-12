@@ -13,7 +13,6 @@ import AddToCartModal from "../../components/ui/products/AddToCartModal";
 
 const ProductPage: React.FC = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState<boolean>(false);
-  const [amt, setAmt] = useState<SelectOptions<number>>(null);
 
   const router = useRouter();
   const { product: productId } = router.query;
@@ -36,9 +35,7 @@ const ProductPage: React.FC = () => {
       <AddToCartModal
         isCartModalOpen={isCartModalOpen}
         setIsCartModalOpen={setIsCartModalOpen}
-        amtLeft={product.amtLeft}
-        setAmt={setAmt}
-        amt={amt}
+        product={product}
       />
       <div className="product">
         <div className="carousel-container">

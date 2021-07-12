@@ -1,22 +1,23 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import Select from "react-select";
 import Modal, { Styles } from "react-modal";
+import { toast, ToastOptions } from "react-toastify";
+
+import Spinner from "../../widgets/Spinner";
+import HOST from "../../../constants/host";
 
 interface Props {
   isCartModalOpen: boolean;
   setIsCartModalOpen: Dispatch<SetStateAction<boolean>>;
-  amtLeft: number;
-  setAmt: Dispatch<SetStateAction<SelectOptions<number>>>;
-  amt: SelectOptions<number>;
+  product: Product;
 }
 
-const AddToCartModal: React.FC<Props> = ({
-  isCartModalOpen,
-  setIsCartModalOpen,
-  amtLeft,
-  setAmt,
-  amt,
-}) => {
+const AddToCartModal: React.FC<Props> = ({ isCartModalOpen, setIsCartModalOpen, product }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [amt, setAmt] = useState<SelectOptions<number>>({ value: 1, label: 1 });
+
+  console.log(amt);
+
   const modalStyle: Styles = {
     content: {
       height: "max-content",
@@ -29,6 +30,42 @@ const AddToCartModal: React.FC<Props> = ({
       padding: "25px",
       overflow: "initial",
     },
+  };
+
+  const toastOptions: ToastOptions = {
+    position: "top-center",
+    autoClose: 3000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: 0,
+  };
+
+  const addToCart = async () => {
+    setIsLoading(true);
+
+    const res = await fetch(`${HOST}/user/cart`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId: product.id,
+        amount: Math.min(amt.value, product.amtLeft),
+      }),
+    });
+    // const data = await res.json();
+
+    if (res.ok) {
+      toast.success("Item successfully added to cart!", toastOptions);
+      setIsLoading(false);
+      setIsCartModalOpen(false);
+    } else {
+      toast.warn("Something went wrong, please try again!", toastOptions);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,7 +81,7 @@ const AddToCartModal: React.FC<Props> = ({
           <p>Amount: </p>
           <Select
             defaultValue={{ label: 1, value: 1 }}
-            options={[...Array(amtLeft + 1).keys()].slice(1).map((n) => {
+            options={[...Array(product.amtLeft + 1).keys()].slice(1).map((n) => {
               return { label: n, value: n };
             })}
             className="select-amt"
@@ -52,7 +89,9 @@ const AddToCartModal: React.FC<Props> = ({
           />
         </div>
         <div className="modal-btns">
-          <button className="to-cart-btn">Add to Cart</button>
+          <button className="to-cart-btn" onClick={addToCart}>
+            {isLoading ? <Spinner size={10} /> : "Add to Cart"}
+          </button>
           <button className="cancel-btn" onClick={() => setIsCartModalOpen(false)}>
             Cancel
           </button>
@@ -77,6 +116,7 @@ const AddToCartModal: React.FC<Props> = ({
 
         .to-cart-btn {
           background: var(--primaryColor);
+          position: relative;
         }
 
         .cancel-btn {

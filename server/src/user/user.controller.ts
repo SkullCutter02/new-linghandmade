@@ -1,41 +1,43 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Req, UseGuards } from "@nestjs/common";
+import { Request } from "express";
 
 import { JwtAuthGuard } from "../auth/guards/jwtAuth.guard";
 import { UserService } from "./user.service";
+import { User } from "./entities/user.entity";
 
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get("/:id/cart")
+  @Get("/cart")
   @UseGuards(JwtAuthGuard)
-  async getCartItems(@Param("id") userId: string) {
-    return this.userService.getCartItems(userId);
+  async getCartItems(@Req() req: Request) {
+    return this.userService.getCartItems((req.user as User).id);
   }
 
-  @Post("/:id/cart")
+  @Post("/cart")
   @UseGuards(JwtAuthGuard)
   async addCartItem(
-    @Param("id") userId: string,
+    @Req() req: Request,
     @Body("productId") productId: string,
     @Body("amount", ParseIntPipe) amount: number,
   ) {
-    return this.userService.addCartItem(userId, productId, amount);
+    return this.userService.addCartItem((req.user as User).id, productId, amount);
   }
 
-  @Patch("/:id/cart")
+  @Patch("/cart")
   @UseGuards(JwtAuthGuard)
   async updateCartItemAmount(
-    @Param("id") userId: string,
+    @Req() req: Request,
     @Body("productId") productId: string,
     @Body("amount", ParseIntPipe) amount: number,
   ) {
-    return this.userService.updateCartItemAmount(userId, productId, amount);
+    return this.userService.updateCartItemAmount((req.user as User).id, productId, amount);
   }
 
-  @Delete("/:id/cart")
+  @Delete("/cart")
   @UseGuards(JwtAuthGuard)
-  async removeCartItem(@Param("id") userId: string, @Body("productId") productId: string) {
-    return this.userService.removeCartItem(userId, productId);
+  async removeCartItem(@Req() req: Request, @Body("productId") productId: string) {
+    return this.userService.removeCartItem((req.user as User).id, productId);
   }
 }

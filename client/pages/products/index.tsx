@@ -6,7 +6,7 @@ import { dehydrate } from "react-query/hydration";
 import Select from "react-select";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import ProductPreview from "../../components/ui/shared/ProductPreview";
+import ProductPreview from "../../components/ui/products/ProductPreview";
 import IconInput from "../../components/widgets/IconInput";
 import getProducts from "../../queries/getProducts";
 import getCategories from "../../queries/getCategories";

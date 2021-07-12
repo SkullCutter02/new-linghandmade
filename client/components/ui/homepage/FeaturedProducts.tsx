@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import Title from "../../widgets/Title";
 
-import ProductPreview from "../shared/ProductPreview";
+import ProductPreview from "../products/ProductPreview";
 import getFeaturedProducts from "../../../queries/getFeaturedProducts";
 
 const FeaturedProducts: React.FC = () => {
