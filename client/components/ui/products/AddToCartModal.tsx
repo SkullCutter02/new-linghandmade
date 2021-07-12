@@ -51,18 +51,36 @@ const AddToCartModal: React.FC<Props> = ({
             onChange={(value) => setAmt(value)}
           />
         </div>
-        <button className="modal-btn">Add to Cart</button>
+        <div className="modal-btns">
+          <button className="to-cart-btn">Add to Cart</button>
+          <button className="cancel-btn" onClick={() => setIsCartModalOpen(false)}>
+            Cancel
+          </button>
+        </div>
       </Modal>
 
       <style jsx>{`
-        .modal-btn {
-          width: 100%;
+        .modal-btns {
+          margin-top: 30px;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .modal-btns button {
+          width: 48%;
           height: 30px;
-          background: var(--primaryColor);
           border: none;
           border-radius: 10px;
           font-size: 1rem;
           color: #fff;
+        }
+
+        .to-cart-btn {
+          background: var(--primaryColor);
+        }
+
+        .cancel-btn {
+          background: #c60a0a;
         }
 
         .modal-select-amt {
@@ -72,10 +90,6 @@ const AddToCartModal: React.FC<Props> = ({
 
         .modal-select-amt p {
           margin-right: 20px;
-        }
-
-        .modal-btn {
-          margin-top: 30px;
         }
       `}</style>
     </>
