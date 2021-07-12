@@ -41,4 +41,18 @@ export class UserService {
 
     return user;
   }
+
+  async updateCartItemAmount(userId: string, productId: string, amount: number) {
+    const user = await this.userRepository.findOneOrFail({ id: userId }, [
+      "userInCartProducts",
+      "userInCartProducts.product",
+    ]);
+
+    for (const e of user.userInCartProducts) {
+      if (e.product.id === productId) e.amount = amount;
+    }
+
+    await this.userRepository.persistAndFlush(user);
+    return user;
+  }
 }

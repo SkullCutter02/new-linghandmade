@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from "@nestjs/common";
 
 import { JwtAuthGuard } from "../auth/guards/jwtAuth.guard";
 import { UserService } from "./user.service";
@@ -21,5 +21,15 @@ export class UserController {
     @Body("amount", ParseIntPipe) amount: number,
   ) {
     return this.userService.addCartItem(userId, productId, amount);
+  }
+
+  @Patch("/:id/cart")
+  @UseGuards(JwtAuthGuard)
+  async updateCartItemAmount(
+    @Param("id") userId: string,
+    @Body("productId") productId: string,
+    @Body("amount", ParseIntPipe) amount: number,
+  ) {
+    return this.userService.updateCartItemAmount(userId, productId, amount);
   }
 }
