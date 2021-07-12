@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
+import { useQueryClient } from "react-query";
 import Select from "react-select";
 import Modal, { Styles } from "react-modal";
 import { toast, ToastOptions } from "react-toastify";
@@ -15,6 +16,8 @@ interface Props {
 const AddToCartModal: React.FC<Props> = ({ isCartModalOpen, setIsCartModalOpen, product }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [amt, setAmt] = useState<SelectOptions<number>>({ value: 1, label: 1 });
+
+  const queryClient = useQueryClient();
 
   const modalStyle: Styles = {
     content: {
@@ -54,9 +57,10 @@ const AddToCartModal: React.FC<Props> = ({ isCartModalOpen, setIsCartModalOpen, 
         amount: Math.min(amt.value, product.amtLeft),
       }),
     });
-    // const data = await res.json();
+    const data = await res.json();
 
     if (res.ok) {
+      queryClient.setQueryData("cart", data.userInCartProducts);
       toast.success("Item successfully added to cart!", toastOptions);
       setIsLoading(false);
       setIsCartModalOpen(false);
