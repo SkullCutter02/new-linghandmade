@@ -33,7 +33,7 @@ const ProductsPage: React.FC = () => {
     }, 400);
   };
 
-  const searchByCategory = async (v: SelectOptions) => {
+  const searchByCategory = async (v: SelectOptions<string>) => {
     if (!v) await router.push(`/products?page=${page}&filter=${searchRef.current.value}`);
     else
       await router.push(

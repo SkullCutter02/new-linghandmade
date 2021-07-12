@@ -1,1 +1,1 @@
-type SelectOptions = { label: string; value: string };
+type SelectOptions<T> = { label: T; value: T };

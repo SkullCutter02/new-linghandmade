@@ -48,3 +48,20 @@ ul {
 .carousel .thumb img {
   height: 100% !important;
 }
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: all 200ms;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 100%;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.select-amt {
+  width: 100%;
+}
