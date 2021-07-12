@@ -55,4 +55,18 @@ export class UserService {
     await this.userRepository.persistAndFlush(user);
     return user;
   }
+
+  async removeCartItem(userId: string, productId: string) {
+    const user = await this.userRepository.findOneOrFail({ id: userId }, [
+      "userInCartProducts",
+      "userInCartProducts.product",
+    ]);
+
+    for (let e of user.userInCartProducts) {
+      if (e.product.id === productId) user.userInCartProducts.remove(e);
+    }
+
+    await this.userRepository.persistAndFlush(user);
+    return user;
+  }
 }

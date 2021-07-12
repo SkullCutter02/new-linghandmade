@@ -5,10 +5,10 @@ import { Product } from "../../product/entities/product.entity";
 
 @Entity({ tableName: "users_in_cart_products" })
 export class UserInCartProducts {
-  @ManyToOne(() => User, { primary: true })
+  @ManyToOne(() => User, { primary: true, nullable: true, onDelete: "cascade" })
   user: User;
 
-  @ManyToOne(() => Product, { primary: true })
+  @ManyToOne(() => Product, { primary: true, nullable: true })
   product: Product;
 
   @Property()
