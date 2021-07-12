@@ -10,11 +10,11 @@ import { v4 as uuid } from "uuid";
 
 import { SignupDto } from "./dto/signup.dto";
 import { ResetPasswordDto } from "./dto/resetPassword.dto";
-import { User } from "./entities/user.entity";
+import { User } from "../user/entities/user.entity";
 import { addMillisecondsToNow } from "../utils/addMillisecondsToNow";
 import { Message } from "../shared/types/Message";
 import { EmailService } from "../email/email.service";
-import { UserRepository } from "./repositories/user.repository";
+import { UserRepository } from "../user/repositories/user.repository";
 import { ResetEmailRepository } from "./repositories/resetEmail.repository";
 
 @Injectable()

@@ -3,7 +3,7 @@ import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 
-import { User } from "./entities/user.entity";
+import { User } from "../user/entities/user.entity";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { LocalStrategy } from "./strategies/local.strategy";

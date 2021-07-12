@@ -3,8 +3,8 @@ import { Strategy } from "passport-local";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import * as argon2 from "argon2";
 
-import { User } from "../entities/user.entity";
-import { UserRepository } from "../repositories/user.repository";
+import { User } from "../../user/entities/user.entity";
+import { UserRepository } from "../../user/repositories/user.repository";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {

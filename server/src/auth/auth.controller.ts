@@ -6,7 +6,7 @@ import { ForgotPasswordDto } from "./dto/forgotPassword.dto";
 import { SignupDto } from "./dto/signup.dto";
 import { ResetPasswordDto } from "./dto/resetPassword.dto";
 import { LocalAuthGuard } from "./guards/localAuth.guard";
-import { User } from "./entities/user.entity";
+import { User } from "../user/entities/user.entity";
 import { JwtAuthGuard } from "./guards/jwtAuth.guard";
 import { cookieOptions } from "./utils/cookieOptions";
 import { Message } from "../shared/types/Message";
