@@ -9,6 +9,7 @@ import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-sol
 import Zoom from "react-medium-image-zoom";
 
 import getProduct from "../../queries/getProduct";
+import getCartItems from "../../queries/getCartItems";
 import AddToCartModal from "../../components/ui/products/AddToCartModal";
 
 const ProductPage: React.FC = () => {
@@ -20,6 +21,7 @@ const ProductPage: React.FC = () => {
   const { data: product } = useQuery<Product>(["product", productId], () =>
     getProduct(productId as string)
   );
+  const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
 
   const carouselArrowStyle: CSSProperties = {
     position: "absolute",
@@ -77,13 +79,19 @@ const ProductPage: React.FC = () => {
           </div>
           <div className="right">
             <p>Price: HK${product.price}</p>
-            <button
-              className="add-cart-btn"
-              onClick={() => setIsCartModalOpen(true)}
-              disabled={product.amtLeft <= 0}
-            >
-              {product.amtLeft ? "Add to Cart" : "Sold Out"}
-            </button>
+            {cartItems.some((cartItem) => cartItem.product.id === product.id) ? (
+              <button className="add-cart-btn in-cart-btn" disabled>
+                In Cart Already
+              </button>
+            ) : (
+              <button
+                className="add-cart-btn"
+                onClick={() => setIsCartModalOpen(true)}
+                disabled={product.amtLeft <= 0}
+              >
+                {product.amtLeft ? "Add to Cart" : "Sold Out"}
+              </button>
+            )}
             <p className="secondary-text amt-left">{product.amtLeft} left</p>
           </div>
         </div>
@@ -152,6 +160,10 @@ const ProductPage: React.FC = () => {
           cursor: initial;
         }
 
+        .in-cart-btn {
+          background: var(--secondaryColor) !important;
+        }
+
         .secondary-text {
           color: var(--secondaryTextColor);
         }
@@ -203,6 +215,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const productId = ctx.query.product as string;
 
   await queryClient.prefetchQuery(["product", productId], () => getProduct(productId));
+  await queryClient.prefetchQuery("cart", () => getCartItems(ctx));
 
   return {
     props: {

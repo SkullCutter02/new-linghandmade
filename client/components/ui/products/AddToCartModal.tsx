@@ -16,8 +16,6 @@ const AddToCartModal: React.FC<Props> = ({ isCartModalOpen, setIsCartModalOpen, 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [amt, setAmt] = useState<SelectOptions<number>>({ value: 1, label: 1 });
 
-  console.log(amt);
-
   const modalStyle: Styles = {
     content: {
       height: "max-content",
