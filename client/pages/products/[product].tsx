@@ -35,9 +35,7 @@ const ProductPage: React.FC = () => {
             showArrows={false}
             showIndicators={false}
             thumbWidth={150}
-            autoPlay={true}
-            interval={3500}
-            transitionTime={700}
+            transitionTime={500}
             infiniteLoop={true}
             renderArrowPrev={(clickHandler) => (
               <FontAwesomeIcon
