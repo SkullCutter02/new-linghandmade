@@ -6,6 +6,7 @@ import { dehydrate } from "react-query/hydration";
 import { Carousel } from "react-responsive-carousel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
+import Zoom from "react-medium-image-zoom";
 
 import getProduct from "../../queries/getProduct";
 
@@ -34,6 +35,10 @@ const ProductPage: React.FC = () => {
             showArrows={false}
             showIndicators={false}
             thumbWidth={150}
+            autoPlay={true}
+            interval={3500}
+            transitionTime={700}
+            infiniteLoop={true}
             renderArrowPrev={(clickHandler) => (
               <FontAwesomeIcon
                 icon={faChevronCircleLeft}
@@ -50,12 +55,14 @@ const ProductPage: React.FC = () => {
             )}
           >
             {[product.mainImgUrl].concat(product.carouselImgUrls).map((image, index) => (
-              <img
-                src={image}
-                alt={product.name}
-                key={index + Date.now()}
-                style={{ height: "90%", objectFit: "cover" }}
-              />
+              <Zoom wrapStyle={{ height: "100%" }}>
+                <img
+                  src={image}
+                  alt={product.name}
+                  key={index + Date.now()}
+                  style={{ height: "90%", objectFit: "cover" }}
+                />
+              </Zoom>
             ))}
           </Carousel>
         </div>
