@@ -94,7 +94,7 @@ const ProductPage: React.FC = () => {
         }
 
         .text-content .left {
-          width: 75%;
+          width: 65%;
           margin-right: 40px;
         }
 
@@ -112,12 +112,6 @@ const ProductPage: React.FC = () => {
 
         .right > * {
           margin-bottom: 15px;
-        }
-
-        .right-flex {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
         }
 
         .product .text-content h1 {
@@ -152,6 +146,39 @@ const ProductPage: React.FC = () => {
 
         .remarks {
           font-size: 0.85rem;
+        }
+
+        @media screen and (max-width: 1000px) {
+          .product {
+            flex-direction: column;
+          }
+
+          .carousel-container {
+            width: 100%;
+          }
+
+          .product .text-content {
+            width: 100%;
+            margin-top: 50px;
+            margin-left: 0;
+            padding: 0 20px;
+          }
+        }
+
+        @media screen and (max-width: 550px) {
+          .product .text-content {
+            flex-direction: column;
+          }
+
+          .product .text-content > .left {
+            width: 100%;
+          }
+
+          .right {
+            margin-top: 30px;
+            width: 80% !important;
+            align-self: center;
+          }
         }
       `}</style>
     </>
