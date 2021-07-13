@@ -82,7 +82,16 @@ const ProductPage: React.FC = () => {
             </p>
           </div>
           <div className="right">
-            <p>Price: HK${product.price}</p>
+            <p>
+              Price:{" "}
+              <span className={product.discount ? "discounted" : ""}>HK${product.price}</span>
+              {product.discount && (
+                <span className="discount">
+                  {" "}
+                  HK${(product.price * (100 - product.discount)) / 100}
+                </span>
+              )}
+            </p>
             {cartItems.length > 0 &&
             cartItems.some((cartItem) => cartItem.product.id === product.id) ? (
               <button className="add-cart-btn in-cart-btn" disabled>
@@ -178,6 +187,12 @@ const ProductPage: React.FC = () => {
 
         .remarks {
           font-size: 0.85rem;
+        }
+
+        .discounted {
+          text-decoration: line-through;
+          font-size: 0.8rem;
+          font-weight: 300;
         }
 
         @media screen and (max-width: 1000px) {
