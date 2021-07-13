@@ -167,8 +167,9 @@ const CartPage: React.FC = () => {
             overflow-x: scroll;
           }
 
-          .cart-item-container > * {
-            min-width: 150px;
+          .text-content,
+          img {
+            width: 150px !important;
           }
         }
       `}</style>
