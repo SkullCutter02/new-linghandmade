@@ -66,7 +66,7 @@ export class AuthService {
 
     const url = `http://localhost:3000/auth/reset-password/${token}`; // TODO: change to front end link
 
-    await this.emailService.send(user.email, url);
+    await this.emailService.sendResetEmail(user.email, url);
 
     return { message: "Email sent" };
   }

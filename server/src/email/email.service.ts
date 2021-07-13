@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { getTestMessageUrl, SendMailOptions } from "nodemailer";
 
-import { getTransporter } from "../shared/transporter";
+import { getTransporter } from "./config/transporter";
 
 @Injectable()
 export class EmailService {
-  async send(email: string, url: string) {
+  async sendResetEmail(email: string, url: string) {
     const mailOptions: SendMailOptions = {
       from: "foo@example.com", // TODO: change email address
       to: email,
