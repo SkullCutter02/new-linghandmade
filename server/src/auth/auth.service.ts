@@ -64,7 +64,7 @@ export class AuthService {
 
     await this.resetEmailRepository.persistAndFlush(resetEmail);
 
-    const url = `http://localhost:3000/auth/reset-password/${token}`; // TODO: change to front end link
+    const url = `${process.env.FRONTEND_URL}/auth/reset-password/${token}`;
 
     await this.emailService.sendResetEmail(user.email, url);
 
