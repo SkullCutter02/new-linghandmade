@@ -155,6 +155,22 @@ const CartPage: React.FC = () => {
         .checkout-btn {
           background: var(--primaryColor);
         }
+
+        @media screen and (max-width: 950px) {
+          main {
+            width: 90%;
+          }
+        }
+
+        @media screen and (max-width: 700px) {
+          .cart-item-container:not(.total-price-container) {
+            overflow-x: scroll;
+          }
+
+          .cart-item-container > * {
+            min-width: 150px;
+          }
+        }
       `}</style>
     </>
   );
