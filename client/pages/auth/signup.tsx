@@ -63,7 +63,11 @@ const SignupPage: React.FC = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({
+        username: username.trim().toLowerCase(),
+        email: email.trim().toLowerCase(),
+        password,
+      }),
     });
     const data = await res.json();
 

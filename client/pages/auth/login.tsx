@@ -49,7 +49,10 @@ const LoginPage: React.FC = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ credentials, password }),
+      body: JSON.stringify({
+        credentials: credentials.trim().toLowerCase(),
+        password,
+      }),
     });
     const data = await res.json();
 
