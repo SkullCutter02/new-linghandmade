@@ -7,7 +7,7 @@ interface Props {
   authType: "login" | "sign up" | "forgot password" | "reset password";
   handleSubmit: any;
   submitFn: (...any) => void;
-  setIsPasswordShown: Dispatch<SetStateAction<boolean>>;
+  setIsPasswordShown?: Dispatch<SetStateAction<boolean>>;
   errMsgRef: MutableRefObject<HTMLParagraphElement>;
   isLoading: boolean;
   buttonText?: string;
@@ -39,7 +39,7 @@ const AuthForm: React.FC<Props> = ({
               <label htmlFor={"show-password"}>Show Password</label>
             </div>
           )}
-          {(authType === "login" || "sign up") && (
+          {(authType === "login" || authType === "sign up") && (
             <Link href={authType === "sign up" ? "/auth/login" : "/auth/forgot-password"}>
               <p className="extra-info">
                 {authType === "sign up" ? "Already have an account? Log in" : "Forgot password?"}

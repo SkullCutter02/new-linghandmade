@@ -52,7 +52,7 @@ export class AuthService {
   async forgotPassword(email: string): Promise<Message> {
     const user = await this.userRepository.findOne({ email });
 
-    if (!user) throw new NotFoundException("User not found");
+    if (!user) throw new NotFoundException("User with this email not found");
 
     const token = uuid();
 
