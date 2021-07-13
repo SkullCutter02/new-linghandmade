@@ -65,6 +65,11 @@ export class UserService {
       .delete({ "users_in_cart_products.product.id": productId, "users_in_cart_products.user.id": userId })
       .execute("get");
 
-    return { message: "Item removed successfully" };
+    return this.em
+      .createQueryBuilder(UserInCartProducts, "c")
+      .select("*")
+      .leftJoinAndSelect("product", "p")
+      .where({ "c.user.id": userId })
+      .getResultList();
   }
 }

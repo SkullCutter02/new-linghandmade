@@ -42,10 +42,7 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
     return () => clearTimeout(timeoutId);
   }, [productAmount]);
 
-  const restoreCartItem = async (cartItemReference: {
-    product: globalThis.Product;
-    amount: number;
-  }) => {
+  const restoreCartItem = async () => {
     const res = await fetch(`${HOST}/user/cart`, {
       method: "POST",
       credentials: "include",
@@ -53,8 +50,8 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        productId: cartItemReference.product.id,
-        amount: cartItemReference.amount,
+        productId: product.id,
+        amount: amount,
       }),
     });
     const data = await res.json();
@@ -64,9 +61,7 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
 
   const removeCartItem = async () => {
     try {
-      const cartItemReference = { product, amount };
-
-      await fetch(`${HOST}/user/cart`, {
+      const res = await fetch(`${HOST}/user/cart`, {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -74,15 +69,11 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
         },
         body: JSON.stringify({ productId: product.id }),
       });
+      const data = await res.json();
 
-      queryClient.setQueryData(
-        "cart",
-        queryClient
-          .getQueryData<CartItem[]>("cart")
-          .filter((cartItem) => cartItem.product.id !== product.id)
-      );
+      queryClient.setQueryData("cart", data);
 
-      toast.success(<UndoToast onUndo={() => restoreCartItem(cartItemReference)} />, {
+      toast.success(<UndoToast onUndo={restoreCartItem} />, {
         ...toastOptions,
         closeOnClick: false,
         closeButton: false,

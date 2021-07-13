@@ -2,6 +2,7 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
+import Link from "next/link";
 
 import getCartItems from "../../queries/getCartItems";
 import CartItem from "../../components/ui/cart/CartItem";
@@ -24,7 +25,7 @@ const CartPage: React.FC = () => {
           {cartItems
             .sort((a, b) => a.product.name.localeCompare(b.product.name))
             .map((cartItem) => (
-              <CartItem cartItem={cartItem} />
+              <CartItem cartItem={cartItem} key={cartItem.product.id} />
             ))}
           <div className="cart-item-container total-price-container">
             <p className="total">Total</p>
@@ -32,7 +33,9 @@ const CartPage: React.FC = () => {
           </div>
         </div>
         <div className="buttons">
-          <button className="continue-shopping-btn">Continue Shopping</button>
+          <Link href={"/products?page=1&filter="}>
+            <button className="continue-shopping-btn">Continue Shopping</button>
+          </Link>
           <button className="checkout-btn">Checkout Now</button>
         </div>
       </main>
