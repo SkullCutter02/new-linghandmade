@@ -7,10 +7,13 @@ import { Carousel } from "react-responsive-carousel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
 import Zoom from "react-medium-image-zoom";
+import { toast } from "react-toastify";
 
 import getProduct from "../../queries/getProduct";
 import getCartItems from "../../queries/getCartItems";
+import getMe from "../../queries/getMe";
 import AddToCartModal from "../../components/ui/products/AddToCartModal";
+import toastOptions from "../../config/toastOptions";
 
 const ProductPage: React.FC = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState<boolean>(false);
@@ -22,6 +25,7 @@ const ProductPage: React.FC = () => {
     getProduct(productId as string)
   );
   const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
+  const { data: user } = useQuery("user", getMe);
 
   const carouselArrowStyle: CSSProperties = {
     position: "absolute",
@@ -79,14 +83,18 @@ const ProductPage: React.FC = () => {
           </div>
           <div className="right">
             <p>Price: HK${product.price}</p>
-            {cartItems.some((cartItem) => cartItem.product.id === product.id) ? (
+            {cartItems.length > 0 &&
+            cartItems.some((cartItem) => cartItem.product.id === product.id) ? (
               <button className="add-cart-btn in-cart-btn" disabled>
                 In Cart Already
               </button>
             ) : (
               <button
                 className="add-cart-btn"
-                onClick={() => setIsCartModalOpen(true)}
+                onClick={() => {
+                  if (!user) toast.error("Please login to add an item to cart!", toastOptions);
+                  else setIsCartModalOpen(true);
+                }}
                 disabled={product.amtLeft <= 0}
               >
                 {product.amtLeft ? "Add to Cart" : "Sold Out"}

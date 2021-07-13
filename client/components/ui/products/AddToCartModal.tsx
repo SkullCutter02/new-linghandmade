@@ -2,10 +2,11 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { useQueryClient } from "react-query";
 import Select from "react-select";
 import Modal, { Styles } from "react-modal";
-import { toast, ToastOptions } from "react-toastify";
+import { toast } from "react-toastify";
 
 import Spinner from "../../widgets/Spinner";
 import HOST from "../../../constants/host";
+import toastOptions from "../../../config/toastOptions";
 
 interface Props {
   isCartModalOpen: boolean;
@@ -31,16 +32,6 @@ const AddToCartModal: React.FC<Props> = ({ isCartModalOpen, setIsCartModalOpen, 
       padding: "25px",
       overflow: "initial",
     },
-  };
-
-  const toastOptions: ToastOptions = {
-    position: "top-center",
-    autoClose: 3000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: 0,
   };
 
   const addToCart = async () => {
