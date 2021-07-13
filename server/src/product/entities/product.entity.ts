@@ -1,4 +1,5 @@
 import { Collection, Entity, EntityRepositoryType, ManyToOne, OneToMany, Property } from "@mikro-orm/core";
+import { IsOptional, Max, Min } from "class-validator";
 
 import { BaseEntity } from "../../shared/base.entity";
 import { ProductRepository } from "../repositories/product.repository";
@@ -15,6 +16,12 @@ export class Product extends BaseEntity {
 
   @Property()
   price: number;
+
+  @IsOptional()
+  @Min(0)
+  @Max(100)
+  @Property({ nullable: true })
+  discount?: number = 0;
 
   @Property()
   mainImgUrl: string;

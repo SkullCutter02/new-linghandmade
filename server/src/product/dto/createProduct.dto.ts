@@ -1,4 +1,4 @@
-import { IsOptional, IsPositive, IsString, IsUrl, IsUUID, Min } from "class-validator";
+import { IsOptional, IsPositive, IsString, IsUrl, IsUUID, Max, Min } from "class-validator";
 
 export class CreateProductDto {
   @IsString()
@@ -9,6 +9,11 @@ export class CreateProductDto {
 
   @IsPositive()
   price: number;
+
+  @IsOptional()
+  @Min(0)
+  @Max(100)
+  discount?: number;
 
   @IsUrl()
   mainImgUrl: string;
