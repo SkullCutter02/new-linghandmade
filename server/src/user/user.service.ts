@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
+import { EntityManager } from "@mikro-orm/postgresql";
 
 import { UserRepository } from "./repositories/user.repository";
 import { ProductRepository } from "../product/repositories/product.repository";
@@ -13,6 +14,7 @@ export class UserService {
     private readonly productRepository: ProductRepository,
     @InjectRepository(UserInCartProducts)
     private readonly userInCartProductsRepository: EntityRepository<UserInCartProducts>,
+    private readonly em: EntityManager,
   ) {}
 
   async getCartItems(userId: string) {
@@ -57,16 +59,12 @@ export class UserService {
   }
 
   async removeCartItem(userId: string, productId: string) {
-    const user = await this.userRepository.findOneOrFail({ id: userId }, [
-      "userInCartProducts",
-      "userInCartProducts.product",
-    ]);
+    await this.em
+      .createQueryBuilder(UserInCartProducts, "c")
+      .select("*")
+      .delete({ "users_in_cart_products.product.id": productId, "users_in_cart_products.user.id": userId })
+      .execute("get");
 
-    for (let e of user.userInCartProducts) {
-      if (e.product.id === productId) user.userInCartProducts.remove(e);
-    }
-
-    await this.userRepository.persistAndFlush(user);
-    return user;
+    return { message: "Item removed successfully" };
   }
 }
