@@ -8,7 +8,7 @@ import { ResetPasswordDto } from "./dto/resetPassword.dto";
 import { LocalAuthGuard } from "./guards/localAuth.guard";
 import { User } from "../user/entities/user.entity";
 import { JwtAuthGuard } from "./guards/jwtAuth.guard";
-import { cookieOptions } from "./utils/cookieOptions";
+import { cookieOptions } from "./config/cookieOptions";
 import { Message } from "../shared/types/Message";
 
 @Controller("auth")
