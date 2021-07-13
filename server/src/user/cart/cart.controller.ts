@@ -1,43 +1,43 @@
 import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import { Request } from "express";
 
-import { JwtAuthGuard } from "../auth/guards/jwtAuth.guard";
-import { UserService } from "./user.service";
-import { User } from "./entities/user.entity";
+import { JwtAuthGuard } from "../../auth/guards/jwtAuth.guard";
+import { CartService } from "./cart.service";
+import { User } from "../entities/user.entity";
 
-@Controller("user")
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+@Controller("user/cart")
+export class CartController {
+  constructor(private readonly cartService: CartService) {}
 
-  @Get("/cart")
+  @Get()
   @UseGuards(JwtAuthGuard)
   async getCartItems(@Req() req: Request) {
-    return this.userService.getCartItems((req.user as User).id);
+    return this.cartService.getCartItems((req.user as User).id);
   }
 
-  @Post("/cart")
+  @Post()
   @UseGuards(JwtAuthGuard)
   async addCartItem(
     @Req() req: Request,
     @Body("productId") productId: string,
     @Body("amount", ParseIntPipe) amount: number,
   ) {
-    return this.userService.addCartItem((req.user as User).id, productId, amount);
+    return this.cartService.addCartItem((req.user as User).id, productId, amount);
   }
 
-  @Patch("/cart")
+  @Patch()
   @UseGuards(JwtAuthGuard)
   async updateCartItemAmount(
     @Req() req: Request,
     @Body("productId") productId: string,
     @Body("amount", ParseIntPipe) amount: number,
   ) {
-    return this.userService.updateCartItemAmount((req.user as User).id, productId, amount);
+    return this.cartService.updateCartItemAmount((req.user as User).id, productId, amount);
   }
 
-  @Delete("/cart")
+  @Delete()
   @UseGuards(JwtAuthGuard)
   async removeCartItem(@Req() req: Request, @Body("productId") productId: string) {
-    return this.userService.removeCartItem((req.user as User).id, productId);
+    return this.cartService.removeCartItem((req.user as User).id, productId);
   }
 }

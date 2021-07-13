@@ -3,12 +3,12 @@ import { EntityRepository } from "@mikro-orm/core";
 import { InjectRepository } from "@mikro-orm/nestjs";
 import { EntityManager } from "@mikro-orm/postgresql";
 
-import { UserRepository } from "./repositories/user.repository";
-import { ProductRepository } from "../product/repositories/product.repository";
-import { UserInCartProducts } from "./entities/userInCartProducts.entity";
+import { UserRepository } from "../repositories/user.repository";
+import { ProductRepository } from "../../product/repositories/product.repository";
+import { UserInCartProducts } from "../entities/userInCartProducts.entity";
 
 @Injectable()
-export class UserService {
+export class CartService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly productRepository: ProductRepository,
