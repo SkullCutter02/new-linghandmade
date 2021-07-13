@@ -111,7 +111,16 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
             +
           </span>
         </div>
-        <p>${(product.price * productAmount).toFixed(2)}</p>
+        <p>
+          <span className={product.discount ? "discounted" : ""}>
+            ${(product.price * productAmount).toFixed(2)}
+          </span>
+          {product.discount && (
+            <span className="discount" style={{ marginLeft: "6px" }}>
+              ${((productAmount * (product.price * (100 - product.discount))) / 100).toFixed(2)}
+            </span>
+          )}
+        </p>
         <FontAwesomeIcon
           icon={faTimesCircle}
           style={{ cursor: "pointer", color: "#c4c4c4" }}

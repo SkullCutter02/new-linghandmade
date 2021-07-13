@@ -189,12 +189,6 @@ const ProductPage: React.FC = () => {
           font-size: 0.85rem;
         }
 
-        .discounted {
-          text-decoration: line-through;
-          font-size: 0.8rem;
-          font-weight: 300;
-        }
-
         @media screen and (max-width: 1000px) {
           .product {
             flex-direction: column;

@@ -13,7 +13,12 @@ const CartPage: React.FC = () => {
   const getTotalPrice = () => {
     let price = 0;
 
-    cartItems.forEach((cartItem) => (price += cartItem.amount * cartItem.product.price));
+    cartItems.forEach((cartItem) => {
+      if (!cartItem.product.discount) price += cartItem.amount * cartItem.product.price;
+      else
+        price +=
+          cartItem.amount * ((cartItem.product.price * (100 - cartItem.product.discount)) / 100);
+    });
 
     return price;
   };
@@ -42,7 +47,7 @@ const CartPage: React.FC = () => {
 
       <style jsx>{`
         main {
-          width: 75%;
+          width: 80%;
           margin: 50px auto;
         }
 

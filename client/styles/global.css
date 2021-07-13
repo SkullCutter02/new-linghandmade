@@ -69,7 +69,7 @@ ul {
 
 .cart-item-container {
   display: grid;
-  grid-template-columns: 0.8fr 1fr 0.4fr 0.4fr 0.2fr;
+  grid-template-columns: 0.8fr 1fr 0.4fr 0.8fr 0.2fr;
   grid-column-gap: 30px;
   justify-items: center;
   align-items: center;
@@ -102,4 +102,10 @@ ul {
   .cart-item-container img {
     width: 150px !important;
   }
+}
+
+.discounted {
+  text-decoration: line-through;
+  font-size: 0.8rem;
+  font-weight: 300;
 }
