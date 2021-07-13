@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import HOST from "../../../constants/host";
 import toastOptions from "../../../config/toastOptions";
+import UndoToast from "../../widgets/UndoToast";
 
 interface Props {
   cartItem: CartItem;
@@ -36,10 +37,61 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
       } catch (err) {
         console.log(err);
       }
-    }, 2000);
+    }, 900);
 
     return () => clearTimeout(timeoutId);
   }, [productAmount]);
+
+  const restoreCartItem = async (cartItemReference: {
+    product: globalThis.Product;
+    amount: number;
+  }) => {
+    const res = await fetch(`${HOST}/user/cart`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId: cartItemReference.product.id,
+        amount: cartItemReference.amount,
+      }),
+    });
+    const data = await res.json();
+
+    queryClient.setQueryData("cart", data.userInCartProducts);
+  };
+
+  const removeCartItem = async () => {
+    try {
+      const cartItemReference = { product, amount };
+
+      await fetch(`${HOST}/user/cart`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId: product.id }),
+      });
+
+      queryClient.setQueryData(
+        "cart",
+        queryClient
+          .getQueryData<CartItem[]>("cart")
+          .filter((cartItem) => cartItem.product.id !== product.id)
+      );
+
+      toast.success(<UndoToast onUndo={() => restoreCartItem(cartItemReference)} />, {
+        ...toastOptions,
+        closeOnClick: false,
+        closeButton: false,
+      });
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong. Try again", toastOptions);
+    }
+  };
 
   return (
     <>
@@ -69,7 +121,11 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
           </span>
         </div>
         <p>${(product.price * productAmount).toFixed(2)}</p>
-        <FontAwesomeIcon icon={faTimesCircle} style={{ cursor: "pointer", color: "#c4c4c4" }} />
+        <FontAwesomeIcon
+          icon={faTimesCircle}
+          style={{ cursor: "pointer", color: "#c4c4c4" }}
+          onClick={removeCartItem}
+        />
       </div>
 
       <style jsx>{`
