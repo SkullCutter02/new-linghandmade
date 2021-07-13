@@ -35,6 +35,8 @@ const AddToCartModal: React.FC<Props> = ({ isCartModalOpen, setIsCartModalOpen, 
   };
 
   const addToCart = async () => {
+    if (isLoading) return;
+
     setIsLoading(true);
 
     const res = await fetch(`${HOST}/user/cart`, {
@@ -65,7 +67,9 @@ const AddToCartModal: React.FC<Props> = ({ isCartModalOpen, setIsCartModalOpen, 
     <>
       <Modal
         isOpen={isCartModalOpen}
-        onRequestClose={() => setIsCartModalOpen(false)}
+        onRequestClose={() => {
+          if (!isLoading) setIsCartModalOpen(false);
+        }}
         style={modalStyle}
         closeTimeoutMS={200}
         appElement={process.browser && document.getElementById("__next")}
