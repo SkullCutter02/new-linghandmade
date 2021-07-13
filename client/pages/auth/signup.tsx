@@ -10,6 +10,7 @@ import AuthForm from "../../components/ui/authpage/AuthForm";
 import IconInput from "../../components/widgets/IconInput";
 import HOST from "../../constants/host";
 import getMe from "../../queries/getMe";
+import passwordRegex from "../../constants/passwordRegex";
 
 interface FormInput {
   username: string;
@@ -44,9 +45,8 @@ const SignupPage: React.FC = () => {
         email: yup.string().email().required(),
         password: yup
           .string()
-          .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
-            message:
-              "password must be at least 8 characters long, and have at least one letter and one number",
+          .matches(passwordRegex.regex, {
+            message: passwordRegex.message,
           })
           .required(),
       })
@@ -83,7 +83,7 @@ const SignupPage: React.FC = () => {
   return (
     <>
       <AuthForm
-        authType={"signup"}
+        authType={"sign up"}
         handleSubmit={handleSubmit}
         submitFn={signup}
         setIsPasswordShown={setIsPasswordShown}

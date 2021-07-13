@@ -4,12 +4,13 @@ import Link from "next/link";
 import Spinner from "../../widgets/Spinner";
 
 interface Props {
-  authType: "login" | "signup";
+  authType: "login" | "sign up" | "forgot password" | "reset password";
   handleSubmit: any;
   submitFn: (...any) => void;
   setIsPasswordShown: Dispatch<SetStateAction<boolean>>;
   errMsgRef: MutableRefObject<HTMLParagraphElement>;
   isLoading: boolean;
+  buttonText?: string;
 }
 
 const AuthForm: React.FC<Props> = ({
@@ -20,28 +21,33 @@ const AuthForm: React.FC<Props> = ({
   setIsPasswordShown,
   errMsgRef,
   isLoading,
+  buttonText,
 }) => {
   return (
     <>
       <main>
         <form onSubmit={handleSubmit(submitFn)}>
-          <h2>{authType === "signup" ? "Sign Up" : "Login"}</h2>
+          <h2>{authType}</h2>
           {children}
-          <div className="show-password-container">
-            <input
-              type="checkbox"
-              id={"show-password"}
-              onChange={(e) => setIsPasswordShown(e.target.checked)}
-            />
-            <label htmlFor={"show-password"}>Show Password</label>
-          </div>
-          <Link href={authType === "signup" ? "/auth/login" : "/auth/forgot-password"}>
-            <p className="extra-info">
-              {authType === "signup" ? "Already have an account? Log in" : "Forgot password?"}
-            </p>
-          </Link>
+          {authType !== "forgot password" && (
+            <div className="show-password-container">
+              <input
+                type="checkbox"
+                id={"show-password"}
+                onChange={(e) => setIsPasswordShown(e.target.checked)}
+              />
+              <label htmlFor={"show-password"}>Show Password</label>
+            </div>
+          )}
+          {(authType === "login" || "sign up") && (
+            <Link href={authType === "sign up" ? "/auth/login" : "/auth/forgot-password"}>
+              <p className="extra-info">
+                {authType === "sign up" ? "Already have an account? Log in" : "Forgot password?"}
+              </p>
+            </Link>
+          )}
           <button className="auth-btn" type={"submit"} disabled={isLoading}>
-            {isLoading ? <Spinner size={10} /> : authType === "login" ? "Login" : "Sign Up"}
+            {isLoading ? <Spinner size={10} /> : buttonText || authType}
           </button>
           <p className="err-msg" ref={errMsgRef} />
         </form>
