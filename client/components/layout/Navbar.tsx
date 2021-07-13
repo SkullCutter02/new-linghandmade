@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import Link from "next/link";
 import { HamburgerButton } from "react-hamburger-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 import MobileNavbar from "./MobileNavbar";
 import NavbarTabs from "./NavbarTabs";
@@ -50,6 +50,12 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <div className="username">
+              <Link href={"/cart"}>
+                <FontAwesomeIcon
+                  icon={faShoppingCart}
+                  style={{ marginRight: "20px", cursor: "pointer" }}
+                />
+              </Link>
               <FontAwesomeIcon icon={faUser} />
               <p>{user.username}</p>
             </div>
@@ -105,6 +111,7 @@ const Navbar: React.FC = () => {
         .username {
           display: flex;
           align-items: center;
+          margin-right: 20px;
         }
 
         .username p {
