@@ -1,4 +1,5 @@
 import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
+import Link from "next/link";
 
 import Spinner from "../../widgets/Spinner";
 
@@ -34,6 +35,11 @@ const AuthForm: React.FC<Props> = ({
             />
             <label htmlFor={"show-password"}>Show Password</label>
           </div>
+          <Link href={authType === "signup" ? "/auth/login" : "/auth/forgot-password"}>
+            <p className="extra-info">
+              {authType === "signup" ? "Already have an account? Log in" : "Forgot password?"}
+            </p>
+          </Link>
           <button className="auth-btn" type={"submit"} disabled={isLoading}>
             {isLoading ? <Spinner size={10} /> : authType === "login" ? "Login" : "Sign Up"}
           </button>
@@ -89,6 +95,14 @@ const AuthForm: React.FC<Props> = ({
           border-radius: 50px;
           text-transform: uppercase;
           position: relative;
+        }
+
+        .extra-info {
+          float: right;
+          font-size: 0.75rem;
+          margin-top: 20px;
+          text-decoration: underline;
+          cursor: pointer;
         }
 
         .err-msg {
