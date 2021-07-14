@@ -41,7 +41,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): { token: string } {
     const token = this.authService.adminLogin(username, password);
-    res.cookie("adminToken", token, { httpOnly: true });
+    res.cookie("adminToken", token, { httpOnly: true, secure: true });
     return { token };
   }
 

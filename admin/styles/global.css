@@ -1,0 +1,21 @@
+:root {
+  --bg: #fff;
+  --primaryTextColor: #1a1a1a;
+  --primaryColor: #0da3d6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", serif;
+}
+
+body {
+  background: var(--bg);
+}
+
+.err-msg {
+  color: #b80909;
+  font-size: 0.75rem;
+}
