@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Spinner, Table, Thead, Tbody, Th, Tr, Td } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
@@ -18,6 +18,10 @@ const ProductDashboardPage: React.FC = () => {
     ["products", page, filter],
     () => getProducts(page, filter)
   );
+
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
 
   return (
     <>
@@ -65,7 +69,7 @@ const ProductDashboardPage: React.FC = () => {
           )}
         </Tbody>
       </Table>
-      <PaginationButtons />
+      <PaginationButtons hasMore={productsData?.hasMore} page={page} setPage={setPage} />
     </>
   );
 };
