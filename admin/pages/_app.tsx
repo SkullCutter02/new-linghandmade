@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import DashboardLayout from "../components/layout/DashboardLayout";
 
 import "../styles/global.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;

@@ -47,7 +47,7 @@ const DashboardLayout: React.FC = ({ children }) => {
           <Text cursor={"pointer"}>Product</Text>
         </VStack>
         <Box width={"90%"} padding={"80px"} paddingTop={"40px"}>
-          <Box width={"100%"} boxShadow={"0 0 5px 2px #cacaca"} minH={"100%"}>
+          <Box width={"100%"} boxShadow={"0 0 5px 2px #cacaca"} minH={"100%"} padding={"20px"}>
             {children}
           </Box>
         </Box>
