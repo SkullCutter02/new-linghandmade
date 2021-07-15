@@ -2,12 +2,12 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
-import { Center, VStack } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 
 import getCategories from "../../queries/getCategories";
-import AdminGrid from "../../components/AdminGrid";
-import AdminHeader from "../../components/AdminHeader";
 import DashboardHeader from "../../components/DashboardHeader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const CategoryDashboardPage: React.FC = () => {
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
@@ -15,20 +15,30 @@ const CategoryDashboardPage: React.FC = () => {
   return (
     <>
       <DashboardHeader />
-      <VStack width={"100%"}>
-        <AdminGrid template={"1fr 1fr 1fr"} isHeader={true}>
-          <AdminHeader text={"name"} />
-          <AdminHeader text={"id"} />
-          <AdminHeader text={"created at"} />
-        </AdminGrid>
-        {categories.map((category) => (
-          <AdminGrid key={category.id} template={"1fr 1fr 1fr"}>
-            <Center>{category.name}</Center>
-            <Center>{category.id}</Center>
-            <Center>{category.createdAt}</Center>
-          </AdminGrid>
-        ))}
-      </VStack>
+      <Table variant={"simple"}>
+        <Thead>
+          <Tr>
+            <Th>name</Th>
+            <Th>id</Th>
+            <Th>created at</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {categories.map((category) => (
+            <Tr key={category.id}>
+              <Td>{category.name}</Td>
+              <Td>{category.id}</Td>
+              <Td>{category.createdAt}</Td>
+              <Td>
+                <FontAwesomeIcon icon={faPencilAlt} style={{ cursor: "pointer" }} />
+              </Td>
+              <Td>
+                <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     </>
   );
 };

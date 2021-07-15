@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { VStack, Center, Image, Spinner } from "@chakra-ui/react";
+import { Image, Spinner, Table, Thead, Tbody, Th, Tr, Td } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 
 import getProducts from "../../queries/getProducts";
-import AdminGrid from "../../components/AdminGrid";
-import AdminHeader from "../../components/AdminHeader";
 import DashboardHeader from "../../components/DashboardHeader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const ProductDashboardPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -21,36 +21,49 @@ const ProductDashboardPage: React.FC = () => {
   return (
     <>
       <DashboardHeader filter={filter} setFilter={setFilter} />
-      <VStack width={"100%"}>
-        <AdminGrid template={"1fr 1fr 1fr 1fr 1fr 1fr"} isHeader>
-          <AdminHeader text={"name"} />
-          <AdminHeader text={"price"} />
-          <AdminHeader text={"discount"} />
-          <AdminHeader text={"main image"} />
-          <AdminHeader text={"amount left"} />
-          <AdminHeader text={"featured"} />
-        </AdminGrid>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          productsData.products.map((product) => (
-            <AdminGrid key={product.id} template={"1fr 1fr 1fr 1fr 1fr 1fr"}>
-              <Center>{product.name}</Center>
-              <Center>${product.price}</Center>
-              <Center>{product.discount || 0}%</Center>
-              <Image
-                src={product.mainImgUrl}
-                maxW={"100%"}
-                maxH={"100%"}
-                objectFit={"cover"}
-                margin={"0 auto"}
-              />
-              <Center>{product.amtLeft}</Center>
-              <Center>{product.featured ? "true" : "false"}</Center>
-            </AdminGrid>
-          ))
-        )}
-      </VStack>
+      <Table varian={"simple"}>
+        <Thead>
+          <Tr>
+            <Th>name</Th>
+            <Th>price</Th>
+            <Th>discount</Th>
+            <Th>main image</Th>
+            <Th>amount left</Th>
+            <Th>featured</Th>
+            <Th>category</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            productsData.products.map((product) => (
+              <Tr key={product.id}>
+                <Td>{product.name}</Td>
+                <Td>${product.price}</Td>
+                <Td>{product.discount || 0}%</Td>
+                <Td>
+                  <Image
+                    src={product.mainImgUrl}
+                    alt={product.name}
+                    objectFit={"cover"}
+                    maxH={"80px"}
+                  />
+                </Td>
+                <Td>{product.amtLeft}</Td>
+                <Td>{product.featured ? "true" : "false"}</Td>
+                <Td>{product.category.name}</Td>
+                <Td>
+                  <FontAwesomeIcon icon={faPencilAlt} style={{ cursor: "pointer" }} />
+                </Td>
+                <Td>
+                  <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />
+                </Td>
+              </Tr>
+            ))
+          )}
+        </Tbody>
+      </Table>
     </>
   );
 };
