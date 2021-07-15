@@ -7,12 +7,14 @@ import { Center, VStack } from "@chakra-ui/react";
 import getCategories from "../../queries/getCategories";
 import AdminGrid from "../../components/AdminGrid";
 import AdminHeader from "../../components/AdminHeader";
+import DashboardHeader from "../../components/DashboardHeader";
 
 const CategoryDashboardPage: React.FC = () => {
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
 
   return (
     <>
+      <DashboardHeader />
       <VStack width={"100%"}>
         <AdminGrid template={"1fr 1fr 1fr"} isHeader={true}>
           <AdminHeader text={"name"} />
