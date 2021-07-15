@@ -28,17 +28,15 @@ const ProductsPage: React.FC = () => {
   const search: ChangeEventHandler<HTMLInputElement> = (e) => {
     setTimeout(async () => {
       await router.push(
-        `/products?page=${page}&filter=${e.target.value}${category ? `&category=${category}` : ""}`
+        `/products?page=1&filter=${e.target.value}${category ? `&category=${category}` : ""}`
       );
     }, 400);
   };
 
   const searchByCategory = async (v: SelectOptions<string>) => {
-    if (!v) await router.push(`/products?page=${page}&filter=${searchRef.current.value}`);
+    if (!v) await router.push(`/products?page=1&filter=${searchRef.current.value}`);
     else
-      await router.push(
-        `/products?page=${page}&filter=${searchRef.current.value}&category=${v.value}`
-      );
+      await router.push(`/products?page=1&filter=${searchRef.current.value}&category=${v.value}`);
   };
 
   return (
