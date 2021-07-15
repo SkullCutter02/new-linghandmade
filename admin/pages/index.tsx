@@ -99,7 +99,7 @@ const LoginPage: React.FC = () => {
             <Input type={"password"} {...register("password")} />
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
-          <Button colorScheme={"blue"} type={"submit"} disabled={isLoading}>
+          <Button colorScheme={"blue"} type={"submit"} isLoading={isLoading}>
             Login
           </Button>
           <p className="err-msg" ref={errMsgRef} />
