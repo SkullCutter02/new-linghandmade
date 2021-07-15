@@ -11,6 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useRouter } from "next/router";
 
 import HOST from "../constants/host";
 
@@ -38,6 +39,8 @@ const LoginPage: React.FC = () => {
 
   const errMsgRef = useRef<HTMLParagraphElement>(null);
 
+  const router = useRouter();
+
   const login = async ({ username, password }: FormInput) => {
     setIsLoading(true);
     errMsgRef.current.innerText = "";
@@ -57,6 +60,7 @@ const LoginPage: React.FC = () => {
       const data = await res.json();
 
       if (res.ok) {
+        await router.push("/dashboard/category");
       } else {
         errMsgRef.current.innerText = data.message;
         setIsLoading(false);
