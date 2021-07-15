@@ -3,11 +3,12 @@ import { Image, Spinner, Table, Thead, Tbody, Th, Tr, Td } from "@chakra-ui/reac
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import getProducts from "../../queries/getProducts";
 import DashboardHeader from "../../components/DashboardHeader";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import PaginationButtons from "../../components/PaginationButtons";
 
 const ProductDashboardPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -64,6 +65,7 @@ const ProductDashboardPage: React.FC = () => {
           )}
         </Tbody>
       </Table>
+      <PaginationButtons />
     </>
   );
 };
