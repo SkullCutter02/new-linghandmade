@@ -3,9 +3,23 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Box, Flex, StackDivider, Text, VStack } from "@chakra-ui/react";
 
+import HOST from "../../constants/host";
+
 const DashboardLayout: React.FC = ({ children }) => {
   const router = useRouter();
   const path = router.asPath.split("/");
+
+  useEffect(() => {
+    const getRes = async () => {
+      return fetch(`${HOST}/auth/me/admin`, {
+        credentials: "include",
+      });
+    };
+
+    getRes().then(async (res) => {
+      if (!res.ok) await router.push("/");
+    });
+  }, [path]);
 
   return (
     <>
