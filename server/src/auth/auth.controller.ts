@@ -10,6 +10,7 @@ import { User } from "../user/entities/user.entity";
 import { JwtAuthGuard } from "./guards/jwtAuth.guard";
 import { cookieOptions } from "./config/cookieOptions";
 import { Message } from "../shared/types/Message";
+import { AdminAuthGuard } from "./guards/adminAuth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -68,5 +69,11 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async me(@Req() req: Request): Promise<User> {
     return this.authService.me(req.user as User);
+  }
+
+  @Get("/me/admin")
+  @UseGuards(AdminAuthGuard)
+  meAdmin() {
+    return { message: "Authorized" };
   }
 }
