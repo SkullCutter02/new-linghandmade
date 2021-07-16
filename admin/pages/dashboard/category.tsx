@@ -14,7 +14,7 @@ const CategoryDashboardPage: React.FC = () => {
 
   return (
     <>
-      <DashboardHeader />
+      <DashboardHeader createPageLink={"/create/category"} />
       <Table variant={"simple"}>
         <Thead>
           <Tr>

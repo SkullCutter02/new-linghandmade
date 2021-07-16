@@ -2,13 +2,15 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Flex, Input, Button } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 interface Props {
   filter?: string;
   setFilter?: Dispatch<SetStateAction<string>>;
+  createPageLink: string;
 }
 
-const DashboardHeader: React.FC<Props> = ({ filter, setFilter }) => {
+const DashboardHeader: React.FC<Props> = ({ filter, setFilter, createPageLink }) => {
   return (
     <>
       <Flex justify={"space-between"} marginBottom={"30px"}>
@@ -22,9 +24,11 @@ const DashboardHeader: React.FC<Props> = ({ filter, setFilter }) => {
         ) : (
           <div />
         )}
-        <Button colorScheme={"teal"} leftIcon={<FontAwesomeIcon icon={faPlus} color={"#fff"} />}>
-          Create
-        </Button>
+        <Link href={"/dashboard" + createPageLink}>
+          <Button colorScheme={"teal"} leftIcon={<FontAwesomeIcon icon={faPlus} color={"#fff"} />}>
+            Create
+          </Button>
+        </Link>
       </Flex>
     </>
   );
