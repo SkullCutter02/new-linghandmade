@@ -1,16 +1,5 @@
 import React, { useState, useRef } from "react";
-import {
-  FormControl,
-  VStack,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  Image,
-  Button,
-  ButtonGroup,
-  Heading,
-  Select,
-} from "@chakra-ui/react";
+import { VStack, Button, Heading } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -20,24 +9,9 @@ import { dehydrate } from "react-query/hydration";
 import { useRouter } from "next/router";
 
 import getCategories from "../../../queries/getCategories";
-import TextInputControl from "../../../components/inputs/TextInputControl";
-import TextareaControl from "../../../components/inputs/TextareaControl";
-import NumberInputControl from "../../../components/inputs/NumberInputControl";
-import SwitchControl from "../../../components/inputs/SwitchControl";
-import { Category } from "../../../../server/src/category/entities/category.entity";
 import HOST from "../../../constants/host";
-
-interface FormInput {
-  name: string;
-  description: string;
-  price: number;
-  discount: number;
-  mainImgUrl: string;
-  amtLeft: number;
-  featured: boolean;
-  remarks: string;
-  categoryId: string;
-}
+import ProductFormTemplate from "../../../components/templates/ProductFormTemplate";
+import FormContainerTemplate from "../../../components/templates/FormContainerTemplate";
 
 const CreateProductPage: React.FC = () => {
   const [mainImg, setMainImg] = useState<string>("");
@@ -56,7 +30,7 @@ const CreateProductPage: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormInput>({
+  } = useForm<ProductFormInput>({
     mode: "onBlur",
     resolver: yupResolver(
       yup.object().shape({
@@ -83,7 +57,7 @@ const CreateProductPage: React.FC = () => {
     featured,
     remarks,
     categoryId,
-  }: FormInput) => {
+  }: ProductFormInput) => {
     const carouselImgUrls = carouselImgRefs.current
       .filter((el) => !!el?.value)
       .map((el) => el.value);
@@ -126,131 +100,26 @@ const CreateProductPage: React.FC = () => {
 
   return (
     <>
-      <VStack
-        as={"form"}
-        spacing={"20px"}
-        width={"50%"}
-        minW={"300px"}
-        margin={"50px auto"}
-        onSubmit={handleSubmit(createProduct)}
-      >
+      <FormContainerTemplate handleSubmit={handleSubmit} submitFn={createProduct}>
         <Heading fontSize={"1.7rem"}>Create Product</Heading>
 
-        <TextInputControl name={"name"} label={"Name"} error={errors.name} register={register} />
-
-        <TextareaControl
-          name={"description"}
-          label={"Description"}
-          error={errors.description}
+        <ProductFormTemplate
+          errors={errors}
           register={register}
+          mainImg={mainImg}
+          setMainImg={setMainImg}
+          carouselImgsLength={carouselImgsLength}
+          setCarouselImgsLength={setCarouselImgsLength}
+          carouselImgRefs={carouselImgRefs}
+          categories={categories}
         />
-
-        <NumberInputControl
-          name={"price"}
-          label={"Price"}
-          error={errors.price}
-          register={register}
-          defaultValue={0}
-          min={0}
-          precision={0.2}
-        />
-
-        <NumberInputControl
-          name={"discount"}
-          label={"Discount"}
-          error={errors.discount}
-          register={register}
-          defaultValue={0}
-          min={0}
-          max={100}
-          precision={0.2}
-        />
-
-        <FormControl id={"mainImgUrl"} isInvalid={!!errors.mainImgUrl?.message} isRequired>
-          <FormLabel>Main Image Url</FormLabel>
-          <Input
-            type={"text"}
-            {...register("mainImgUrl")}
-            value={mainImg}
-            onChange={(e) => setMainImg(e.target.value)}
-          />
-          <FormErrorMessage>{errors.mainImgUrl?.message}</FormErrorMessage>
-          <Image src={mainImg} margin={"20px 0"} maxW={"50%"} />
-        </FormControl>
-
-        <FormControl id={"carouselImgUrls"}>
-          <FormLabel>Carousel Image Urls</FormLabel>
-          <VStack spacing={"20px"} marginBottom={"20px"}>
-            {[...Array(carouselImgsLength).keys()].map((n) => (
-              <Input key={n} ref={(el) => (carouselImgRefs.current[n] = el)} />
-            ))}
-          </VStack>
-          <ButtonGroup float={"right"}>
-            <Button
-              size={"sm"}
-              variant={"outline"}
-              colorScheme={"teal"}
-              onClick={() => setCarouselImgsLength((prev) => prev + 1)}
-            >
-              Add One
-            </Button>
-            <Button
-              size={"sm"}
-              variant={"outline"}
-              colorScheme={"red"}
-              onClick={() => {
-                setCarouselImgsLength((prev) => prev - 1);
-                carouselImgRefs.current.pop();
-              }}
-            >
-              Remove Last
-            </Button>
-          </ButtonGroup>
-        </FormControl>
-
-        <NumberInputControl
-          name={"amtLeft"}
-          label={"Amount Left"}
-          error={errors.amtLeft}
-          register={register}
-          defaultValue={0}
-          min={0}
-        />
-
-        <SwitchControl
-          name={"featured"}
-          label={"Featured"}
-          error={errors.featured}
-          register={register}
-        />
-
-        <TextareaControl
-          name={"remarks"}
-          label={"Remarks"}
-          error={errors.remarks}
-          register={register}
-          height={100}
-          isRequired={false}
-        />
-
-        <FormControl id={"category"} isInvalid={!!errors.categoryId?.message} isRequired>
-          <FormLabel>Category</FormLabel>
-          <Select placeholder={"Select Category"} {...register("categoryId")}>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </Select>
-          <FormErrorMessage>{errors.categoryId?.message}</FormErrorMessage>
-        </FormControl>
 
         <Button type={"submit"} colorScheme={"teal"} isLoading={isLoading}>
           Create
         </Button>
 
         <p className="err-msg" ref={errMsgRef} />
-      </VStack>
+      </FormContainerTemplate>
     </>
   );
 };
