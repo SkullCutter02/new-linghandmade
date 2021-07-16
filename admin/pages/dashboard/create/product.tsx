@@ -17,6 +17,7 @@ import * as yup from "yup";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
+import { useRouter } from "next/router";
 
 import getCategories from "../../../queries/getCategories";
 import TextInputControl from "../../../components/inputs/TextInputControl";
@@ -24,6 +25,7 @@ import TextareaControl from "../../../components/inputs/TextareaControl";
 import NumberInputControl from "../../../components/inputs/NumberInputControl";
 import SwitchControl from "../../../components/inputs/SwitchControl";
 import { Category } from "../../../../server/src/category/entities/category.entity";
+import HOST from "../../../constants/host";
 
 interface FormInput {
   name: string;
@@ -44,6 +46,9 @@ const CreateProductPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const carouselImgRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const errMsgRef = useRef<HTMLParagraphElement>(null);
+
+  const router = useRouter();
 
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
 
@@ -68,8 +73,55 @@ const CreateProductPage: React.FC = () => {
     ),
   });
 
-  const createProduct = (hello: FormInput) => {
-    console.log(hello);
+  const createProduct = async ({
+    name,
+    description,
+    price,
+    discount,
+    mainImgUrl,
+    amtLeft,
+    featured,
+    remarks,
+    categoryId,
+  }: FormInput) => {
+    const carouselImgUrls = carouselImgRefs.current
+      .filter((el) => !!el?.value)
+      .map((el) => el.value);
+
+    setIsLoading(true);
+    errMsgRef.current.innerText = "";
+
+    try {
+      const res = await fetch(`${HOST}/product`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          price,
+          discount,
+          mainImgUrl,
+          carouselImgUrls,
+          amtLeft,
+          featured,
+          remarks,
+          categoryId,
+        }),
+      });
+      const data = await res.json();
+
+      if (res.ok) await router.push("/dashboard/product");
+      else {
+        setIsLoading(false);
+        errMsgRef.current.innerText = data.message;
+      }
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -196,6 +248,8 @@ const CreateProductPage: React.FC = () => {
         <Button type={"submit"} colorScheme={"teal"} isLoading={isLoading}>
           Create
         </Button>
+
+        <p className="err-msg" ref={errMsgRef} />
       </VStack>
     </>
   );
