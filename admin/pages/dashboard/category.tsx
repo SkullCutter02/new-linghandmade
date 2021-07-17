@@ -1,6 +1,6 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { QueryClient, useQuery } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -9,11 +9,31 @@ import getCategories from "../../queries/getCategories";
 import DashboardHeader from "../../components/DashboardHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import HOST from "../../constants/host";
 
 const CategoryDashboardPage: React.FC = () => {
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const removeCategory = async (categoryId: string) => {
+    try {
+      await fetch(`${HOST}/category/${categoryId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      queryClient.setQueryData(
+        "categories",
+        queryClient
+          .getQueryData<Category[]>("categories")
+          .filter((category) => category.id !== categoryId)
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -40,7 +60,11 @@ const CategoryDashboardPage: React.FC = () => {
                 />
               </Td>
               <Td>
-                <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => removeCategory(category.id)}
+                />
               </Td>
             </Tr>
           ))}
