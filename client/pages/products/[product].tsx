@@ -84,12 +84,16 @@ const ProductPage: React.FC = () => {
           <div className="right">
             <p>
               Price:{" "}
-              <span className={product.discount ? "discounted" : ""}>HK${product.price}</span>
-              {product.discount && (
+              <span className={product.discount ? "discounted" : ""}>
+                HK${product.price.toFixed(2)}
+              </span>
+              {product.discount ? (
                 <span className="discount">
                   {" "}
-                  HK${(product.price * (100 - product.discount)) / 100}
+                  HK${((product.price * (100 - product.discount)) / 100).toFixed(2)}
                 </span>
+              ) : (
+                ""
               )}
             </p>
             {cartItems.length > 0 &&
