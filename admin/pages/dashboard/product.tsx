@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, Spinner, Table, Thead, Tbody, Th, Tr, Td } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
-import { QueryClient, useQuery } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -10,9 +10,11 @@ import { useRouter } from "next/router";
 import getProducts from "../../queries/getProducts";
 import DashboardHeader from "../../components/DashboardHeader";
 import PaginationButtons from "../../components/PaginationButtons";
+import HOST from "../../constants/host";
 
 const ProductDashboardPage: React.FC = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>("");
@@ -25,6 +27,24 @@ const ProductDashboardPage: React.FC = () => {
   useEffect(() => {
     setPage(1);
   }, [filter]);
+
+  const removeProduct = async (productId: string) => {
+    try {
+      await fetch(`${HOST}/product/${productId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      queryClient.setQueryData(
+        ["products", page, filter],
+        queryClient
+          .getQueryData<Product[]>(["products", page, filter])
+          .filter((product) => product.id !== productId)
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -69,7 +89,11 @@ const ProductDashboardPage: React.FC = () => {
                   />
                 </Td>
                 <Td>
-                  <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />
+                  <FontAwesomeIcon
+                    icon={faTrashAlt}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => removeProduct(product.id)}
+                  />
                 </Td>
               </Tr>
             ))
