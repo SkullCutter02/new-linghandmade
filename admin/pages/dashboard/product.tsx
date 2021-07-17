@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image, Spinner, Table, Thead, Tbody, Th, Tr, Td } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
@@ -11,6 +11,7 @@ import getProducts from "../../queries/getProducts";
 import DashboardHeader from "../../components/DashboardHeader";
 import PaginationButtons from "../../components/PaginationButtons";
 import HOST from "../../constants/host";
+import ConfirmModal from "../../components/ConfirmModal";
 
 const ProductDashboardPage: React.FC = () => {
   const router = useRouter();
@@ -18,6 +19,11 @@ const ProductDashboardPage: React.FC = () => {
 
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>("");
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDeleteInProgress, setIsDeleteInProgress] = useState<boolean>(false);
+
+  const cancelBtnRef = useRef<HTMLButtonElement>(null);
 
   const { isLoading, data: productsData } = useQuery<{ products: Product[]; hasMore: boolean }>(
     ["products", page, filter],
@@ -30,17 +36,24 @@ const ProductDashboardPage: React.FC = () => {
 
   const removeProduct = async (productId: string) => {
     try {
-      await fetch(`${HOST}/product/${productId}`, {
+      setIsDeleteInProgress(true);
+
+      const res = await fetch(`${HOST}/product/${productId}`, {
         method: "DELETE",
         credentials: "include",
       });
 
-      queryClient.setQueryData(
-        ["products", page, filter],
-        queryClient
-          .getQueryData<Product[]>(["products", page, filter])
-          .filter((product) => product.id !== productId)
-      );
+      if (res.ok) {
+        queryClient.setQueryData(
+          ["products", page, filter],
+          queryClient
+            .getQueryData<Product[]>(["products", page, filter])
+            .filter((product) => product.id !== productId)
+        );
+        setIsModalOpen(false);
+      }
+
+      setIsDeleteInProgress(false);
     } catch (err) {
       console.log(err);
     }
@@ -92,9 +105,17 @@ const ProductDashboardPage: React.FC = () => {
                   <FontAwesomeIcon
                     icon={faTrashAlt}
                     style={{ cursor: "pointer" }}
-                    onClick={() => removeProduct(product.id)}
+                    onClick={() => setIsModalOpen(true)}
                   />
                 </Td>
+                <ConfirmModal
+                  target={"Product"}
+                  isModalOpen={isModalOpen}
+                  setIsModalOpen={setIsModalOpen}
+                  cancelBtnRef={cancelBtnRef}
+                  actionFn={() => removeProduct(product.id)}
+                  isLoading={isDeleteInProgress}
+                />
               </Tr>
             ))
           )}
