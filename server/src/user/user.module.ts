@@ -6,10 +6,12 @@ import { CartService } from "./cart/cart.service";
 import { User } from "./entities/user.entity";
 import { Product } from "../product/entities/product.entity";
 import { UserInCartProducts } from "./entities/userInCartProducts.entity";
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 
 @Module({
   imports: [MikroOrmModule.forFeature([User, Product, UserInCartProducts])],
-  controllers: [CartController],
-  providers: [CartService],
+  controllers: [CartController, UserController],
+  providers: [CartService, UserService],
 })
 export class UserModule {}
