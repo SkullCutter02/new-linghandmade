@@ -5,24 +5,29 @@ import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import { useRouter } from "next/router";
 
-import getCategories from "../../../queries/getCategories";
-import HOST from "../../../constants/host";
-import ProductFormTemplate from "../../../components/templates/ProductFormTemplate";
-import FormContainerTemplate from "../../../components/templates/FormContainerTemplate";
-import productYupResolver from "../../../resolvers/productYupResolver";
+import FormContainerTemplate from "../../../../components/templates/FormContainerTemplate";
+import productYupResolver from "../../../../resolvers/productYupResolver";
+import getProduct from "../../../../queries/getProduct";
+import getCategories from "../../../../queries/getCategories";
+import ProductFormTemplate from "../../../../components/templates/ProductFormTemplate";
+import HOST from "../../../../constants/host";
 
-const CreateProductPage: React.FC = () => {
-  const [mainImg, setMainImg] = useState<string>("");
-  const [carouselImgsLength, setCarouselImgsLength] = useState<number>(1);
+const EditProductPage: React.FC = () => {
+  const router = useRouter();
+  const { productId } = router.query;
+
+  const { data: categories } = useQuery<Category[]>("categories", getCategories);
+  const { data: product } = useQuery<Product>(["product", productId as string], () =>
+    getProduct(productId as string)
+  );
+
+  const [mainImg, setMainImg] = useState<string>(product.mainImgUrl);
+  const [carouselImgsLength, setCarouselImgsLength] = useState(product.carouselImgUrls.length);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const carouselImgRefs = useRef<Array<HTMLInputElement | null>>([]);
   const errMsgRef = useRef<HTMLParagraphElement>(null);
-
-  const router = useRouter();
-
-  const { data: categories } = useQuery<Category[]>("categories", getCategories);
 
   const {
     register,
@@ -31,9 +36,20 @@ const CreateProductPage: React.FC = () => {
   } = useForm<ProductFormInput>({
     mode: "onBlur",
     resolver: productYupResolver,
+    defaultValues: {
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      discount: product.discount ?? 0,
+      mainImgUrl: product.mainImgUrl,
+      amtLeft: product.amtLeft,
+      featured: product.featured,
+      remarks: product.remarks ?? "",
+      categoryId: product.category.id,
+    },
   });
 
-  const createProduct = async ({
+  const editProduct = async ({
     name,
     description,
     price,
@@ -52,8 +68,8 @@ const CreateProductPage: React.FC = () => {
     errMsgRef.current.innerText = "";
 
     try {
-      const res = await fetch(`${HOST}/product`, {
-        method: "POST",
+      const res = await fetch(`${HOST}/product/${product.id}`, {
+        method: "PATCH",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -88,9 +104,9 @@ const CreateProductPage: React.FC = () => {
     <>
       <FormContainerTemplate
         handleSubmit={handleSubmit}
-        submitFn={createProduct}
-        heading={"Create Product"}
-        buttonText={"Create"}
+        submitFn={editProduct}
+        heading={"Edit Product"}
+        buttonText={"Update"}
         isLoading={isLoading}
         errMsgRef={errMsgRef}
       >
@@ -103,15 +119,19 @@ const CreateProductPage: React.FC = () => {
           setCarouselImgsLength={setCarouselImgsLength}
           carouselImgRefs={carouselImgRefs}
           categories={categories}
+          defaultCarouselImgs={product.carouselImgUrls}
         />
       </FormContainerTemplate>
     </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const queryClient = new QueryClient();
 
+  const productId = ctx.query.productId as string;
+
+  await queryClient.prefetchQuery(["product", productId], () => getProduct(productId));
   await queryClient.prefetchQuery("categories", getCategories);
 
   return {
@@ -121,4 +141,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default CreateProductPage;
+export default EditProductPage;

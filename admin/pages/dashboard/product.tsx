@@ -5,12 +5,15 @@ import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 import getProducts from "../../queries/getProducts";
 import DashboardHeader from "../../components/DashboardHeader";
 import PaginationButtons from "../../components/PaginationButtons";
 
 const ProductDashboardPage: React.FC = () => {
+  const router = useRouter();
+
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>("");
 
@@ -59,7 +62,11 @@ const ProductDashboardPage: React.FC = () => {
                 <Td>{product.featured ? "true" : "false"}</Td>
                 <Td>{product.category.name}</Td>
                 <Td>
-                  <FontAwesomeIcon icon={faPencilAlt} style={{ cursor: "pointer" }} />
+                  <FontAwesomeIcon
+                    icon={faPencilAlt}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => router.push(`/dashboard/edit/product/${product.id}`)}
+                  />
                 </Td>
                 <Td>
                   <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />

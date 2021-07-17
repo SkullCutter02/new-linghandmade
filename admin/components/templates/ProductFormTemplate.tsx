@@ -26,6 +26,7 @@ interface Props {
   setCarouselImgsLength: Dispatch<SetStateAction<number>>;
   carouselImgRefs: MutableRefObject<HTMLInputElement[]>;
   categories: Category[];
+  defaultCarouselImgs?: string[];
 }
 
 const ProductFormTemplate: React.FC<Props> = ({
@@ -37,6 +38,7 @@ const ProductFormTemplate: React.FC<Props> = ({
   setCarouselImgsLength,
   carouselImgRefs,
   categories,
+  defaultCarouselImgs,
 }) => {
   return (
     <>
@@ -86,7 +88,11 @@ const ProductFormTemplate: React.FC<Props> = ({
         <FormLabel>Carousel Image Urls</FormLabel>
         <VStack spacing={"20px"} marginBottom={"20px"}>
           {[...Array(carouselImgsLength).keys()].map((n) => (
-            <Input key={n} ref={(el) => (carouselImgRefs.current[n] = el)} />
+            <Input
+              key={n}
+              defaultValue={defaultCarouselImgs && defaultCarouselImgs[n]}
+              ref={(el) => (carouselImgRefs.current[n] = el)}
+            />
           ))}
         </VStack>
         <ButtonGroup float={"right"}>

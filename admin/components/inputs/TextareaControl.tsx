@@ -9,6 +9,7 @@ interface Props {
   register: any;
   height?: number;
   isRequired?: boolean;
+  defaultValue?: string;
 }
 
 const TextareaControl: React.FC<Props> = ({
@@ -18,12 +19,18 @@ const TextareaControl: React.FC<Props> = ({
   register,
   height = 150,
   isRequired = true,
+  defaultValue,
 }) => {
   return (
     <>
       <FormControl id={name} isInvalid={!!error?.message} isRequired={isRequired}>
         <FormLabel>{label}</FormLabel>
-        <Textarea resize={"none"} height={height + "px"} {...register(name)} />
+        <Textarea
+          resize={"none"}
+          height={height + "px"}
+          defaultValue={defaultValue}
+          {...register(name)}
+        />
         <FormErrorMessage>{error?.message}</FormErrorMessage>
       </FormControl>
     </>
