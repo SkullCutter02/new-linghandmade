@@ -13,11 +13,10 @@ import productYupResolver from "../../../resolvers/productYupResolver";
 
 const CreateProductPage: React.FC = () => {
   const [mainImg, setMainImg] = useState<string>("");
-  const [carouselImgsLength, setCarouselImgsLength] = useState<number>(1);
+  const [carouselImgUrls, setCarouselImgUrls] = useState<string[]>([""]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const carouselImgRefs = useRef<Array<HTMLInputElement | null>>([]);
   const errMsgRef = useRef<HTMLParagraphElement>(null);
 
   const router = useRouter();
@@ -44,10 +43,6 @@ const CreateProductPage: React.FC = () => {
     remarks,
     categoryId,
   }: ProductFormInput) => {
-    const carouselImgUrls = carouselImgRefs.current
-      .filter((el) => !!el?.value)
-      .map((el) => el.value);
-
     setIsLoading(true);
     errMsgRef.current.innerText = "";
 
@@ -64,7 +59,7 @@ const CreateProductPage: React.FC = () => {
           price,
           discount,
           mainImgUrl,
-          carouselImgUrls,
+          carouselImgUrls: carouselImgUrls.filter((url) => !!url),
           amtLeft,
           featured,
           remarks,
@@ -99,10 +94,9 @@ const CreateProductPage: React.FC = () => {
           register={register}
           mainImg={mainImg}
           setMainImg={setMainImg}
-          carouselImgsLength={carouselImgsLength}
-          setCarouselImgsLength={setCarouselImgsLength}
-          carouselImgRefs={carouselImgRefs}
           categories={categories}
+          carouselImgUrls={carouselImgUrls}
+          setCarouselImgUrls={setCarouselImgUrls}
         />
       </FormContainerTemplate>
     </>

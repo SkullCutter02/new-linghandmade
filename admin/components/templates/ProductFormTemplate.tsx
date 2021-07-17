@@ -1,12 +1,13 @@
-import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import {
   Button,
-  ButtonGroup,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Image,
   Input,
+  InputGroup,
+  InputRightElement,
   Select,
   VStack,
 } from "@chakra-ui/react";
@@ -22,11 +23,9 @@ interface Props {
   register: any;
   mainImg: string;
   setMainImg: Dispatch<SetStateAction<string>>;
-  carouselImgsLength: number;
-  setCarouselImgsLength: Dispatch<SetStateAction<number>>;
-  carouselImgRefs: MutableRefObject<HTMLInputElement[]>;
   categories: Category[];
-  defaultCarouselImgs?: string[];
+  carouselImgUrls: string[];
+  setCarouselImgUrls: Dispatch<SetStateAction<string[]>>;
 }
 
 const ProductFormTemplate: React.FC<Props> = ({
@@ -34,11 +33,9 @@ const ProductFormTemplate: React.FC<Props> = ({
   register,
   mainImg,
   setMainImg,
-  carouselImgsLength,
-  setCarouselImgsLength,
-  carouselImgRefs,
   categories,
-  defaultCarouselImgs,
+  carouselImgUrls,
+  setCarouselImgUrls,
 }) => {
   return (
     <>
@@ -87,35 +84,43 @@ const ProductFormTemplate: React.FC<Props> = ({
       <FormControl id={"carouselImgUrls"}>
         <FormLabel>Carousel Image Urls</FormLabel>
         <VStack spacing={"20px"} marginBottom={"20px"}>
-          {[...Array(carouselImgsLength).keys()].map((n) => (
-            <Input
-              key={n}
-              defaultValue={defaultCarouselImgs && defaultCarouselImgs[n]}
-              ref={(el) => (carouselImgRefs.current[n] = el)}
-            />
+          {carouselImgUrls.map((img, i) => (
+            <InputGroup key={i}>
+              <Input
+                value={img}
+                onChange={(e) =>
+                  setCarouselImgUrls((prev) =>
+                    prev.map((s, j) => {
+                      if (i === j) return e.target.value;
+                      else return s;
+                    })
+                  )
+                }
+              />
+              <InputRightElement>
+                <Button
+                  size={"xs"}
+                  minW={"70px"}
+                  colorScheme={"red"}
+                  marginRight={"40px"}
+                  fontSize={"0.8rem"}
+                  variant={"ghost"}
+                  onClick={() => setCarouselImgUrls((prev) => prev.filter((_, j) => i !== j))}
+                >
+                  Remove
+                </Button>
+              </InputRightElement>
+            </InputGroup>
           ))}
         </VStack>
-        <ButtonGroup float={"right"}>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            colorScheme={"teal"}
-            onClick={() => setCarouselImgsLength((prev) => prev + 1)}
-          >
-            Add One
-          </Button>
-          <Button
-            size={"sm"}
-            variant={"outline"}
-            colorScheme={"red"}
-            onClick={() => {
-              setCarouselImgsLength((prev) => prev - 1);
-              carouselImgRefs.current.pop();
-            }}
-          >
-            Remove Last
-          </Button>
-        </ButtonGroup>
+        <Button
+          variant={"outline"}
+          colorScheme={"teal"}
+          float={"right"}
+          onClick={() => setCarouselImgUrls((prev) => [...prev, ""])}
+        >
+          Add One
+        </Button>
       </FormControl>
 
       <NumberInputControl

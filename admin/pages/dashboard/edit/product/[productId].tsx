@@ -22,11 +22,10 @@ const EditProductPage: React.FC = () => {
   );
 
   const [mainImg, setMainImg] = useState<string>(product.mainImgUrl);
-  const [carouselImgsLength, setCarouselImgsLength] = useState(product.carouselImgUrls.length);
+  const [carouselImgUrls, setCarouselImgUrls] = useState<string[]>(product.carouselImgUrls);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const carouselImgRefs = useRef<Array<HTMLInputElement | null>>([]);
   const errMsgRef = useRef<HTMLParagraphElement>(null);
 
   const {
@@ -60,10 +59,6 @@ const EditProductPage: React.FC = () => {
     remarks,
     categoryId,
   }: ProductFormInput) => {
-    const carouselImgUrls = carouselImgRefs.current
-      .filter((el) => !!el?.value)
-      .map((el) => el.value);
-
     setIsLoading(true);
     errMsgRef.current.innerText = "";
 
@@ -80,7 +75,7 @@ const EditProductPage: React.FC = () => {
           price,
           discount,
           mainImgUrl,
-          carouselImgUrls,
+          carouselImgUrls: carouselImgUrls.filter((url) => !!url),
           amtLeft,
           featured,
           remarks,
@@ -115,11 +110,9 @@ const EditProductPage: React.FC = () => {
           register={register}
           mainImg={mainImg}
           setMainImg={setMainImg}
-          carouselImgsLength={carouselImgsLength}
-          setCarouselImgsLength={setCarouselImgsLength}
-          carouselImgRefs={carouselImgRefs}
           categories={categories}
-          defaultCarouselImgs={product.carouselImgUrls}
+          carouselImgUrls={carouselImgUrls}
+          setCarouselImgUrls={setCarouselImgUrls}
         />
       </FormContainerTemplate>
     </>
