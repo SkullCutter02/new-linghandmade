@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
@@ -10,26 +10,39 @@ import DashboardHeader from "../../components/DashboardHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import HOST from "../../constants/host";
+import ConfirmModal from "../../components/ConfirmModal";
 
 const CategoryDashboardPage: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDeleteInProgress, setIsDeleteInProgress] = useState<boolean>(false);
+
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
+
+  const cancelBtnRef = useRef<HTMLButtonElement>(null);
 
   const router = useRouter();
   const queryClient = useQueryClient();
 
   const removeCategory = async (categoryId: string) => {
     try {
-      await fetch(`${HOST}/category/${categoryId}`, {
+      setIsDeleteInProgress(true);
+
+      const res = await fetch(`${HOST}/category/${categoryId}`, {
         method: "DELETE",
         credentials: "include",
       });
 
-      queryClient.setQueryData(
-        "categories",
-        queryClient
-          .getQueryData<Category[]>("categories")
-          .filter((category) => category.id !== categoryId)
-      );
+      if (res.ok) {
+        queryClient.setQueryData(
+          "categories",
+          queryClient
+            .getQueryData<Category[]>("categories")
+            .filter((category) => category.id !== categoryId)
+        );
+        setIsModalOpen(false);
+      }
+
+      setIsDeleteInProgress(false);
     } catch (err) {
       console.log(err);
     }
@@ -63,9 +76,17 @@ const CategoryDashboardPage: React.FC = () => {
                 <FontAwesomeIcon
                   icon={faTrashAlt}
                   style={{ cursor: "pointer" }}
-                  onClick={() => removeCategory(category.id)}
+                  onClick={() => setIsModalOpen(true)}
                 />
               </Td>
+              <ConfirmModal
+                target={"Category"}
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                cancelBtnRef={cancelBtnRef}
+                actionFn={() => removeCategory(category.id)}
+                isLoading={isDeleteInProgress}
+              />
             </Tr>
           ))}
         </Tbody>
