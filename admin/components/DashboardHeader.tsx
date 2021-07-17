@@ -7,7 +7,7 @@ import Link from "next/link";
 interface Props {
   filter?: string;
   setFilter?: Dispatch<SetStateAction<string>>;
-  createPageLink: string;
+  createPageLink?: string;
 }
 
 const DashboardHeader: React.FC<Props> = ({ filter, setFilter, createPageLink }) => {
@@ -24,11 +24,16 @@ const DashboardHeader: React.FC<Props> = ({ filter, setFilter, createPageLink })
         ) : (
           <div />
         )}
-        <Link href={"/dashboard" + createPageLink}>
-          <Button colorScheme={"teal"} leftIcon={<FontAwesomeIcon icon={faPlus} color={"#fff"} />}>
-            Create
-          </Button>
-        </Link>
+        {createPageLink && (
+          <Link href={"/dashboard" + createPageLink}>
+            <Button
+              colorScheme={"teal"}
+              leftIcon={<FontAwesomeIcon icon={faPlus} color={"#fff"} />}
+            >
+              Create
+            </Button>
+          </Link>
+        )}
       </Flex>
     </>
   );

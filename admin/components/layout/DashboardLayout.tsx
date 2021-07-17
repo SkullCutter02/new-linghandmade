@@ -41,6 +41,9 @@ const DashboardLayout: React.FC = ({ children }) => {
           padding={"35px"}
           divider={<StackDivider borderColor={"gray.200"} />}
         >
+          <Link href={"/dashboard/user"}>
+            <Text cursor={"pointer"}>User</Text>
+          </Link>
           <Link href={"/dashboard/category"}>
             <Text cursor={"pointer"}>Category</Text>
           </Link>
