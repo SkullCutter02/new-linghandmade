@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 import getCategories from "../../queries/getCategories";
 import DashboardHeader from "../../components/DashboardHeader";
@@ -11,6 +12,8 @@ import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const CategoryDashboardPage: React.FC = () => {
   const { data: categories } = useQuery<Category[]>("categories", getCategories);
+
+  const router = useRouter();
 
   return (
     <>
@@ -30,7 +33,11 @@ const CategoryDashboardPage: React.FC = () => {
               <Td>{category.id}</Td>
               <Td>{category.createdAt}</Td>
               <Td>
-                <FontAwesomeIcon icon={faPencilAlt} style={{ cursor: "pointer" }} />
+                <FontAwesomeIcon
+                  icon={faPencilAlt}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => router.push(`/dashboard/edit/category/${category.id}`)}
+                />
               </Td>
               <Td>
                 <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />
