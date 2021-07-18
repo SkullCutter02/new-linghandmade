@@ -14,6 +14,6 @@ export class ChargeController {
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   async createCharge(@Req() req: Request, @Body() { amount, paymentMethodId }: CreateChargeDto) {
-    await this.stripeService.charge(amount, paymentMethodId, (req.user as User).stripeCustomerId);
+    return await this.stripeService.charge(amount, paymentMethodId, (req.user as User).stripeCustomerId);
   }
 }

@@ -95,9 +95,11 @@ const CartPage: React.FC = () => {
           <Link href={"/products?page=1&filter="}>
             <button className="continue-shopping-btn">Continue Shopping</button>
           </Link>
-          <button className="checkout-btn" disabled={cartItems.length === 0}>
-            Checkout Now
-          </button>
+          <Link href={"/cart/checkout"}>
+            <button className="checkout-btn" disabled={cartItems.length === 0}>
+              Checkout Now
+            </button>
+          </Link>
         </div>
       </main>
 

@@ -6,9 +6,11 @@ interface Props {
   inputType?: string;
   placeholder?: string;
   name: string;
+  label?: string;
   icon?: IconDefinition;
   width?: string;
   margin?: string;
+  pattern?: string;
   required?: boolean;
   register?: any;
   error?: {
@@ -23,9 +25,11 @@ const IconInput: React.FC<Props> = ({
   inputType = "text",
   placeholder = "",
   name,
+  label,
   icon,
   width = "100%",
   margin = "0",
+  pattern,
   required = true,
   register,
   error,
@@ -36,7 +40,7 @@ const IconInput: React.FC<Props> = ({
   return (
     <>
       <div className="container">
-        <p className="label">{name}</p>
+        <p className="label">{label || name}</p>
         <div className="input-container">
           <FontAwesomeIcon
             icon={icon}
@@ -50,6 +54,7 @@ const IconInput: React.FC<Props> = ({
             onChange={onChange}
             defaultValue={defaultValue}
             ref={inputRef}
+            pattern={pattern}
           />
         </div>
         <p className="err-msg">{error?.message}</p>
