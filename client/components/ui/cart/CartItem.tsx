@@ -112,10 +112,10 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
           </span>
         </div>
         <p>
-          <span className={product.discount !== 0 ? "discounted" : ""}>
+          <span className={!!product.discount ? "discounted" : ""}>
             ${(product.price * productAmount).toFixed(2)}
           </span>
-          {product.discount !== 0 && (
+          {!!product.discount && (
             <span className="discount" style={{ marginLeft: "6px" }}>
               ${((productAmount * (product.price * (100 - product.discount))) / 100).toFixed(2)}
             </span>
