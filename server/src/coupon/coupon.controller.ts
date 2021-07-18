@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -20,6 +21,11 @@ import { PaginationDto } from "../shared/pagination.dto";
 @Controller("coupon")
 export class CouponController {
   constructor(private readonly couponService: CouponService) {}
+
+  @Get("/code")
+  async findOneByCode(@Body("code") code: string) {
+    return this.couponService.findOneByCode(code);
+  }
 
   @Get("/:id")
   @UseGuards(AdminAuthGuard)
@@ -51,5 +57,11 @@ export class CouponController {
   @UseGuards(AdminAuthGuard)
   async useCoupon(@Param("id") id: string) {
     return this.couponService.useCoupon(id);
+  }
+
+  @Delete("/:id")
+  @UseGuards(AdminAuthGuard)
+  async delete(@Param("id") id: string) {
+    return this.couponService.delete(id);
   }
 }

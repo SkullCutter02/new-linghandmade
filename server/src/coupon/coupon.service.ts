@@ -1,4 +1,4 @@
-import { GoneException, Injectable } from "@nestjs/common";
+import { GoneException, Injectable, NotFoundException } from "@nestjs/common";
 import * as voucherCodes from "voucher-code-generator";
 
 import { CouponRepository } from "./repositories/coupon.repository";
@@ -9,6 +9,17 @@ import { PaginationDto } from "../shared/pagination.dto";
 @Injectable()
 export class CouponService {
   constructor(private readonly couponRepository: CouponRepository) {}
+
+  async findOneByCode(code: string) {
+    return this.couponRepository.findOneOrFail(
+      { code },
+      {
+        failHandler: () => {
+          throw new NotFoundException("No coupon with such code found");
+        },
+      },
+    );
+  }
 
   async findOne(couponId: string) {
     return this.couponRepository.findOneOrFail({ id: couponId });
@@ -51,6 +62,13 @@ export class CouponService {
     coupon.assign({ used: true });
 
     await this.couponRepository.persistAndFlush(coupon);
+    return coupon;
+  }
+
+  async delete(couponId: string) {
+    const coupon = await this.couponRepository.findOneOrFail({ id: couponId });
+
+    await this.couponRepository.removeAndFlush(coupon);
     return coupon;
   }
 }
