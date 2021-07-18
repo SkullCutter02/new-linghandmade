@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { GoneException, Injectable } from "@nestjs/common";
 import * as voucherCodes from "voucher-code-generator";
 
 import { CouponRepository } from "./repositories/coupon.repository";
 import { CreateCouponDto } from "./dto/createCoupon.dto";
+import { UpdateCouponDto } from "./dto/updateCoupon.dto";
 import { PaginationDto } from "../shared/pagination.dto";
 
 @Injectable()
@@ -28,6 +29,26 @@ export class CouponService {
     })[0];
 
     const coupon = this.couponRepository.create({ code, discount });
+
+    await this.couponRepository.persistAndFlush(coupon);
+    return coupon;
+  }
+
+  async update(couponId: string, { discount }: UpdateCouponDto) {
+    const coupon = await this.couponRepository.findOneOrFail({ id: couponId });
+
+    coupon.assign({ discount });
+
+    await this.couponRepository.persistAndFlush(coupon);
+    return coupon;
+  }
+
+  async useCoupon(couponId: string) {
+    const coupon = await this.couponRepository.findOneOrFail({ id: couponId });
+
+    if (coupon.used) throw new GoneException("Coupon has already been used");
+
+    coupon.assign({ used: true });
 
     await this.couponRepository.persistAndFlush(coupon);
     return coupon;

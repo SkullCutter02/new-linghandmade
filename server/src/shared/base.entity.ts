@@ -11,7 +11,7 @@ export abstract class BaseEntity {
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date();
 
-  assign(values: object) {
+  assign(values: Partial<this>) {
     for (const key in values) {
       this[key] = values[key] ?? this[key];
     }
