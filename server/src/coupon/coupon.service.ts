@@ -9,6 +9,10 @@ import { PaginationDto } from "../shared/pagination.dto";
 export class CouponService {
   constructor(private readonly couponRepository: CouponRepository) {}
 
+  async findOne(couponId: string) {
+    return this.couponRepository.findOneOrFail({ id: couponId });
+  }
+
   async find({ page, limit, filter }: PaginationDto) {
     const [coupons, count] = await this.couponRepository.findAndCount(
       { code: { $ilike: `%${filter}%` } },

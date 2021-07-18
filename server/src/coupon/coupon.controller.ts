@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
 
 import { CouponService } from "./coupon.service";
 import { AdminAuthGuard } from "../auth/guards/adminAuth.guard";
@@ -8,6 +18,12 @@ import { PaginationDto } from "../shared/pagination.dto";
 @Controller("coupon")
 export class CouponController {
   constructor(private readonly couponService: CouponService) {}
+
+  @Get("/:id")
+  @UseGuards(AdminAuthGuard)
+  async findOne(@Param("id") id: string) {
+    return this.couponService.findOne(id);
+  }
 
   @Get()
   @UseGuards(AdminAuthGuard)
