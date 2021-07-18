@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import Link from "next/link";
+import { faTag } from "@fortawesome/free-solid-svg-icons";
 
 import getCartItems from "../../queries/getCartItems";
 import CartItem from "../../components/ui/cart/CartItem";
+import IconInput from "../../components/widgets/IconInput";
+import HOST from "../../constants/host";
 
 const CartPage: React.FC = () => {
+  const [isGettingCoupon, setIsGettingCoupon] = useState<boolean>(false);
+  const [coupon, setCoupon] = useState<Coupon | null>(null);
+
   const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
 
-  const getTotalPrice = () => {
+  const couponInputRef = useRef<HTMLInputElement>(null);
+  const couponErrMsgRef = useRef<HTMLParagraphElement>(null);
+
+  const getTotalPrice = (includeDiscount: boolean = false) => {
     let price = 0;
 
     cartItems.forEach((cartItem) => {
@@ -20,7 +29,30 @@ const CartPage: React.FC = () => {
           cartItem.amount * ((cartItem.product.price * (100 - cartItem.product.discount)) / 100);
     });
 
+    if (coupon && includeDiscount) return price * ((100 - coupon.discount) / 100);
+
     return price;
+  };
+
+  const applyCoupon = async () => {
+    setIsGettingCoupon(true);
+    couponErrMsgRef.current.innerText = "";
+
+    try {
+      const res = await fetch(`${HOST}/coupon/code?code=${couponInputRef.current.value}`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setCoupon(data);
+        couponInputRef.current.value = "";
+      } else couponErrMsgRef.current.innerText = data.message;
+
+      setIsGettingCoupon(false);
+    } catch (err) {
+      console.log(err);
+      setIsGettingCoupon(false);
+      couponErrMsgRef.current.innerText = err;
+    }
   };
 
   return (
@@ -34,9 +66,31 @@ const CartPage: React.FC = () => {
             ))}
           <div className="cart-item-container total-price-container">
             <p className="total">Total</p>
-            <p className="total-price">${getTotalPrice().toFixed(2)}</p>
+            <span>
+              <p className={coupon ? "discounted" : "total-price"}>
+                ${getTotalPrice().toFixed(2)}{" "}
+              </p>
+              {coupon && <span className="total-price">${getTotalPrice(true).toFixed(2)}</span>}
+            </span>
           </div>
         </div>
+        <div className="coupon-container">
+          <IconInput
+            name={""}
+            inputRef={couponInputRef}
+            icon={faTag}
+            placeholder={"Enter Coupon Code"}
+          />
+          <button className="coupon-btn" disabled={isGettingCoupon} onClick={applyCoupon}>
+            Apply
+          </button>
+          {coupon && (
+            <p className="coupon-active">
+              Coupon active. <span onClick={() => setCoupon(null)}>Remove coupon?</span>
+            </p>
+          )}
+        </div>
+        <p className="err-msg" ref={couponErrMsgRef} />
         <div className="buttons">
           <Link href={"/products?page=1&filter="}>
             <button className="continue-shopping-btn">Continue Shopping</button>
@@ -72,6 +126,26 @@ const CartPage: React.FC = () => {
           color: var(--primaryColor);
         }
 
+        .coupon-container {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          margin: 30px 0;
+        }
+
+        .coupon-btn {
+          margin-left: 25px;
+          padding: 5px 8px;
+          border: none;
+          border-radius: 4px;
+          background: var(--secondaryColor);
+          color: #fff;
+        }
+
+        .coupon-btn:disabled {
+          background: #d4c3a4;
+        }
+
         .buttons {
           display: flex;
           justify-content: space-between;
@@ -92,6 +166,17 @@ const CartPage: React.FC = () => {
 
         .checkout-btn {
           background: var(--primaryColor);
+        }
+
+        .coupon-active {
+          font-size: 0.75rem;
+          margin-left: 10px;
+          font-weight: initial;
+        }
+
+        .coupon-active span {
+          text-decoration: underline;
+          cursor: pointer;
         }
 
         @media screen and (max-width: 950px) {

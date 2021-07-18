@@ -23,7 +23,7 @@ export class CouponController {
   constructor(private readonly couponService: CouponService) {}
 
   @Get("/code")
-  async findOneByCode(@Body("code") code: string) {
+  async findOneByCode(@Query("code") code: string) {
     return this.couponService.findOneByCode(code);
   }
 
