@@ -14,6 +14,7 @@ import { User } from "../user/entities/user.entity";
 import { addMillisecondsToNow } from "../utils/addMillisecondsToNow";
 import { Message } from "../shared/types/Message";
 import { EmailService } from "../email/email.service";
+import { StripeService } from "../stripe/stripe.service";
 import { UserRepository } from "../user/repositories/user.repository";
 import { ResetEmailRepository } from "./repositories/resetEmail.repository";
 
@@ -24,13 +25,15 @@ export class AuthService {
     private readonly resetEmailRepository: ResetEmailRepository,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
+    private readonly stripeService: StripeService,
   ) {}
 
   async signup({ username, email, password }: SignupDto): Promise<string> {
     if (await this.userRepository.isExist(username, email)) {
       const hash = await argon2.hash(password);
 
-      const user = this.userRepository.create({ username, email, hash });
+      const { id: stripeCustomerId } = await this.stripeService.createCustomer(username, email);
+      const user = this.userRepository.create({ username, email, hash, stripeCustomerId });
 
       await this.userRepository.persistAndFlush(user);
 

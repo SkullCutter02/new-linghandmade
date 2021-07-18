@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
-import { ConfigModule } from "@nestjs/config";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -10,18 +9,19 @@ import { CategoryModule } from "./category/category.module";
 import { ProductModule } from "./product/product.module";
 import { UserModule } from "./user/user.module";
 import { CouponModule } from "./coupon/coupon.module";
+import { StripeModule } from "./stripe/stripe.module";
 import ormconfig from "./config/ormconfig";
 
 @Module({
   imports: [
     MikroOrmModule.forRoot(ormconfig),
-    ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
     EmailModule,
     CategoryModule,
     ProductModule,
     UserModule,
     CouponModule,
+    StripeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

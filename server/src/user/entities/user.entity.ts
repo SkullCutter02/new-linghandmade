@@ -19,6 +19,9 @@ export class User extends BaseEntity {
   @Property()
   hash: string;
 
+  @Property()
+  stripeCustomerId: string;
+
   @OneToMany(() => UserInCartProducts, (userInCartProducts) => userInCartProducts.user)
   userInCartProducts = new Collection<UserInCartProducts>(this);
 

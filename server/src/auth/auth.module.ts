@@ -11,18 +11,20 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { cookieOptions } from "./config/cookieOptions";
 import { EmailService } from "../email/email.service";
 import { ResetEmail } from "./entities/resetEmail.entity";
+import { StripeService } from "../stripe/stripe.service";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
     MikroOrmModule.forFeature([User, ResetEmail]),
     PassportModule,
-    EmailService,
+    ConfigModule.forRoot(),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: cookieOptions.maxAge },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, EmailService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, EmailService, StripeService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}
