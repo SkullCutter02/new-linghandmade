@@ -3,10 +3,19 @@ import * as voucherCodes from "voucher-code-generator";
 
 import { CouponRepository } from "./repositories/coupon.repository";
 import { CreateCouponDto } from "./dto/createCoupon.dto";
+import { PaginationDto } from "../shared/pagination.dto";
 
 @Injectable()
 export class CouponService {
   constructor(private readonly couponRepository: CouponRepository) {}
+
+  async find({ page, limit, filter }: PaginationDto) {
+    const [coupons, count] = await this.couponRepository.findAndCount(
+      { code: { $ilike: `%${filter}%` } },
+      { limit, offset: (page - 1) * limit },
+    );
+    return { coupons, hasMore: count > page * limit };
+  }
 
   async create({ discount }: CreateCouponDto) {
     const code = voucherCodes.generate({
