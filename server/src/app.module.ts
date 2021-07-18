@@ -10,6 +10,7 @@ import { ProductModule } from "./product/product.module";
 import { UserModule } from "./user/user.module";
 import { CouponModule } from "./coupon/coupon.module";
 import { StripeModule } from "./stripe/stripe.module";
+import { ChargeModule } from './charge/charge.module';
 import ormconfig from "./config/ormconfig";
 
 @Module({
@@ -22,6 +23,7 @@ import ormconfig from "./config/ormconfig";
     UserModule,
     CouponModule,
     StripeModule,
+    ChargeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
