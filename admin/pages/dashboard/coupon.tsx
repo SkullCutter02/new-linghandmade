@@ -5,6 +5,7 @@ import { dehydrate } from "react-query/hydration";
 import { Table, Thead, Tbody, Tr, Th, Td, Spinner } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 import getCoupons from "../../queries/getCoupons";
 import PaginationButtons from "../../components/PaginationButtons";
@@ -13,6 +14,8 @@ import DashboardHeader from "../../components/DashboardHeader";
 const CouponDashboardPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>("");
+
+  const router = useRouter();
 
   const { isLoading, data: couponsData } = useQuery<{ coupons: Coupon[]; hasMore: boolean }>(
     ["coupons", page, filter],
@@ -46,7 +49,11 @@ const CouponDashboardPage: React.FC = () => {
                   <Td>{coupon.discount}</Td>
                   <Td>{coupon.createdAt}</Td>
                   <Td>
-                    <FontAwesomeIcon icon={faPencilAlt} style={{ cursor: "pointer" }} />
+                    <FontAwesomeIcon
+                      icon={faPencilAlt}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => router.push(`/dashboard/edit/coupon/${coupon.id}`)}
+                    />
                   </Td>
                   <Td>
                     <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />
