@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { GetServerSideProps } from "next";
 import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
@@ -9,10 +9,12 @@ import getCartItems from "../../queries/getCartItems";
 import CartItem from "../../components/ui/cart/CartItem";
 import IconInput from "../../components/widgets/IconInput";
 import HOST from "../../constants/host";
+import { CouponContext } from "../../providers/CouponContextProvider";
 
 const CartPage: React.FC = () => {
   const [isGettingCoupon, setIsGettingCoupon] = useState<boolean>(false);
-  const [coupon, setCoupon] = useState<Coupon | null>(null);
+
+  const { coupon, setCoupon } = useContext(CouponContext);
 
   const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
 
