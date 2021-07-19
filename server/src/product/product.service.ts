@@ -6,12 +6,16 @@ import { Product } from "./entities/product.entity";
 import { PaginationDto } from "../shared/pagination.dto";
 import { ProductRepository } from "./repositories/product.repository";
 import { CategoryRepository } from "../category/repositories/category.repository";
+import { CouponRepository } from "../coupon/repositories/coupon.repository";
+import { CartService } from "../user/cart/cart.service";
 
 @Injectable()
 export class ProductService {
   constructor(
     private readonly productRepository: ProductRepository,
     private readonly categoryRepository: CategoryRepository,
+    private readonly couponRepository: CouponRepository,
+    private readonly cartService: CartService,
   ) {}
 
   async findFeatured(): Promise<Product[]> {
@@ -113,5 +117,21 @@ export class ProductService {
 
     await this.productRepository.removeAndFlush(product);
     return product;
+  }
+
+  async getPrice(userId: string, couponId?: string) {
+    const products = await this.cartService.getCartItems(userId);
+    const coupon = await this.couponRepository.findOne({ id: couponId });
+
+    let total = 0;
+
+    for (let i = 0; i < products.length; i++) {
+      total +=
+        products[i].amount * (products[i].product.price * ((100 - products[i].product.discount) / 100));
+    }
+
+    if (coupon) total *= (100 - coupon.discount) / 100;
+
+    return total;
   }
 }

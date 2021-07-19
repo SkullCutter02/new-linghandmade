@@ -72,4 +72,12 @@ export class CartService {
       .where({ "c.user.id": userId })
       .getResultList();
   }
+
+  async clearCart(userId: string) {
+    const cartItems = await this.getCartItems(userId);
+
+    for (let i = 0; i < cartItems.length; i++) {
+      await this.removeCartItem(userId, cartItems[i].product.id);
+    }
+  }
 }

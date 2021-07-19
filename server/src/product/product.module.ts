@@ -5,10 +5,13 @@ import { ProductController } from "./product.controller";
 import { ProductService } from "./product.service";
 import { Category } from "../category/entities/category.entity";
 import { Product } from "./entities/product.entity";
+import { Coupon } from "../coupon/entities/coupon.entity";
+import { UserModule } from "../user/user.module";
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Category, Product])],
+  imports: [MikroOrmModule.forFeature([Product, Category, Coupon]), UserModule],
   controllers: [ProductController],
   providers: [ProductService],
+  exports: [ProductService],
 })
 export class ProductModule {}
