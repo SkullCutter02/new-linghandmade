@@ -1,10 +1,12 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateChargeDto {
   @IsString()
   @IsNotEmpty()
   paymentMethodId: string;
 
-  @IsNumber()
-  amount: number;
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  couponId?: string;
 }

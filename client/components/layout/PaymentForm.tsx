@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useQuery } from "react-query";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { faUser, faMapMarkedAlt, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,6 +9,8 @@ import "yup-phone";
 
 import IconInput from "../widgets/IconInput";
 import HOST from "../../constants/host";
+import getCartItems from "../../queries/getCartItems";
+import { CouponContext } from "../../providers/CouponContextProvider";
 
 interface FormInput {
   name: string;
@@ -17,6 +20,10 @@ interface FormInput {
 
 const PaymentForm: React.FC = () => {
   const [isPaying, setIsPaying] = useState<boolean>(false);
+
+  const { coupon, setCoupon } = useContext(CouponContext);
+
+  const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
 
   const errMsgRef = useRef<HTMLParagraphElement>(null);
 
@@ -70,12 +77,14 @@ const PaymentForm: React.FC = () => {
         },
         body: JSON.stringify({
           paymentMethodId: paymentMethod.id,
-          amount: 5 * 100, // amount needs to be in cents
-        }), // TODO: change amount to product
+          productIds: cartItems.map((cartItem) => cartItem.product.id),
+          couponId: coupon?.id,
+        }),
       });
       const data = await res.json();
 
-      if (!res.ok) errMsgRef.current.innerText = data.message;
+      if (res.ok) setCoupon(null);
+      else errMsgRef.current.innerText = data.message;
 
       setIsPaying(false);
     } catch (err) {
