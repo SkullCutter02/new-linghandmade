@@ -62,7 +62,7 @@ const ProductDashboardPage: React.FC = () => {
   return (
     <>
       <DashboardHeader filter={filter} setFilter={setFilter} createPageLink={"/create/product"} />
-      <Table varian={"simple"}>
+      <Table variant={"simple"}>
         <Thead>
           <Tr>
             <Th>name</Th>
