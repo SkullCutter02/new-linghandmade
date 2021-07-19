@@ -44,12 +44,7 @@ const ProductDashboardPage: React.FC = () => {
       });
 
       if (res.ok) {
-        queryClient.setQueryData(
-          ["products", page, filter],
-          queryClient
-            .getQueryData<Product[]>(["products", page, filter])
-            .filter((product) => product.id !== productId)
-        );
+        await queryClient.prefetchQuery(["products", page, filter]);
         setIsModalOpen(false);
       }
 

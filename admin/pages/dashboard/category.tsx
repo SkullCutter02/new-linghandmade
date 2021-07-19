@@ -33,12 +33,7 @@ const CategoryDashboardPage: React.FC = () => {
       });
 
       if (res.ok) {
-        queryClient.setQueryData(
-          "categories",
-          queryClient
-            .getQueryData<Category[]>("categories")
-            .filter((category) => category.id !== categoryId)
-        );
+        await queryClient.prefetchQuery(["categories"]);
         setIsModalOpen(false);
       }
 
