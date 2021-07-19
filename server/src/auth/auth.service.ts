@@ -12,7 +12,7 @@ import { SignupDto } from "./dto/signup.dto";
 import { ResetPasswordDto } from "./dto/resetPassword.dto";
 import { User } from "../user/entities/user.entity";
 import { addMillisecondsToNow } from "../utils/addMillisecondsToNow";
-import { Message } from "../shared/types/Message";
+import { Message } from "../types/Message";
 import { EmailService } from "../email/email.service";
 import { StripeService } from "../stripe/stripe.service";
 import { UserRepository } from "../user/repositories/user.repository";

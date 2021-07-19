@@ -9,7 +9,7 @@ import { LocalAuthGuard } from "./guards/localAuth.guard";
 import { User } from "../user/entities/user.entity";
 import { JwtAuthGuard } from "./guards/jwtAuth.guard";
 import { cookieOptions } from "./config/cookieOptions";
-import { Message } from "../shared/types/Message";
+import { Message } from "../types/Message";
 import { AdminAuthGuard } from "./guards/adminAuth.guard";
 
 @Controller("auth")

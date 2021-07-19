@@ -79,6 +79,9 @@ const PaymentForm: React.FC = () => {
           paymentMethodId: paymentMethod.id,
           productIds: cartItems.map((cartItem) => cartItem.product.id),
           couponId: coupon?.id,
+          name,
+          address,
+          phoneNumber,
         }),
       });
       const data = await res.json();

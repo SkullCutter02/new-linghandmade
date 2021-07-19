@@ -120,14 +120,14 @@ export class ProductService {
   }
 
   async getPrice(userId: string, couponId?: string) {
-    const products = await this.cartService.getCartItems(userId);
+    const cartItems = await this.cartService.getCartItems(userId);
     const coupon = await this.couponRepository.findOne({ id: couponId });
 
     let total = 0;
 
-    for (let i = 0; i < products.length; i++) {
+    for (let i = 0; i < cartItems.length; i++) {
       total +=
-        products[i].amount * (products[i].product.price * ((100 - products[i].product.discount) / 100));
+        cartItems[i].amount * (cartItems[i].product.price * ((100 - cartItems[i].product.discount) / 100));
     }
 
     if (coupon) total *= (100 - coupon.discount) / 100;
