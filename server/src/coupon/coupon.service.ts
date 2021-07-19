@@ -12,7 +12,7 @@ export class CouponService {
 
   async findOneByCode(code: string) {
     return this.couponRepository.findOneOrFail(
-      { code },
+      { code, used: false },
       {
         failHandler: () => {
           throw new NotFoundException("No coupon with such code found");
