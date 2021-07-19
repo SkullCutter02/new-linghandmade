@@ -56,6 +56,7 @@ const ProductDashboardPage: React.FC = () => {
       setIsDeleteInProgress(false);
     } catch (err) {
       console.log(err);
+      setIsDeleteInProgress(false);
     }
   };
 

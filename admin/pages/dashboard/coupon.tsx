@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GetServerSideProps } from "next";
-import { QueryClient, useQuery } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
 import { Table, Thead, Tbody, Tr, Th, Td, Spinner } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,12 +10,20 @@ import { useRouter } from "next/router";
 import getCoupons from "../../queries/getCoupons";
 import PaginationButtons from "../../components/PaginationButtons";
 import DashboardHeader from "../../components/DashboardHeader";
+import ConfirmModal from "../../components/ConfirmModal";
+import HOST from "../../constants/host";
 
 const CouponDashboardPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>("");
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDeleteInProgress, setIsDeleteInProgress] = useState<boolean>(false);
+
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
   const { isLoading, data: couponsData } = useQuery<{ coupons: Coupon[]; hasMore: boolean }>(
     ["coupons", page, filter],
@@ -25,6 +33,27 @@ const CouponDashboardPage: React.FC = () => {
   useEffect(() => {
     setPage(1);
   }, [filter]);
+
+  const removeCoupon = async (couponId: string) => {
+    setIsDeleteInProgress(true);
+
+    try {
+      const res = await fetch(`${HOST}/coupon/${couponId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        await queryClient.prefetchQuery(["coupons", page, filter]);
+        setIsModalOpen(false);
+      }
+
+      setIsDeleteInProgress(false);
+    } catch (err) {
+      console.log(err);
+      setIsDeleteInProgress(false);
+    }
+  };
 
   return (
     <>
@@ -56,8 +85,20 @@ const CouponDashboardPage: React.FC = () => {
                     />
                   </Td>
                   <Td>
-                    <FontAwesomeIcon icon={faTrashAlt} style={{ cursor: "pointer" }} />
+                    <FontAwesomeIcon
+                      icon={faTrashAlt}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsModalOpen(true)}
+                    />
                   </Td>
+                  <ConfirmModal
+                    target={"Coupon"}
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                    cancelBtnRef={cancelButtonRef}
+                    actionFn={() => removeCoupon(coupon.id)}
+                    isLoading={isDeleteInProgress}
+                  />
                 </Tr>
               ))
           )}
