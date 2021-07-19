@@ -1,0 +1,3 @@
+interface CouponFormInput {
+  discount: number;
+}

@@ -25,7 +25,7 @@ const CouponDashboardPage: React.FC = () => {
 
   return (
     <>
-      <DashboardHeader filter={filter} setFilter={setFilter} />
+      <DashboardHeader filter={filter} setFilter={setFilter} createPageLink={"/create/coupon"} />
       <Table variant={"simple"}>
         <Thead>
           <Tr>
