@@ -28,7 +28,7 @@ export class CouponService {
   async find({ page, limit, filter }: PaginationDto) {
     const [coupons, count] = await this.couponRepository.findAndCount(
       { code: { $ilike: `%${filter}%` } },
-      { limit, offset: (page - 1) * limit },
+      { limit, offset: (page - 1) * limit, orderBy: { createdAt: "DESC" } },
     );
     return { coupons, hasMore: count > page * limit };
   }
