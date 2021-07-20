@@ -53,6 +53,9 @@ const DashboardLayout: React.FC = ({ children }) => {
           <Link href={"/dashboard/coupon"}>
             <Text cursor={"pointer"}>Coupon</Text>
           </Link>
+          <Link href={"/dashboard/order"}>
+            <Text cursor={"pointer"}>Order</Text>
+          </Link>
         </VStack>
         <Box width={"90%"} padding={"80px"} paddingTop={"40px"}>
           <Box width={"100%"} boxShadow={"0 0 5px 2px #cacaca"} minH={"100%"} padding={"20px"}>

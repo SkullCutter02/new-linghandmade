@@ -12,10 +12,11 @@ export class OrderService {
   constructor(private readonly orderRepository: OrderRepository, private readonly cartService: CartService) {}
 
   async find({ page, limit, filter }: PaginationDto) {
-    return this.orderRepository.find(
+    const [orders, count] = await this.orderRepository.findAndCount(
       { name: { $ilike: `%${filter}%` } },
-      { limit, offset: (page - 1) * limit },
+      { limit, offset: (page - 1) * limit, orderBy: { createdAt: "ASC" } },
     );
+    return { orders, hasMore: count > page * limit };
   }
 
   async create({ name, address, phoneNumber }: CreateOrderDto, user: User) {
