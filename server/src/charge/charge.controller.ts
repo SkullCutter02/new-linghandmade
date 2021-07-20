@@ -34,7 +34,7 @@ export class ChargeController {
     if (couponId) await this.couponService.useCoupon(couponId);
 
     await this.stripeService.charge(amount, paymentMethodId, (req.user as User).stripeCustomerId);
-    await this.orderService.create(createOrderDto, (req.user as User).id);
+    await this.orderService.create(createOrderDto, req.user as User);
     await this.cartService.clearCart((req.user as User).id);
 
     return { checkout: "Successful" };
