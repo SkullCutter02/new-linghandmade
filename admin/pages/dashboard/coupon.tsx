@@ -12,6 +12,7 @@ import PaginationButtons from "../../components/PaginationButtons";
 import DashboardHeader from "../../components/DashboardHeader";
 import ConfirmModal from "../../components/ConfirmModal";
 import HOST from "../../constants/host";
+import formatDate from "../../utils/formatDate";
 
 const CouponDashboardPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -76,7 +77,7 @@ const CouponDashboardPage: React.FC = () => {
                 <Tr key={coupon.id}>
                   <Td>{coupon.code}</Td>
                   <Td>{coupon.discount}</Td>
-                  <Td>{coupon.updatedAt}</Td>
+                  <Td>{formatDate(coupon.updatedAt)}</Td>
                   <Td>
                     <FontAwesomeIcon
                       icon={faPencilAlt}

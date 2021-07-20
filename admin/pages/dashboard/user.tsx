@@ -7,6 +7,7 @@ import { Table, Th, Tr, Thead, Tbody, Td, Spinner } from "@chakra-ui/react";
 import getUsers from "../../queries/getUsers";
 import DashboardHeader from "../../components/DashboardHeader";
 import PaginationButtons from "../../components/PaginationButtons";
+import formatDate from "../../utils/formatDate";
 
 const UserDashboardPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -40,7 +41,7 @@ const UserDashboardPage: React.FC = () => {
               <Tr key={user.id}>
                 <Td>{user.username}</Td>
                 <Td>{user.email}</Td>
-                <Td>{user.createdAt}</Td>
+                <Td>{formatDate(user.createdAt)}</Td>
               </Tr>
             ))
           )}

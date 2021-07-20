@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import HOST from "../../constants/host";
 import ConfirmModal from "../../components/ConfirmModal";
+import formatDate from "../../utils/formatDate";
 
 const CategoryDashboardPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -59,7 +60,7 @@ const CategoryDashboardPage: React.FC = () => {
             <Tr key={category.id}>
               <Td>{category.name}</Td>
               <Td>{category.id}</Td>
-              <Td>{category.createdAt}</Td>
+              <Td>{formatDate(category.createdAt)}</Td>
               <Td>
                 <FontAwesomeIcon
                   icon={faPencilAlt}
