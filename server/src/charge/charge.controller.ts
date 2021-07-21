@@ -29,13 +29,16 @@ export class ChargeController {
     @Body() { paymentMethodId, couponId }: CreateChargeDto,
     @Body() createOrderDto: CreateOrderDto,
   ) {
-    const amount = (await this.productService.getPrice((req.user as User).id, couponId)) * 100; // in cents
+    const user = req.user as User;
+
+    const amount = (await this.productService.getPrice(user.id, couponId)) * 100; // in cents
 
     if (couponId) await this.couponService.useCoupon(couponId);
 
-    await this.stripeService.charge(amount, paymentMethodId, (req.user as User).stripeCustomerId);
-    await this.orderService.create(createOrderDto, req.user as User);
-    await this.cartService.clearCart((req.user as User).id);
+    await this.stripeService.charge(amount, paymentMethodId, user.stripeCustomerId);
+    await this.orderService.create(createOrderDto, user);
+    await this.productService.reduceProductsAmount(user.id);
+    await this.cartService.clearCart(user.id);
 
     return { checkout: "Successful" };
   }

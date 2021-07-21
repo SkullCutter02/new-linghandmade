@@ -134,4 +134,12 @@ export class ProductService {
 
     return total;
   }
+
+  async reduceProductsAmount(userId: string) {
+    const cartItems = await this.cartService.getCartItems(userId);
+
+    for (let i = 0; i < cartItems.length; i++) {
+      await this.productRepository.reduceAmount(cartItems[i].product.id, cartItems[i].amount);
+    }
+  }
 }
