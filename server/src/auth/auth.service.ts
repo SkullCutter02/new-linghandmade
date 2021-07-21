@@ -65,11 +65,11 @@ export class AuthService {
       expirationDate: addMillisecondsToNow(3_600_000), // 1 hour expiration
     });
 
-    await this.resetEmailRepository.persistAndFlush(resetEmail);
-
     const url = `${process.env.FRONTEND_URL}/auth/reset-password/${token}`;
+    const html = this.emailService.compileHTML<{ url: string }>("reset-email.html", { url });
 
-    await this.emailService.sendResetEmail(user.email, url);
+    await this.emailService.send("Reset password email for Ling Handmade", user.email, html);
+    await this.resetEmailRepository.persistAndFlush(resetEmail);
 
     return { message: "Email sent" };
   }

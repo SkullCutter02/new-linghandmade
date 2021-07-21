@@ -1,10 +1,11 @@
 import { createTransport } from "nodemailer";
 import nodemailerSendgrid from "nodemailer-sendgrid";
+import { htmlToText } from "nodemailer-html-to-text";
 
-export const getTransporter = () => {
+export const getTransporter = (apiKey: string) => {
   return createTransport(
     nodemailerSendgrid({
-      apiKey: process.env.SENDGRID_API_KEY,
+      apiKey,
     }),
-  );
+  ).use("compile", htmlToText());
 };

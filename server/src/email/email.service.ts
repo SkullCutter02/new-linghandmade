@@ -1,21 +1,37 @@
 import { Injectable } from "@nestjs/common";
 import { SendMailOptions } from "nodemailer";
+import juice from "juice";
+import * as handlebars from "handlebars";
+import * as fs from "fs";
+import * as path from "path";
 
 import { getTransporter } from "./config/transporter";
+import Mail from "nodemailer/lib/mailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 @Injectable()
 export class EmailService {
-  async sendResetEmail(email: string, url: string) {
+  transporter: Mail<SMTPTransport.SentMessageInfo>;
+
+  constructor() {
+    this.transporter = getTransporter(process.env.SENDGRID_API_KEY);
+  }
+
+  compileHTML<T = {}>(file: string, variables: T) {
+    const source = fs.readFileSync(path.join(__dirname, "templates", file), "utf-8").toString();
+    const template = handlebars.compile(source);
+    const html = template(variables);
+    return juice(html);
+  }
+
+  async send(subject: string, email: string, html: string) {
     const mailOptions: SendMailOptions = {
       from: "lhmsoap2018@gmail.com",
       to: email,
-      subject: "Reset password for ling-handmade.com",
-      text: url,
-      html: `<a href="${url}">${url}</a>`,
+      subject,
+      html,
     };
 
-    const transporter = await getTransporter();
-
-    return await transporter.sendMail(mailOptions);
+    return this.transporter.sendMail(mailOptions);
   }
 }
