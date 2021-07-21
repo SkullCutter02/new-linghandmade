@@ -3,12 +3,13 @@ import { ChargeController } from "./charge.controller";
 import { StripeService } from "../stripe/stripe.service";
 import { ProductModule } from "../product/product.module";
 import { CouponModule } from "../coupon/coupon.module";
+import { EmailModule } from "../email/email.module";
 import { UserModule } from "../user/user.module";
 import { OrderModule } from "../order/order.module";
-import { ChargeService } from './charge.service';
+import { ChargeService } from "./charge.service";
 
 @Module({
-  imports: [ProductModule, CouponModule, UserModule, OrderModule],
+  imports: [ProductModule, CouponModule, UserModule, OrderModule, EmailModule],
   controllers: [ChargeController],
   providers: [StripeService, ChargeService],
 })

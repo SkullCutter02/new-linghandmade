@@ -1,0 +1,21 @@
+<p>
+  Hi {{name}}! Thank you for your purchase at Ling Handmade! This is a receipt that contains a record of your
+  purchase.
+</p>
+
+<div>
+  {{#each orderItems}}
+  <p>{{product.name}} x{{amount}} - ${{price}}</p>
+  {{/each}}
+</div>
+
+<p>Total: ${{price}}</p>
+
+<span>
+  {{#if couponDiscount}}
+  <p>
+    You've used a coupon that gives you a {{couponDiscount}}% discount. The original price was
+    {{originalPrice}}
+  </p>
+  {{/if}}
+</span>

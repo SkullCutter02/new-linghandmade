@@ -80,4 +80,13 @@ export class CartService {
       await this.removeCartItem(userId, cartItems[i].product.id);
     }
   }
+
+  toOrderItems(cartItems: UserInCartProducts[]) {
+    return cartItems.map((cartItem) => {
+      return {
+        ...cartItem,
+        price: cartItem.product.price * ((100 - cartItem.product.discount) / 100) * cartItem.amount,
+      };
+    });
+  }
 }
