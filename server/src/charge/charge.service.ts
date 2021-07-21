@@ -5,6 +5,7 @@ import { ProductService } from "../product/product.service";
 import { CouponService } from "../coupon/coupon.service";
 import { CartService } from "../user/cart/cart.service";
 import { OrderService } from "../order/order.service";
+import { EmailService } from "../email/email.service";
 import { User } from "../user/entities/user.entity";
 import { CreateChargeDto } from "./dto/createCharge.dto";
 import { CreateOrderDto } from "../order/dto/createOrder.dto";
@@ -17,6 +18,7 @@ export class ChargeService {
     private readonly couponService: CouponService,
     private readonly cartService: CartService,
     private readonly orderService: OrderService,
+    private readonly emailService: EmailService,
   ) {}
 
   async createCharge(
@@ -24,14 +26,32 @@ export class ChargeService {
     { couponId, paymentMethodId }: CreateChargeDto,
     createOrderDto: CreateOrderDto,
   ) {
-    const amount = (await this.productService.getPrice(user.id, couponId)) * 100; // in cents
+    const amount = Math.round((await this.productService.getPrice(user.id, couponId)) * 100); // in cents
+    const cartItems = Array.from(await this.cartService.getCartItems(user.id));
 
-    if (couponId) await this.couponService.useCoupon(couponId);
+    const coupon = couponId && (await this.couponService.useCoupon(couponId));
 
     await this.stripeService.charge(amount, paymentMethodId, user.stripeCustomerId);
     await this.orderService.create(createOrderDto, user);
     await this.productService.reduceProductsAmount(user.id);
     await this.cartService.clearCart(user.id);
+
+    await this.emailService.send(
+      "Your Ling Handmade Receipt",
+      user.email,
+      this.emailService.compileHTML("receipt.html", {
+        name: createOrderDto.name,
+        orderItems: this.cartService.toOrderItems(cartItems),
+        price: (amount / 100).toString(),
+        couponDiscount: coupon?.discount,
+        originalPrice: amount / 100 / ((100 - coupon?.discount) / 100),
+      }),
+    );
+    // await this.emailService.send(
+    //   "A new customer has ordered some items",
+    //   "lhmsoap2018@gmail.com",
+    //   this.emailService.compileHTML("order.html", {}),
+    // );
 
     return { checkout: "Successful" };
   }
