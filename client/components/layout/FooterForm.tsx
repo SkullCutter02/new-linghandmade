@@ -18,7 +18,7 @@ const FooterForm: React.FC = () => {
           flex-direction: column;
           justify-content: space-between;
           position: absolute;
-          top: 110px;
+          top: 100px;
           right: 15%;
           box-shadow: 0 0 20px 2px #c4c4c4;
           width: 33%;
@@ -74,9 +74,10 @@ const FooterForm: React.FC = () => {
         @media screen and (max-width: 690px) {
           form {
             right: 50%;
-            width: 75%;
+            width: 80%;
+            padding: 50px 40px;
             transform: translate(50%, 0);
-            top: 470px;
+            top: 450px;
           }
         }
       `}</style>

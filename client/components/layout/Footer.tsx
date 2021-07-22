@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
 
         .upper,
         .lower {
-          padding: 110px 10% 50px 10%;
+          padding: 80px 10% 50px 10%;
         }
 
         p,
@@ -84,7 +84,7 @@ const Footer: React.FC = () => {
           color: #000;
           text-transform: uppercase;
           letter-spacing: 1.3px;
-          margin-top: 70px;
+          margin-top: 40px;
         }
 
         .contact-info {
@@ -110,6 +110,10 @@ const Footer: React.FC = () => {
 
         .lower * {
           color: #fff;
+        }
+
+        .lower h2 {
+          margin-top: 140px;
         }
 
         .lower-text-info {
@@ -144,7 +148,7 @@ const Footer: React.FC = () => {
           }
 
           .lower {
-            padding-top: 270px;
+            padding-top: 200px;
           }
         }
       `}</style>
