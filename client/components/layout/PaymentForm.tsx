@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { faUser, faMapMarkedAlt, faPhoneAlt } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import "yup-phone";
@@ -10,7 +11,8 @@ import "yup-phone";
 import IconInput from "../widgets/IconInput";
 import HOST from "../../constants/host";
 import getCartItems from "../../queries/getCartItems";
-import { CouponContext } from "../../providers/CouponContextProvider";
+import { CouponContext } from "../../context/CouponContextProvider";
+import Spinner from "../widgets/Spinner";
 
 interface FormInput {
   name: string;
@@ -26,6 +28,7 @@ const PaymentForm: React.FC = () => {
   const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
 
   const errMsgRef = useRef<HTMLParagraphElement>(null);
+  const router = useRouter();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -86,8 +89,10 @@ const PaymentForm: React.FC = () => {
       });
       const data = await res.json();
 
-      if (res.ok) setCoupon(null);
-      else errMsgRef.current.innerText = data.message;
+      if (res.ok) {
+        setCoupon(null);
+        await router.push("/cart/checkout/success");
+      } else errMsgRef.current.innerText = data.message;
 
       setIsPaying(false);
     } catch (err) {
@@ -128,7 +133,7 @@ const PaymentForm: React.FC = () => {
         />
         <CardElement id="card-element" options={{ hidePostalCode: true }} />
         <button type="submit" className="pay-btn" disabled={isPaying}>
-          Pay
+          {isPaying ? <Spinner size={10} /> : "Pay"}
         </button>
         <p className="err-msg" ref={errMsgRef} />
       </form>
@@ -140,13 +145,15 @@ const PaymentForm: React.FC = () => {
         }
 
         .pay-btn {
-          margin: 30px auto;
+          margin: 40px auto;
           display: block;
           border: none;
-          padding: 5px 15px;
-          background: #5736f1;
+          width: 40%;
+          height: 30px;
+          background: var(--primaryColor);
+          border-radius: 50px;
           color: #fff;
-          border-radius: 10px;
+          position: relative;
         }
 
         @media screen and (max-width: 700px) {

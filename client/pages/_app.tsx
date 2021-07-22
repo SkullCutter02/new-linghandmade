@@ -7,7 +7,7 @@ import { Hydrate } from "react-query/hydration";
 import { ToastContainer } from "react-toastify";
 
 import Navbar from "../components/layout/Navbar";
-import CouponContextProvider from "../providers/CouponContextProvider";
+import CouponContextProvider from "../context/CouponContextProvider";
 
 import "../styles/global.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";

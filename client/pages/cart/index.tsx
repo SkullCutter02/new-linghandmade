@@ -9,7 +9,7 @@ import getCartItems from "../../queries/getCartItems";
 import CartItem from "../../components/ui/cart/CartItem";
 import IconInput from "../../components/widgets/IconInput";
 import HOST from "../../constants/host";
-import { CouponContext } from "../../providers/CouponContextProvider";
+import { CouponContext } from "../../context/CouponContextProvider";
 
 const CartPage: React.FC = () => {
   const [isGettingCoupon, setIsGettingCoupon] = useState<boolean>(false);
