@@ -7,6 +7,8 @@ import { Hydrate } from "react-query/hydration";
 import { ToastContainer } from "react-toastify";
 
 import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
+
 import CouponContextProvider from "../context/CouponContextProvider";
 
 import "../styles/global.css";
@@ -39,12 +41,21 @@ export default function App(props: AppProps) {
               />
             </Head>
             <ToastContainer />
-            <Navbar />
-            <Component {...pageProps} />
+            <div className="content">
+              <Navbar />
+              <Component {...pageProps} />
+            </div>
+            <Footer />
           </CouponContextProvider>
           <ReactQueryDevtools />
         </Hydrate>
       </QueryClientProvider>
+
+      <style jsx>{`
+        .content {
+          min-height: 100vh;
+        }
+      `}</style>
     </>
   );
 }

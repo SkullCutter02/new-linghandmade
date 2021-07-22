@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
@@ -21,15 +22,15 @@
     "yup": "^0.32.9",
     "yup-phone": "^1.2.19"
   },
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
-  },
   "devDependencies": {
     "@types/react": "^17.0.14",
     "@types/react-modal": "^3.12.1",
     "@types/react-select": "^4.0.17",
     "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   }
 }
