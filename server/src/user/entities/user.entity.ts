@@ -5,6 +5,7 @@ import { BaseEntity } from "../../shared/base.entity";
 import { usernameRegex } from "../../shared/regexes";
 import { UserRepository } from "../repositories/user.repository";
 import { UserInCartProducts } from "./userInCartProducts.entity";
+import { Order } from "../../order/entities/order.entity";
 
 @Entity({ tableName: "users", customRepository: () => UserRepository })
 export class User extends BaseEntity {
@@ -24,6 +25,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => UserInCartProducts, (userInCartProducts) => userInCartProducts.user)
   userInCartProducts = new Collection<UserInCartProducts>(this);
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders = new Collection<Order>(this);
 
   [EntityRepositoryType]?: UserRepository;
 

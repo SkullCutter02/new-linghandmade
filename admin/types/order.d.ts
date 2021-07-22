@@ -4,4 +4,5 @@ interface Order extends Base {
   phoneNumber: string;
   email: string;
   orderItems: string[];
+  user: User;
 }

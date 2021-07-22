@@ -30,6 +30,7 @@ export class OrderService {
       orderItems: cartItems
         .toArray()
         .map((cartItem: UserInCartProducts) => `${cartItem.product.name} x${cartItem.amount}`),
+      user,
     });
 
     await this.orderRepository.persistAndFlush(order);
