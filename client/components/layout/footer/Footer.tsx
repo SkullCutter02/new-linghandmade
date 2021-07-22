@@ -58,6 +58,7 @@ const Footer: React.FC = () => {
         footer {
           border-top: 1px solid var(--secondaryColor);
           position: relative;
+          margin-top: 100px;
         }
 
         .upper,

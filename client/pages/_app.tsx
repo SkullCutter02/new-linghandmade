@@ -6,8 +6,8 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { Hydrate } from "react-query/hydration";
 import { ToastContainer } from "react-toastify";
 
-import Navbar from "../components/layout/Navbar";
-import Footer from "../components/layout/Footer";
+import Navbar from "../components/layout/nav/Navbar";
+import Footer from "../components/layout/footer/Footer";
 
 import CouponContextProvider from "../context/CouponContextProvider";
 

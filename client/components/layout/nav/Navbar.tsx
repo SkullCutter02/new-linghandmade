@@ -7,7 +7,7 @@ import { faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 import MobileNavbar from "./MobileNavbar";
 import NavbarTabs from "./NavbarTabs";
-import getMe from "../../queries/getMe";
+import getMe from "../../../queries/getMe";
 
 const Navbar: React.FC = () => {
   const hamburgerRevealWidth = 650;
