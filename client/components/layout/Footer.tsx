@@ -72,7 +72,7 @@ const Footer: React.FC = () => {
           position: absolute;
           top: 110px;
           right: 15%;
-          box-shadow: 0 0 20px 2px #e2e2e2;
+          box-shadow: 0 0 20px 2px #c4c4c4;
           width: 33%;
           padding: 60px 50px;
           height: 560px;
@@ -90,6 +90,10 @@ const Footer: React.FC = () => {
           resize: none;
           padding: 10px;
           font-size: 0.8rem;
+        }
+
+        form input:invalid {
+          border: 1px solid red;
         }
 
         form textarea {
@@ -181,6 +185,37 @@ const Footer: React.FC = () => {
           font-weight: 600;
           text-transform: uppercase;
           cursor: pointer;
+          text-decoration: underline;
+        }
+
+        @media screen and (max-width: 900px) {
+          form {
+            width: 40%;
+            right: 5%;
+          }
+        }
+
+        @media screen and (max-width: 690px) {
+          .upper,
+          .lower {
+            width: 100%;
+          }
+
+          .upper {
+            padding-top: 30px;
+            padding-bottom: 400px;
+          }
+
+          .lower {
+            padding-top: 270px;
+          }
+
+          form {
+            right: 50%;
+            width: 75%;
+            transform: translate(50%, 0);
+            top: 470px;
+          }
         }
       `}</style>
     </>
