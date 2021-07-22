@@ -8,11 +8,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import "yup-phone";
 
-import IconInput from "../widgets/IconInput";
-import HOST from "../../constants/host";
-import getCartItems from "../../queries/getCartItems";
-import { CouponContext } from "../../context/CouponContextProvider";
-import Spinner from "../widgets/Spinner";
+import IconInput from "../../widgets/IconInput";
+import HOST from "../../../constants/host";
+import getCartItems from "../../../queries/getCartItems";
+import { CouponContext } from "../../../context/CouponContextProvider";
+import Spinner from "../../widgets/Spinner";
 
 interface FormInput {
   name: string;

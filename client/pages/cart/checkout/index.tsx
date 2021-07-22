@@ -5,7 +5,7 @@ import { GetServerSideProps } from "next";
 import { QueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
 
-import PaymentForm from "../../../components/layout/PaymentForm";
+import PaymentForm from "../../../components/ui/cart/PaymentForm";
 import getCartItems from "../../../queries/getCartItems";
 
 const CheckoutPage: React.FC = () => {
