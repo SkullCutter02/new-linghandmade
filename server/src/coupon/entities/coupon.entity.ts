@@ -14,5 +14,8 @@ export class Coupon extends BaseEntity {
   @Property({ default: false })
   used: boolean = false;
 
+  @Property({ nullable: true })
+  remarks?: string;
+
   [EntityRepositoryType]?: CouponRepository;
 }

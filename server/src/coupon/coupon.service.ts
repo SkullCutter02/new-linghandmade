@@ -33,13 +33,13 @@ export class CouponService {
     return { coupons, hasMore: count > page * limit };
   }
 
-  async create({ discount }: CreateCouponDto) {
+  async create({ discount, remarks }: CreateCouponDto) {
     const code = voucherCodes.generate({
       length: 8,
       count: 1,
     })[0];
 
-    const coupon = this.couponRepository.create({ code, discount });
+    const coupon = this.couponRepository.create({ code, discount, remarks });
 
     await this.couponRepository.persistAndFlush(coupon);
     return coupon;
