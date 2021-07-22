@@ -23,7 +23,7 @@ const CreateCouponPage: React.FC = () => {
     resolver: couponYupResolver,
   });
 
-  const createCoupon = async ({ discount }: CouponFormInput) => {
+  const createCoupon = async ({ discount, remarks }: CouponFormInput) => {
     setIsLoading(true);
     errMsgRef.current.innerText = "";
 
@@ -34,7 +34,7 @@ const CreateCouponPage: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ discount }),
+        body: JSON.stringify({ discount, remarks }),
       });
       const data = await res.json();
 

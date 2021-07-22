@@ -65,6 +65,7 @@ const CouponDashboardPage: React.FC = () => {
             <Th>code</Th>
             <Th>discount</Th>
             <Th>updated at</Th>
+            <Th>remarks</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -78,6 +79,7 @@ const CouponDashboardPage: React.FC = () => {
                   <Td>{coupon.code}</Td>
                   <Td>{coupon.discount}</Td>
                   <Td>{formatDate(coupon.updatedAt)}</Td>
+                  <Td>{coupon?.remarks}</Td>
                   <Td>
                     <FontAwesomeIcon
                       icon={faPencilAlt}

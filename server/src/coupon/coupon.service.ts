@@ -45,10 +45,10 @@ export class CouponService {
     return coupon;
   }
 
-  async update(couponId: string, { discount }: UpdateCouponDto) {
+  async update(couponId: string, { discount, remarks }: UpdateCouponDto) {
     const coupon = await this.couponRepository.findOneOrFail({ id: couponId });
 
-    coupon.assign({ discount });
+    coupon.assign({ discount, remarks });
 
     await this.couponRepository.persistAndFlush(coupon);
     return coupon;

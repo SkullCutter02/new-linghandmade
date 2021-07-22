@@ -32,10 +32,11 @@ const EditCouponPage: React.FC = () => {
     resolver: couponYupResolver,
     defaultValues: {
       discount: coupon.discount,
+      remarks: coupon?.remarks,
     },
   });
 
-  const editCoupon = async ({ discount }: CouponFormInput) => {
+  const editCoupon = async ({ discount, remarks }: CouponFormInput) => {
     setIsLoading(true);
     errMsgRef.current.innerText = "";
 
@@ -46,7 +47,7 @@ const EditCouponPage: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ discount }),
+        body: JSON.stringify({ discount, remarks }),
       });
       const data = await res.json();
 
