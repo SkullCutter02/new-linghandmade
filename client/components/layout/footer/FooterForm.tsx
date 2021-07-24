@@ -1,15 +1,102 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import ReactTooltip from "react-tooltip";
+
+import Spinner from "../../widgets/Spinner";
+import HOST from "../../../constants/host";
+
+interface FormInput {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 const FooterForm: React.FC = () => {
+  const [isEmailSending, setIsEmailSending] = useState<boolean>(false);
+
+  const errMsgRef = useRef<HTMLParagraphElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormInput>({
+    mode: "onChange",
+    resolver: yupResolver(
+      yup.object().shape({
+        name: yup.string().required(),
+        email: yup.string().email().required(),
+        subject: yup.string().required(),
+        message: yup.string().min(80).required(),
+      })
+    ),
+  });
+
+  const sendEmail = async (input: FormInput) => {
+    setIsEmailSending(true);
+    errMsgRef.current.innerText = "";
+
+    try {
+      const res = await fetch(`${HOST}/email/contact-us`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        reset();
+      } else {
+        errMsgRef.current.innerText = data.message;
+      }
+
+      setIsEmailSending(false);
+    } catch (err) {
+      console.log(err);
+      setIsEmailSending(false);
+      errMsgRef.current.innerText = err;
+    }
+  };
+
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit(sendEmail)} noValidate>
         <h3>Send Us An Email</h3>
-        <input type="text" placeholder={"Your Name..."} />
-        <input type="text" placeholder={"Your Email..."} />
-        <input type="text" placeholder={"Subject..."} />
-        <textarea placeholder={"Message..."} />
-        <button type={"submit"}>SEND</button>
+        <input
+          className={!!errors.name?.message && "invalid"}
+          type="text"
+          placeholder={"Your Name..."}
+          {...register("name")}
+        />
+        <input
+          className={!!errors.email?.message && "invalid"}
+          type="text"
+          placeholder={"Your Email..."}
+          {...register("email")}
+        />
+        <input
+          className={!!errors.subject?.message && "invalid"}
+          type="text"
+          placeholder={"Subject..."}
+          {...register("subject")}
+        />
+        <textarea
+          className={!!errors.message?.message && "invalid"}
+          data-tip={errors.message?.message}
+          placeholder={"Message..."}
+          {...register("message")}
+        />
+        <ReactTooltip />
+        <button type={"submit"} disabled={isEmailSending}>
+          {isEmailSending ? <Spinner size={10} /> : "SEND"}
+        </button>
+        <p className="err-msg" ref={errMsgRef} />
       </form>
 
       <style jsx>{`
@@ -40,8 +127,8 @@ const FooterForm: React.FC = () => {
           font-size: 0.8rem;
         }
 
-        form input:invalid {
-          border: 1px solid red;
+        .invalid {
+          border: 1px solid red !important;
         }
 
         form textarea {
@@ -57,6 +144,7 @@ const FooterForm: React.FC = () => {
           color: #fff;
           font-size: 1rem;
           transition: all 0.4s;
+          position: relative;
         }
 
         form button:hover:not(:disabled) {

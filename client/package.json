@@ -19,6 +19,7 @@
     "react-responsive-carousel": "^3.2.19",
     "react-select": "^4.3.1",
     "react-toastify": "^7.0.4",
+    "react-tooltip": "^4.2.21",
     "yup": "^0.32.9",
     "yup-phone": "^1.2.19"
   },
