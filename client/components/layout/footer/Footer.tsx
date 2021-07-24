@@ -151,6 +151,15 @@ const Footer: React.FC = () => {
           .lower {
             padding-top: 200px;
           }
+
+          .lower h2 {
+            text-align: center;
+          }
+
+          .lower-text-info {
+            width: 100%;
+            text-align: justify;
+          }
         }
       `}</style>
     </>
