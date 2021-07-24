@@ -24,10 +24,10 @@ export class EmailService {
     return juice(html);
   }
 
-  async send(subject: string, email: string, html: string) {
+  async send(subject: string, to: string, html: string, from: string = "lhmsoap2018@gmail.com") {
     const mailOptions: SendMailOptions = {
-      from: "lhmsoap2018@gmail.com",
-      to: email,
+      from,
+      to,
       subject,
       html,
     };
