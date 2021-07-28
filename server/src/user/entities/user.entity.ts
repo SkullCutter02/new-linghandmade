@@ -1,4 +1,4 @@
-import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
+import { Collection, Entity, Unique, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
 import { IsEmail, Matches } from "class-validator";
 
 import { BaseEntity } from "../../shared/base.entity";
@@ -11,10 +11,12 @@ import { Order } from "../../order/entities/order.entity";
 export class User extends BaseEntity {
   @Property()
   @Matches(usernameRegex)
+  @Unique()
   username: string;
 
   @Property()
   @IsEmail()
+  @Unique()
   email: string;
 
   @Property()
