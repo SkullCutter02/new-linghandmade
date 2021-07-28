@@ -11,7 +11,7 @@ export class UserRepository extends EntityRepository<User> {
     if (isEmail) throw new ConflictException("Email already exists");
     if (isUsername) throw new ConflictException("Username already exists");
 
-    return true;
+    return false;
   }
 
   async findByCredentials(credentials: string): Promise<User> {

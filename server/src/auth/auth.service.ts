@@ -31,7 +31,9 @@ export class AuthService {
   ) {}
 
   async signup({ username, email, password }: SignupDto): Promise<string> {
-    if (await this.userRepository.isExist(username, email)) {
+    const isExist = await this.userRepository.isExist(username, email);
+
+    if (!isExist) {
       const hash = await argon2.hash(password);
 
       const user = await this.userService.create(username, email, hash);
