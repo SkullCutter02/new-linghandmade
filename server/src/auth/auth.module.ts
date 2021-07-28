@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
+import { ConfigModule } from "@nestjs/config";
 
 import { User } from "../user/entities/user.entity";
 import { AuthController } from "./auth.controller";
@@ -11,8 +12,8 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { cookieOptions } from "./config/cookieOptions";
 import { EmailService } from "../email/email.service";
 import { ResetEmail } from "./entities/resetEmail.entity";
-import { StripeService } from "../stripe/stripe.service";
-import { ConfigModule } from "@nestjs/config";
+import { StripeModule } from "../stripe/stripe.module";
+import { UserModule } from "../user/user.module";
 
 @Module({
   imports: [
@@ -23,8 +24,10 @@ import { ConfigModule } from "@nestjs/config";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: cookieOptions.maxAge },
     }),
+    StripeModule,
+    UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, EmailService, StripeService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, EmailService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

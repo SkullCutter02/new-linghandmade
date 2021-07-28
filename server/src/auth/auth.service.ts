@@ -17,6 +17,7 @@ import { EmailService } from "../email/email.service";
 import { StripeService } from "../stripe/stripe.service";
 import { UserRepository } from "../user/repositories/user.repository";
 import { ResetEmailRepository } from "./repositories/resetEmail.repository";
+import { UserService } from "../user/user.service";
 
 @Injectable()
 export class AuthService {
@@ -26,16 +27,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
     private readonly stripeService: StripeService,
+    private readonly userService: UserService,
   ) {}
 
   async signup({ username, email, password }: SignupDto): Promise<string> {
     if (await this.userRepository.isExist(username, email)) {
       const hash = await argon2.hash(password);
 
-      const { id: stripeCustomerId } = await this.stripeService.createCustomer(username, email);
-      const user = this.userRepository.create({ username, email, hash, stripeCustomerId });
-
-      await this.userRepository.persistAndFlush(user);
+      const user = await this.userService.create(username, email, hash);
 
       return this.jwtService.sign({ id: user.id });
     }
