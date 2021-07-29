@@ -120,6 +120,7 @@ const CartPage: React.FC = () => {
 
         .total-price-container {
           height: 30px !important;
+          min-height: 0 !important;
           font-size: 18px;
           font-weight: 500;
         }

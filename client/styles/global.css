@@ -78,7 +78,7 @@ ul {
   justify-items: center;
   align-items: center;
   margin-bottom: 30px;
-  height: 170px;
+  min-height: 170px;
   padding-bottom: 30px;
   border-bottom: 1px solid #e5e5e5;
 }

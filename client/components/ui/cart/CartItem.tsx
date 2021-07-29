@@ -126,6 +126,12 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
           style={{ cursor: "pointer", color: "#c4c4c4" }}
           onClick={removeCartItem}
         />
+        {amount > product.amtLeft && (
+          <p className="err-msg">
+            Warning: This product only has {product.amtLeft} items left. Please adjust the amount of
+            items you want for this product
+          </p>
+        )}
       </div>
 
       <style jsx>{`
@@ -156,6 +162,14 @@ const CartItem: React.FC<Props> = ({ cartItem: { product, amount } }) => {
         .amount * {
           font-weight: 300;
           color: #919191;
+        }
+
+        .err-msg {
+          grid-row-start: 2;
+          grid-column-start: 1;
+          grid-column-end: 6;
+          margin-top: 30px;
+          width: 100%;
         }
       `}</style>
     </>
