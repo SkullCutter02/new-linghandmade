@@ -113,3 +113,16 @@ ul {
   font-size: 0.8rem;
   font-weight: 300;
 }
+
+.policy {
+  margin: 50px auto;
+  width: 75%;
+  line-height: 1.5em;
+}
+
+.policy pre {
+  overflow: scroll;
+  background: #dddddd;
+  padding: 20px;
+  margin: 20px 0;
+}
