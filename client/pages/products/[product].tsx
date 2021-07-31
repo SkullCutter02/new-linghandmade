@@ -6,7 +6,7 @@ import { dehydrate } from "react-query/hydration";
 import { Carousel } from "react-responsive-carousel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
-import Zoom from "react-medium-image-zoom";
+import ImageZoom from "react-medium-image-zoom";
 
 import getProduct from "../../queries/getProduct";
 import getCartItems from "../../queries/getCartItems";
@@ -66,9 +66,13 @@ const ProductPage: React.FC = () => {
             )}
           >
             {[product.mainImgUrl].concat(product.carouselImgUrls).map((image, index) => (
-              <Zoom wrapStyle={{ height: "100%" }} key={index + Date.now()}>
-                <img src={image} alt={product.name} style={{ height: "90%", objectFit: "cover" }} />
-              </Zoom>
+              <ImageZoom key={index + Date.now()}>
+                <img
+                  src={image}
+                  alt={product.name}
+                  style={{ height: "100%", objectFit: "cover" }}
+                />
+              </ImageZoom>
             ))}
           </Carousel>
         </div>
