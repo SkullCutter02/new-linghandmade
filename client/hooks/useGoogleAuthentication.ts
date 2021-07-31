@@ -6,7 +6,10 @@ import { useRouter } from "next/router";
 import HOST from "../constants/host";
 import getMe from "../queries/getMe";
 
-export default function useGoogleAuthentication(errMsgRef: MutableRefObject<HTMLParagraphElement>) {
+export default function useGoogleAuthentication(
+  errMsgRef: MutableRefObject<HTMLParagraphElement>,
+  redirectUrn: string
+) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -29,7 +32,7 @@ export default function useGoogleAuthentication(errMsgRef: MutableRefObject<HTML
 
         if (res.ok) {
           await queryClient.prefetchQuery("user", getMe);
-          await router.push("/");
+          await router.push(redirectUrn);
         } else if (!res.ok) {
           errMsgRef.current.innerText = data.message;
         }

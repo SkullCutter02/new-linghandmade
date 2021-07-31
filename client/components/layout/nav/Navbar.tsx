@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { HamburgerButton } from "react-hamburger-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +9,8 @@ import { faUser, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import MobileNavbar from "./MobileNavbar";
 import NavbarTabs from "./NavbarTabs";
 import getMe from "../../../queries/getMe";
+import getRedirectQuery from "../../../utils/getRedirectQuery";
+import buildRedirectUrn from "../../../utils/buildRedirectUrn";
 
 const Navbar: React.FC = () => {
   const hamburgerRevealWidth = 650;
@@ -15,6 +18,8 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const { isLoading, isError, data: user } = useQuery<User>("user", getMe);
+
+  const router = useRouter();
 
   return (
     <>
@@ -41,10 +46,22 @@ const Navbar: React.FC = () => {
         <div className="right-content">
           {isLoading || isError || !user?.username ? (
             <>
-              <Link href={"/auth/login"}>
+              <Link
+                href={`/auth/login${getRedirectQuery(
+                  router.pathname,
+                  router.asPath,
+                  buildRedirectUrn(router.query)
+                )}`}
+              >
                 <button className="login-btn">Log in</button>
               </Link>
-              <Link href={"/auth/signup"}>
+              <Link
+                href={`/auth/signup${getRedirectQuery(
+                  router.pathname,
+                  router.asPath,
+                  buildRedirectUrn(router.query)
+                )}`}
+              >
                 <button className="signup-btn">Sign Up</button>
               </Link>
             </>

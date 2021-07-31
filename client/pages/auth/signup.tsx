@@ -11,6 +11,7 @@ import IconInput from "../../components/widgets/IconInput";
 import HOST from "../../constants/host";
 import getMe from "../../queries/getMe";
 import passwordRegex from "../../constants/passwordRegex";
+import buildRedirectUrn from "../../utils/buildRedirectUrn";
 
 interface FormInput {
   username: string;
@@ -73,7 +74,7 @@ const SignupPage: React.FC = () => {
 
     if (res.ok) {
       await queryClient.prefetchQuery("user", getMe);
-      await router.push("/");
+      await router.push(buildRedirectUrn(router.query));
     } else {
       errMsgRef.current.innerText = data.message;
       setIsLoading(false);
@@ -89,6 +90,7 @@ const SignupPage: React.FC = () => {
         setIsPasswordShown={setIsPasswordShown}
         errMsgRef={errMsgRef}
         isLoading={isLoading}
+        redirectUrn={buildRedirectUrn(router.query)}
       >
         <IconInput
           name={"username"}

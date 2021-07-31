@@ -5,6 +5,7 @@ import GoogleLogin from "react-google-login";
 import Spinner from "../../widgets/Spinner";
 import LineInfo from "../../widgets/LineInfo";
 import useGoogleAuthentication from "../../../hooks/useGoogleAuthentication";
+import capitalise from "../../../utils/capitalise";
 
 interface Props {
   authType: "login" | "sign up" | "forgot password" | "reset password";
@@ -14,6 +15,7 @@ interface Props {
   errMsgRef: MutableRefObject<HTMLParagraphElement>;
   isLoading: boolean;
   buttonText?: string;
+  redirectUrn?: string;
 }
 
 const AuthForm: React.FC<Props> = ({
@@ -25,8 +27,9 @@ const AuthForm: React.FC<Props> = ({
   errMsgRef,
   isLoading,
   buttonText,
+  redirectUrn,
 }) => {
-  const { handleSuccess } = useGoogleAuthentication(errMsgRef);
+  const { handleSuccess } = useGoogleAuthentication(errMsgRef, redirectUrn);
 
   return (
     <>
@@ -45,7 +48,13 @@ const AuthForm: React.FC<Props> = ({
             </div>
           )}
           {(authType === "login" || authType === "sign up") && (
-            <Link href={authType === "sign up" ? "/auth/login" : "/auth/forgot-password"}>
+            <Link
+              href={
+                authType === "sign up"
+                  ? `/auth/login?redirect=${redirectUrn}`
+                  : "/auth/forgot-password"
+              }
+            >
               <p className="extra-info">
                 {authType === "sign up" ? "Already have an account? Log in" : "Forgot password?"}
               </p>
@@ -63,6 +72,7 @@ const AuthForm: React.FC<Props> = ({
                   clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID}
                   disabled={false}
                   onSuccess={handleSuccess}
+                  buttonText={`${capitalise(authType)} with Google`}
                 />
               </div>
             </>

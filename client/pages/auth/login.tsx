@@ -10,6 +10,7 @@ import AuthForm from "../../components/ui/authpage/AuthForm";
 import IconInput from "../../components/widgets/IconInput";
 import HOST from "../../constants/host";
 import getMe from "../../queries/getMe";
+import buildRedirectUrn from "../../utils/buildRedirectUrn";
 
 interface FormInput {
   credentials: string;
@@ -58,7 +59,7 @@ const LoginPage: React.FC = () => {
 
     if (res.ok) {
       await queryClient.prefetchQuery("user", getMe);
-      await router.push("/");
+      await router.push(buildRedirectUrn(router.query));
     } else {
       errMsgRef.current.innerText = data.message;
       setIsLoading(false);
@@ -74,6 +75,7 @@ const LoginPage: React.FC = () => {
         setIsPasswordShown={setIsPasswordShown}
         errMsgRef={errMsgRef}
         isLoading={isLoading}
+        redirectUrn={buildRedirectUrn(router.query)}
       >
         <IconInput
           name={"credentials"}
