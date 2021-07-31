@@ -4,6 +4,7 @@ import GoogleLogin from "react-google-login";
 
 import Spinner from "../../widgets/Spinner";
 import LineInfo from "../../widgets/LineInfo";
+import useGoogleAuthentication from "../../../hooks/useGoogleAuthentication";
 
 interface Props {
   authType: "login" | "sign up" | "forgot password" | "reset password";
@@ -25,6 +26,8 @@ const AuthForm: React.FC<Props> = ({
   isLoading,
   buttonText,
 }) => {
+  const { handleSuccess } = useGoogleAuthentication();
+
   return (
     <>
       <main>
@@ -59,6 +62,7 @@ const AuthForm: React.FC<Props> = ({
                 <GoogleLogin
                   clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID}
                   disabled={false}
+                  onSuccess={handleSuccess}
                 />
               </div>
             </>
