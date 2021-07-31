@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import ReactTooltip from "react-tooltip";
 
 import Spinner from "../../widgets/Spinner";
 import HOST from "../../../constants/host";
@@ -88,11 +87,10 @@ const FooterForm: React.FC = () => {
         />
         <textarea
           className={!!errors.message?.message && "invalid"}
-          data-tip={errors.message?.message}
           placeholder={"Message..."}
           {...register("message")}
         />
-        <ReactTooltip />
+        <p className="err-msg">{errors.message?.message}</p>
         <button type={"submit"} disabled={isEmailSending}>
           {isEmailSending ? <Spinner size={10} /> : "SEND"}
         </button>
