@@ -7,13 +7,11 @@ import { Carousel } from "react-responsive-carousel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronCircleLeft, faChevronCircleRight } from "@fortawesome/free-solid-svg-icons";
 import Zoom from "react-medium-image-zoom";
-import { toast } from "react-toastify";
 
 import getProduct from "../../queries/getProduct";
 import getCartItems from "../../queries/getCartItems";
-import getMe from "../../queries/getMe";
 import AddToCartModal from "../../components/ui/products/AddToCartModal";
-import toastOptions from "../../config/toastOptions";
+import useUser from "../../hooks/useUser";
 
 const ProductPage: React.FC = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState<boolean>(false);
@@ -25,7 +23,8 @@ const ProductPage: React.FC = () => {
     getProduct(productId as string)
   );
   const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
-  const { data: user } = useQuery("user", getMe);
+
+  const user = useUser();
 
   const carouselArrowStyle: CSSProperties = {
     position: "absolute",
@@ -104,13 +103,10 @@ const ProductPage: React.FC = () => {
             ) : (
               <button
                 className="add-cart-btn"
-                onClick={() => {
-                  if (!user) toast.error("Please login to add an item to cart!", toastOptions);
-                  else setIsCartModalOpen(true);
-                }}
-                disabled={product.amtLeft <= 0}
+                onClick={() => setIsCartModalOpen(true)}
+                disabled={product.amtLeft <= 0 || !user}
               >
-                {product.amtLeft ? "Add to Cart" : "Sold Out"}
+                {!user ? "Login to Use Cart" : product.amtLeft ? "Add to Cart" : "Sold Out"}
               </button>
             )}
             <p className="secondary-text amt-left">{product.amtLeft} left</p>
@@ -161,7 +157,7 @@ const ProductPage: React.FC = () => {
 
         .add-cart-btn {
           width: 100%;
-          height: 30px;
+          padding: 5px 0;
           background: var(--primaryColor);
           border: none;
           border-radius: 10px;
