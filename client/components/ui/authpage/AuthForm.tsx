@@ -1,7 +1,9 @@
 import React, { Dispatch, MutableRefObject, SetStateAction } from "react";
 import Link from "next/link";
+import GoogleLogin from "react-google-login";
 
 import Spinner from "../../widgets/Spinner";
+import LineInfo from "../../widgets/LineInfo";
 
 interface Props {
   authType: "login" | "sign up" | "forgot password" | "reset password";
@@ -50,23 +52,31 @@ const AuthForm: React.FC<Props> = ({
             {isLoading ? <Spinner size={10} /> : buttonText || authType}
           </button>
           <p className="err-msg" ref={errMsgRef} />
+          {(authType === "login" || authType === "sign up") && (
+            <>
+              <LineInfo text={"or"} margin={"25px 0"} />
+              <div className="google-btn">
+                <GoogleLogin
+                  clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID}
+                  disabled={false}
+                />
+              </div>
+            </>
+          )}
         </form>
       </main>
 
       <style jsx>{`
         main {
-          position: relative;
           width: 100%;
-          height: calc(100vh - var(--navbarHeight));
-          min-height: 580px;
+          min-height: calc(100vh - var(--navbarHeight));
+          padding: 50px 0;
           background: linear-gradient(90deg, var(--primaryColor) 0%, #d23c9e 100%);
+          display: grid;
+          place-items: center;
         }
 
         form {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
           width: 28%;
           min-width: 350px;
           background: #fff;
@@ -113,6 +123,11 @@ const AuthForm: React.FC<Props> = ({
 
         .err-msg {
           margin-top: 15px;
+        }
+
+        .google-btn {
+          display: flex;
+          place-content: center;
         }
       `}</style>
     </>

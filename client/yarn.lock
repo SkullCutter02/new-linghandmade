@@ -2034,6 +2034,14 @@ react-easy-swipe@^0.0.21:
   dependencies:
     prop-types "^15.5.8"
 
+react-google-login@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-5.2.2.tgz#a20b46440c6c1610175ef75baf427118ff0e9859"
+  integrity sha512-JUngfvaSMcOuV0lFff7+SzJ2qviuNMQdqlsDJkUM145xkGPVIfqWXq9Ui+2Dr6jdJWH5KYdynz9+4CzKjI5u6g==
+  dependencies:
+    "@types/react" "*"
+    prop-types "^15.6.0"
+
 react-hamburger-button@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-hamburger-button/-/react-hamburger-button-0.0.1.tgz#37e0141a4caa19ca68a7e1eb595a5d8c0d154915"
