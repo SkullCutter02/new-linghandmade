@@ -37,6 +37,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "cookie-parser": "^1.4.5",
+    "googleapis": "^83.0.0",
     "handlebars": "^4.7.7",
     "juice": "^8.0.0",
     "jwt-decode": "^3.1.2",

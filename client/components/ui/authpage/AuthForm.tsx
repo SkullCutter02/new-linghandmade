@@ -26,7 +26,7 @@ const AuthForm: React.FC<Props> = ({
   isLoading,
   buttonText,
 }) => {
-  const { handleSuccess } = useGoogleAuthentication();
+  const { handleSuccess } = useGoogleAuthentication(errMsgRef);
 
   return (
     <>

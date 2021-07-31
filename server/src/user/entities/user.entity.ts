@@ -1,4 +1,4 @@
-import { Collection, Entity, Unique, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
+import { Collection, Entity, EntityRepositoryType, OneToMany, Property } from "@mikro-orm/core";
 import { IsEmail, Matches } from "class-validator";
 
 import { BaseEntity } from "../../shared/base.entity";
@@ -9,18 +9,19 @@ import { Order } from "../../order/entities/order.entity";
 
 @Entity({ tableName: "users", customRepository: () => UserRepository })
 export class User extends BaseEntity {
-  @Property()
+  @Property({ unique: true })
   @Matches(usernameRegex)
-  @Unique()
   username: string;
 
-  @Property()
+  @Property({ unique: true })
   @IsEmail()
-  @Unique()
   email: string;
 
-  @Property()
-  hash: string;
+  @Property({ nullable: true })
+  hash?: string;
+
+  @Property({ default: false })
+  isRegisteredWithGoogle: boolean;
 
   @Property()
   stripeCustomerId: string;

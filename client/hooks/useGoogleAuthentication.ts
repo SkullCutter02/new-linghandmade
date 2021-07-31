@@ -1,21 +1,41 @@
 import { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
+import { MutableRefObject } from "react";
+import { useQueryClient } from "react-query";
+import { useRouter } from "next/router";
 
 import HOST from "../constants/host";
+import getMe from "../queries/getMe";
 
-export default function useGoogleAuthentication() {
-  const handleSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+export default function useGoogleAuthentication(errMsgRef: MutableRefObject<HTMLParagraphElement>) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const handleSuccess = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
     if ("accessToken" in response) {
       const accessToken = response.accessToken;
 
-      fetch(`${HOST}/auth/google`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: accessToken,
-        }),
-      }).catch((err) => console.log(err));
+      try {
+        const res = await fetch(`${HOST}/auth/google`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: accessToken,
+          }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          await queryClient.prefetchQuery("user", getMe);
+          await router.push("/");
+        } else if (!res.ok) {
+          errMsgRef.current.innerText = data.message;
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 

@@ -5,6 +5,7 @@ import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { ConfigModule } from "@nestjs/config";
 
 import { User } from "../user/entities/user.entity";
+import { GoogleAuthController } from "./google/googleAuth.controller";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { LocalStrategy } from "./strategies/local.strategy";
@@ -14,6 +15,7 @@ import { EmailService } from "../email/email.service";
 import { ResetEmail } from "./entities/resetEmail.entity";
 import { StripeModule } from "../stripe/stripe.module";
 import { UserModule } from "../user/user.module";
+import { GoogleAuthService } from "./google/googleAuth.service";
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { UserModule } from "../user/user.module";
     StripeModule,
     UserModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService, EmailService, LocalStrategy, JwtStrategy],
+  controllers: [AuthController, GoogleAuthController],
+  providers: [AuthService, GoogleAuthService, EmailService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}
