@@ -1,16 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 
 import { CouponService } from "./coupon.service";
 import { AdminAuthGuard } from "../auth/guards/adminAuth.guard";
@@ -41,14 +29,12 @@ export class CouponController {
 
   @Post()
   @UseGuards(AdminAuthGuard)
-  @UsePipes(ValidationPipe)
   async create(@Body() createCouponDto: CreateCouponDto) {
     return this.couponService.create(createCouponDto);
   }
 
   @Patch("/:id")
   @UseGuards(AdminAuthGuard)
-  @UsePipes(ValidationPipe)
   async update(@Param("id") id: string, @Body() updateCouponDto: UpdateCouponDto) {
     return this.couponService.update(id, updateCouponDto);
   }

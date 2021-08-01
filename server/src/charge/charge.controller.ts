@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { Request } from "express";
 
 import { JwtAuthGuard } from "../auth/guards/jwtAuth.guard";
@@ -13,7 +13,6 @@ export class ChargeController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
   async createCharge(
     @Req() req: Request,
     @Body() createChargeDto: CreateChargeDto,

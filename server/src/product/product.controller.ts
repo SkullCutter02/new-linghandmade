@@ -1,16 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 
 import { ProductService } from "./product.service";
 import { AdminAuthGuard } from "../auth/guards/adminAuth.guard";
@@ -43,14 +31,12 @@ export class ProductController {
 
   @Post()
   @UseGuards(AdminAuthGuard)
-  @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return this.productService.create(createProductDto);
   }
 
   @Patch("/:id")
   @UseGuards(AdminAuthGuard)
-  @UsePipes(ValidationPipe)
   async update(@Param("id") id: string, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productService.update(id, updateProductDto);
   }

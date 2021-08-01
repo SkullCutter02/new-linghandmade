@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { Request, Response } from "express";
 
 import { AuthService } from "./auth.service";
@@ -17,7 +17,6 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post("/signup")
-  @UsePipes(ValidationPipe)
   async signup(
     @Body() signupDto: SignupDto,
     @Res({ passthrough: true }) res: Response,
@@ -54,13 +53,11 @@ export class AuthController {
   }
 
   @Post("/forgot-password")
-  @UsePipes(ValidationPipe)
   async forgotPassword(@Body() { email }: ForgotPasswordDto): Promise<Message> {
     return this.authService.forgotPassword(email);
   }
 
   @Post("/reset-password")
-  @UsePipes(ValidationPipe)
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto): Promise<Message> {
     return this.authService.resetPassword(resetPasswordDto);
   }
