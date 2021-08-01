@@ -40,16 +40,34 @@ const Footer: React.FC = () => {
               excepturi maxime omnis, porro quos temporibus?
             </p>
           </div>
-          <div className="links">
-            <Link href={"/"}>
-              <p>Home</p>
-            </Link>
-            <Link href={"/products?page=1&filter="}>
-              <p>Products</p>
-            </Link>
-            <Link href={"/blog"}>
-              <p>Blog</p>
-            </Link>
+          <div className="site-information">
+            <div className="links">
+              <h3>Useful Links: </h3>
+              <Link href={"/"}>
+                <p>Home</p>
+              </Link>
+              <Link href={"/products?page=1&filter="}>
+                <p>Products</p>
+              </Link>
+              <Link href={"/blog"}>
+                <p>Blog</p>
+              </Link>
+            </div>
+            <div className="links policies">
+              <h3>Our Policies: </h3>
+              <Link href={"/policies/privacy"}>
+                <p>Privacy Policy</p>
+              </Link>
+              <Link href={"/policies/terms"}>
+                <p>Terms and Conditions</p>
+              </Link>
+              <Link href={"/policies/refund"}>
+                <p>Refund Policy</p>
+              </Link>
+              <Link href={"/policies/shipping"}>
+                <p>Shipping Policy</p>
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
@@ -121,12 +139,15 @@ const Footer: React.FC = () => {
           margin-top: 20px;
         }
 
-        .links {
-          width: 100%;
+        .site-information {
           display: flex;
-          justify-content: space-between;
+          justify-content: space-around;
           margin-top: 70px;
           margin-bottom: 50px;
+        }
+
+        .links h3 {
+          margin-bottom: 10px;
         }
 
         .links p {
@@ -134,6 +155,7 @@ const Footer: React.FC = () => {
           text-transform: uppercase;
           cursor: pointer;
           text-decoration: underline;
+          margin: 5px 0;
         }
 
         @media screen and (max-width: 690px) {
