@@ -118,11 +118,22 @@ ul {
   margin: 50px auto;
   width: 75%;
   line-height: 1.5em;
+  text-align: justify;
+}
+
+@media screen and (max-width: 600px) {
+  .policy {
+    width: 85%;
+    font-size: 14px;
+  }
+}
+
+.policy > * {
+  margin-bottom: 20px;
 }
 
 .policy pre {
   overflow: scroll;
   background: #dddddd;
   padding: 20px;
-  margin: 20px 0;
 }
