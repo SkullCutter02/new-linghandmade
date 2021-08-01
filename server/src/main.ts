@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 
 import { AppModule } from "./app.module";
 
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
