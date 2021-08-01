@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
+import { ConfigModule } from "@nestjs/config";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -17,6 +18,7 @@ import ormconfig from "./config/ormconfig";
 @Module({
   imports: [
     MikroOrmModule.forRoot(ormconfig),
+    ConfigModule.forRoot(),
     AuthModule,
     EmailModule,
     CategoryModule,
