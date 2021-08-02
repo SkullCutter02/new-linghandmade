@@ -42,8 +42,8 @@ ul {
   margin-right: 30px;
 }
 
-.carousel .slide img {
-  height: 95% !important;
+.carousel .slide > div {
+  width: 100% !important;
 }
 
 .carousel .thumb {

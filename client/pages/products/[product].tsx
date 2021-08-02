@@ -50,6 +50,7 @@ const ProductPage: React.FC = () => {
             thumbWidth={150}
             transitionTime={500}
             infiniteLoop={true}
+            dynamicHeight={false}
             renderArrowPrev={(clickHandler) => (
               <FontAwesomeIcon
                 icon={faChevronCircleLeft}
@@ -70,7 +71,7 @@ const ProductPage: React.FC = () => {
                 <img
                   src={image}
                   alt={product.name}
-                  style={{ height: "100%", objectFit: "cover" }}
+                  style={{ height: "360px", width: "100%", objectFit: "cover" }}
                 />
               </ImageZoom>
             ))}
