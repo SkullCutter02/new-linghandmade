@@ -3,20 +3,31 @@ import { Injectable } from "@nestjs/common";
 import { UserRepository } from "./repositories/user.repository";
 import { PaginationDto } from "../shared/pagination.dto";
 import { StripeService } from "../stripe/stripe.service";
+import { DatabaseService } from "../database/database.service";
+import { User } from "../user/entities/user.entity";
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly stripeService: StripeService,
+    private readonly databaseService: DatabaseService,
   ) {}
 
   async find({ page, limit, filter }: PaginationDto) {
-    const [users, count] = await this.userRepository.findAndCount(
-      { email: { $ilike: `%${filter}%` } },
-      { limit, offset: (page - 1) * limit },
-    );
-    return { users, hasMore: count > page * limit };
+    if (!filter) {
+      const [users, count] = await this.userRepository.findAndCount(
+        { email: { $ilike: `%${filter}%` } },
+        { limit, offset: (page - 1) * limit },
+      );
+      return { users, hasMore: count > page * limit };
+    } else {
+      const [users, count] = await this.databaseService.fullTextSearch(User, page, limit, filter, [
+        "username",
+        "email",
+      ]);
+      return { users, hasMore: count > page * limit };
+    }
   }
 
   async create(username: string, email: string, hash: string) {

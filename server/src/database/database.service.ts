@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { EntityName } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { Order } from "../order/entities/order.entity";
 
 @Injectable()
 export class DatabaseService {
@@ -17,14 +16,14 @@ export class DatabaseService {
     const query = fields.join(" || ' ' || ");
 
     const data = await this.em
-      .createQueryBuilder(Order)
+      .createQueryBuilder(entity)
       .select("*")
       .where(`to_tsvector(${query}) @@ plainto_tsquery(?)`, [filter])
       .limit(limit)
       .offset((page - 1) * limit)
       .execute("all");
     const count = await this.em
-      .createQueryBuilder(Order)
+      .createQueryBuilder(entity)
       .select("*")
       .where(`to_tsvector(${query}) @@ plainto_tsquery(?)`, [filter])
       .count()

@@ -9,9 +9,10 @@ import { UserInCartProducts } from "./entities/userInCartProducts.entity";
 import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
 import { StripeModule } from "../stripe/stripe.module";
+import { DatabaseModule } from "../database/database.module";
 
 @Module({
-  imports: [MikroOrmModule.forFeature([User, Product, UserInCartProducts]), StripeModule],
+  imports: [MikroOrmModule.forFeature([User, Product, UserInCartProducts]), StripeModule, DatabaseModule],
   controllers: [CartController, UserController],
   providers: [CartService, UserService],
   exports: [CartService, UserService],
