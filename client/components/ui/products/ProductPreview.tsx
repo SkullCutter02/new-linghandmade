@@ -19,7 +19,7 @@ const ProductPreview: React.FC<Props> = ({ product }) => {
         <Link href={`/products/${product.id}`}>
           <div className="product-info">
             <h3>{product.name}</h3>
-            <p>${product.price}</p>
+            <p>${(product.price * ((100 - product.discount) / 100)).toFixed(2)}</p>
           </div>
         </Link>
       </div>
@@ -97,6 +97,12 @@ const ProductPreview: React.FC<Props> = ({ product }) => {
 
         .product-info p {
           margin-top: 3px;
+        }
+
+        @media screen and (max-width: 790px) {
+          .product-info p {
+            font-size: 0.85rem;
+          }
         }
       `}</style>
     </>
