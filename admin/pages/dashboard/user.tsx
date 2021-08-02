@@ -52,10 +52,10 @@ const UserDashboardPage: React.FC = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(["users", 1, ""], () => getUsers(1, ""));
+  await queryClient.prefetchQuery(["users", 1, ""], () => getUsers(1, "", ctx));
 
   return {
     props: {
