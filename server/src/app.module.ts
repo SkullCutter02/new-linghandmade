@@ -13,6 +13,7 @@ import { CouponModule } from "./coupon/coupon.module";
 import { StripeModule } from "./stripe/stripe.module";
 import { ChargeModule } from "./charge/charge.module";
 import { OrderModule } from "./order/order.module";
+import { DatabaseModule } from './database/database.module';
 import ormconfig from "./config/ormconfig";
 
 @Module({
@@ -28,6 +29,7 @@ import ormconfig from "./config/ormconfig";
     StripeModule,
     ChargeModule,
     OrderModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
