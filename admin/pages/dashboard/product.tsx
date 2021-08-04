@@ -12,6 +12,7 @@ import DashboardHeader from "../../components/DashboardHeader";
 import PaginationButtons from "../../components/PaginationButtons";
 import HOST from "../../constants/host";
 import ConfirmModal from "../../components/ConfirmModal";
+import { Product } from "../../types/product";
 
 const ProductDashboardPage: React.FC = () => {
   const router = useRouter();

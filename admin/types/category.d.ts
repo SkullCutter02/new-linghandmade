@@ -1,3 +1,3 @@
-interface Category extends Base {
-  name: string;
-}
+import type { Category as BaseCategory } from "../../client/types/category";
+
+interface Category extends BaseCategory {}

@@ -10,6 +10,7 @@ import FormContainerTemplate from "../../../../components/templates/FormContaine
 import categoryYupResolver from "../../../../resolvers/categoryYupResolver";
 import CategoryFormTemplate from "../../../../components/templates/CategoryFormTemplate";
 import HOST from "../../../../constants/host";
+import { Category } from "../../../../types/category";
 
 const EditCategoryPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

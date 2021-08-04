@@ -11,6 +11,8 @@ import getProduct from "../../../../queries/getProduct";
 import getCategories from "../../../../queries/getCategories";
 import ProductFormTemplate from "../../../../components/templates/ProductFormTemplate";
 import HOST from "../../../../constants/host";
+import { Category } from "../../../../types/category";
+import { Product } from "../../../../types/product";
 
 const EditProductPage: React.FC = () => {
   const router = useRouter();

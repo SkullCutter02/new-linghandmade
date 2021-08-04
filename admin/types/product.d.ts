@@ -1,12 +1,7 @@
-interface Product extends Base {
-  name: string;
-  description: string;
-  price: number;
-  discount?: number;
-  mainImgUrl: string;
-  carouselImgUrls: string[];
-  amtLeft: number;
-  featured: boolean;
-  remarks?: string;
+import type { Product as BaseProduct } from "../../client/types/product";
+
+import { Category } from "./category";
+
+interface Product extends BaseProduct {
   category: Category;
 }

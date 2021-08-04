@@ -10,6 +10,7 @@ import couponYupResolver from "../../../../resolvers/couponYupResolver";
 import FormContainerTemplate from "../../../../components/templates/FormContainerTemplate";
 import CouponFormTemplate from "../../../../components/templates/CouponFormTemplate";
 import HOST from "../../../../constants/host";
+import { Coupon } from "../../../../types/coupon";
 
 const EditCouponPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

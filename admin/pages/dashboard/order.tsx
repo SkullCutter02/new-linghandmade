@@ -8,6 +8,7 @@ import getOrders from "../../queries/getOrders";
 import DashboardHeader from "../../components/DashboardHeader";
 import PaginationButtons from "../../components/PaginationButtons";
 import formatDate from "../../utils/formatDate";
+import { Order } from "../../types/order";
 
 const OrderDashboardPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
@@ -38,7 +39,7 @@ const OrderDashboardPage: React.FC = () => {
           ) : (
             ordersData.orders.map((order) => (
               <Tr key={order.id}>
-                <Td>{formatDate(order.createdAt)}</Td>
+                <Td>{formatDate(order.createdAt.toString())}</Td>
                 <Td>{order.name}</Td>
                 <Td>{order.address}</Td>
                 <Td>{order.phoneNumber}</Td>
