@@ -12,6 +12,8 @@ import getProduct from "../../queries/getProduct";
 import getCartItems from "../../queries/getCartItems";
 import AddToCartModal from "../../components/ui/products/AddToCartModal";
 import useUser from "../../hooks/useUser";
+import { Product } from "../../types/product";
+import { CartItem } from "../../types/cartItem";
 
 const ProductPage: React.FC = () => {
   const [isCartModalOpen, setIsCartModalOpen] = useState<boolean>(false);

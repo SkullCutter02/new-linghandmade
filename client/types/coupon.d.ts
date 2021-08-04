@@ -1,6 +1,3 @@
-interface Coupon extends Base {
-  code: string;
-  discount: number;
-  used: boolean;
-  remarks?: string;
-}
+import type { Coupon as BaseCoupon } from "../../server/src/coupon/entities/coupon.entity";
+
+interface Coupon extends BaseCoupon {}

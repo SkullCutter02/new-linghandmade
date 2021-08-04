@@ -11,6 +11,7 @@ import NavbarTabs from "./NavbarTabs";
 import getMe from "../../../queries/getMe";
 import getRedirectQuery from "../../../utils/getRedirectQuery";
 import buildRedirectUrn from "../../../utils/buildRedirectUrn";
+import { User } from "../../../types/user";
 
 const Navbar: React.FC = () => {
   const hamburgerRevealWidth = 650;

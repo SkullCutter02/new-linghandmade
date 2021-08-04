@@ -4,6 +4,7 @@ import Title from "../../widgets/Title";
 
 import ProductPreview from "../products/ProductPreview";
 import getFeaturedProducts from "../../../queries/getFeaturedProducts";
+import { Product } from "../../../types/product";
 
 const FeaturedProducts: React.FC = () => {
   const { data: products } = useQuery<Product[]>("featured-products", getFeaturedProducts);

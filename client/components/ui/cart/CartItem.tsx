@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import HOST from "../../../constants/host";
 import toastOptions from "../../../config/toastOptions";
 import UndoToast from "../../widgets/UndoToast";
+import { CartItem } from "../../../types/cartItem";
 
 interface Props {
   cartItem: CartItem;

@@ -11,6 +11,8 @@ import IconInput from "../../components/widgets/IconInput";
 import getProducts from "../../queries/getProducts";
 import getCategories from "../../queries/getCategories";
 import capitalise from "../../utils/capitalise";
+import { Product } from "../../types/product";
+import { Category } from "../../types/category";
 
 const ProductsPage: React.FC = () => {
   const router = useRouter();

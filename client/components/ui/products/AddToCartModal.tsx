@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Spinner from "../../widgets/Spinner";
 import HOST from "../../../constants/host";
 import toastOptions from "../../../config/toastOptions";
+import { Product } from "../../../types/product";
 
 interface Props {
   isCartModalOpen: boolean;

@@ -1,12 +1,5 @@
-interface Product extends Base {
-  name: string;
-  description: string;
-  price: number;
-  discount?: number;
-  mainImgUrl: string;
-  carouselImgUrls: string[];
-  amtLeft: number;
-  featured: boolean;
-  remarks?: string;
+import type { Product as BaseProduct } from "../../server/src/product/entities/product.entity";
+
+interface Product extends BaseProduct {
   category: Category;
 }
