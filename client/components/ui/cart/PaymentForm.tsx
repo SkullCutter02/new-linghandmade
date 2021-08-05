@@ -13,6 +13,7 @@ import HOST from "../../../constants/host";
 import getCartItems from "../../../queries/getCartItems";
 import { CouponContext } from "../../../context/CouponContextProvider";
 import Spinner from "../../widgets/Spinner";
+import { CartItem } from "../../../types/cartItem";
 
 interface FormInput {
   name: string;

@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 
+import { Product } from "../../../types/product";
+
 interface Props {
   product: Product;
 }

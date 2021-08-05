@@ -10,13 +10,14 @@ import CartItem from "../../components/ui/cart/CartItem";
 import IconInput from "../../components/widgets/IconInput";
 import HOST from "../../constants/host";
 import { CouponContext } from "../../context/CouponContextProvider";
+import { CartItem as ICartItem } from "../../types/cartItem";
 
 const CartPage: React.FC = () => {
   const [isGettingCoupon, setIsGettingCoupon] = useState<boolean>(false);
 
   const { coupon, setCoupon } = useContext(CouponContext);
 
-  const { data: cartItems } = useQuery<CartItem[]>("cart", () => getCartItems());
+  const { data: cartItems } = useQuery<ICartItem[]>("cart", () => getCartItems());
 
   const couponInputRef = useRef<HTMLInputElement>(null);
   const couponErrMsgRef = useRef<HTMLParagraphElement>(null);

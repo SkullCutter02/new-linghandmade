@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 
 import { ICouponContext } from "../types/couponContext";
+import { Coupon } from "../types/coupon";
 
 export const CouponContext = createContext<ICouponContext>(null);
 
