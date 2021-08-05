@@ -25,6 +25,7 @@
     "yup-phone": "^1.2.19"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^11.0.1",
     "@types/marked": "^2.0.4",
     "@types/react": "^17.0.14",
     "@types/react-modal": "^3.12.1",
@@ -34,6 +35,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "analyze": "ANALYZE=true next build"
   }
 }
