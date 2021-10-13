@@ -35,7 +35,6 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "build:prod": "cd ../ && cd server && yarn install && cd ../ && cd client && next build",
     "start": "next start",
     "analyze": "ANALYZE=true next build"
   }
