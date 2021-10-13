@@ -1,1 +1,1 @@
-web: npm run start:prod
+web: node_modules/.bin/mikro-orm migration:up && npm run start:prod
