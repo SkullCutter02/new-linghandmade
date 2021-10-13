@@ -6,7 +6,7 @@ const ormconfig: MikroOrmModuleSyncOptions = {
   host: process.env.PG_HOST || "localhost",
   port: parseInt(process.env.PG_PORT) || 5432,
   dbName: process.env.PG_NAME || "new_linghandmade_db",
-  user: process.env.USER || null,
+  user: process.env.PG_USER || null,
   password: process.env.PG_PASSWORD || null,
   baseDir: __dirname,
   entities: ["../**/*.entity.js"],
