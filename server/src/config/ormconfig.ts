@@ -15,7 +15,13 @@ const ormconfig: MikroOrmModuleSyncOptions = {
   debug: process.env.NODE_ENV === "development",
   driverOptions: {
     connection: {
-      ssl: process.env.NODE_ENV === "production",
+      ssl:
+        process.env.NODE_ENV === "production"
+          ? {
+              require: true,
+              rejectUnauthorized: false,
+            }
+          : null,
     },
   },
   migrations: {
