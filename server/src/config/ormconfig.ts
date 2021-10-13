@@ -8,22 +8,23 @@ const ormconfig: MikroOrmModuleSyncOptions = {
   dbName: process.env.PG_NAME || "new_linghandmade_db",
   user: process.env.PG_USER || null,
   password: process.env.PG_PASSWORD || null,
+  clientUrl: process.env.DATABASE_URL || null,
   baseDir: __dirname,
   entities: ["../**/*.entity.js"],
   entitiesTs: ["../**/*.entity.ts"],
   highlighter: new SqlHighlighter(),
   debug: process.env.NODE_ENV === "development",
-  driverOptions: {
-    connection: {
-      ssl:
-        process.env.NODE_ENV === "production"
-          ? {
-              require: true,
-              rejectUnauthorized: false,
-            }
-          : null,
-    },
-  },
+  // driverOptions: {
+  //   connection: {
+  //     ssl:
+  //       process.env.NODE_ENV === "production"
+  //         ? {
+  //             require: true,
+  //             rejectUnauthorized: false,
+  //           }
+  //         : null,
+  //   },
+  // },
   migrations: {
     path: __dirname + "/../migrations",
     dropTables: false,
