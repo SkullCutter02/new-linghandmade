@@ -13,6 +13,11 @@ const ormconfig: MikroOrmModuleSyncOptions = {
   entitiesTs: ["../**/*.entity.ts"],
   highlighter: new SqlHighlighter(),
   debug: process.env.NODE_ENV === "development",
+  driverOptions: {
+    connection: {
+      ssl: process.env.NODE_ENV === "production",
+    },
+  },
   migrations: {
     path: __dirname + "/../migrations",
     dropTables: false,
