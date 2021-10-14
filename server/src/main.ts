@@ -15,6 +15,7 @@ async function bootstrap() {
       ],
       credentials: true,
     },
+    logger: true,
   });
 
   app.use(cookieParser());

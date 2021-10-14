@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: process.env.JWT_SECRET,
     });
   }
-
+  w;
   async validate({ id }: JwtPayload): Promise<User> {
     const user = await this.userRepository.findOne(id);
 
