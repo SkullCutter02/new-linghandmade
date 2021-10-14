@@ -4,7 +4,7 @@ import { QueryClient, useQuery } from "react-query";
 import { dehydrate } from "react-query/hydration";
 
 import UserProfile from "../../components/ui/user/UserProfile";
-import OrderHistory from "../../components/ui/user/OrderHistory";
+import OrderHistories from "../../components/ui/user/OrderHistories";
 import getMe from "../../queries/getMe";
 import getOrders from "../../queries/getOrders";
 import { User } from "../../types/user";
@@ -16,7 +16,7 @@ const UserPage: React.FC = () => {
     <>
       <main className="user-container">
         <UserProfile user={user} />
-        <OrderHistory />
+        <OrderHistories />
       </main>
 
       <style jsx>{`

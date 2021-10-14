@@ -11,16 +11,16 @@ We collect Device Information using the following technologies:
     - “Cookies” are data files that are placed on your device or computer and often include an anonymous unique identifier. For more information about cookies, and how to disable cookies, visit http://www.allaboutcookies.org.
     - “Log files” track actions occurring on the Site, and collect data including your IP address, browser type, Internet service provider, referring/exit pages, and date/time stamps.
     - “Web beacons,” “tags,” and “pixels” are electronic files used to record information about how you browse the Site.
-    Additionally when you make a purchase or attempt to make a purchase through the Site, we collect certain information from you, including your name, billing address, shipping address, email address, and phone number.  We refer to this information as “Order Information.”
+    Additionally when you make a purchase or attempt to make a purchase through the Site, we collect certain information from you, including your name, billing address, shipping address, email address, and phone number.  We refer to this information as “OrderHistory Information.”
 
 We also collect your email address when you sign up for an account.  
 
-When we talk about “Personal Information” in this Privacy Policy, we are talking both about Device Information and Order Information.  
+When we talk about “Personal Information” in this Privacy Policy, we are talking both about Device Information and OrderHistory Information.  
 
 **HOW DO WE USE YOUR PERSONAL INFORMATION?**  
 
-We use the Order Information that we collect generally to fulfill any orders placed through the Site (including processing your payment information, arranging for shipping, and providing you with invoices and/or order confirmations).
-Additionally, we use this Order Information to: Communicate with you; Screen our orders for potential risk or fraud; and
+We use the OrderHistory Information that we collect generally to fulfill any orders placed through the Site (including processing your payment information, arranging for shipping, and providing you with invoices and/or order confirmations).
+Additionally, we use this OrderHistory Information to: Communicate with you; Screen our orders for potential risk or fraud; and
 when in line with the preferences you have shared with us, provide you with information or advertising relating to our products or services.  
 
 **DO NOT TRACK**  
@@ -29,7 +29,7 @@ Please note that we do not alter our Site’s data collection and use practices 
 
 **DATA RETENTION**  
 
-When you place an order through the Site, we will maintain your Order Information for our records.  
+When you place an order through the Site, we will maintain your OrderHistory Information for our records.  
 
 **CHANGES**  
 
