@@ -32,7 +32,10 @@ export class ChargeService {
     const coupon = couponId && (await this.couponService.useCoupon(couponId));
 
     await this.stripeService.charge(amount, paymentMethodId, user.stripeCustomerId);
-    await this.orderService.create(createOrderDto, user);
+    await this.orderService.create(
+      { ...createOrderDto, price: amount / 100, couponCode: coupon?.code },
+      user,
+    );
     await this.productService.reduceProductsAmount(user.id);
     await this.cartService.clearCart(user.id);
 

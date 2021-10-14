@@ -39,13 +39,18 @@ export class OrderService {
     return this.orderRepository.find({ user });
   }
 
-  async create({ name, address, phoneNumber }: CreateOrderDto, user: User) {
+  async create(
+    { name, address, phoneNumber, price, couponCode }: CreateOrderDto & { price: number; couponCode: string },
+    user: User,
+  ) {
     const cartItems = await this.cartService.getCartItems(user.id);
 
     const order = this.orderRepository.create({
       name,
       address,
       phoneNumber,
+      price,
+      couponCode,
       email: user.email,
       orderItems: cartItems
         .toArray()

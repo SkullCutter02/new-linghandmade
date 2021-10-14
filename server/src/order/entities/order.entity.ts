@@ -1,5 +1,5 @@
 import { Entity, EntityRepositoryType, ManyToOne, Property } from "@mikro-orm/core";
-import { IsEmail } from "class-validator";
+import { IsBoolean, IsEmail, IsNumber } from "class-validator";
 
 import { BaseEntity } from "../../shared/base.entity";
 import { OrderRepository } from "../repositories/order.repository";
@@ -19,6 +19,13 @@ export class Order extends BaseEntity {
   @Property()
   @IsEmail()
   email: string;
+
+  @Property()
+  @IsNumber()
+  price: number;
+
+  @Property({ nullable: true })
+  couponCode?: string;
 
   @Property({ type: "array" })
   orderItems: string[];
