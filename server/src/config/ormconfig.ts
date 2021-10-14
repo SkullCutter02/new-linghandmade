@@ -1,33 +1,35 @@
 import { MikroOrmModuleSyncOptions } from "@mikro-orm/nestjs";
 import { SqlHighlighter } from "@mikro-orm/sql-highlighter";
 
-const ormconfig: MikroOrmModuleSyncOptions = {
-  type: "postgresql",
-  host: process.env.PG_HOST || "localhost",
-  port: parseInt(process.env.PG_PORT) || 5432,
-  dbName: process.env.PG_NAME || "new_linghandmade_db",
-  user: process.env.PG_USER || null,
-  password: process.env.PG_PASSWORD || null,
+const productionSettings: Partial<MikroOrmModuleSyncOptions> = {
   clientUrl: process.env.DATABASE_URL || null,
+  driverOptions: {
+    connection: {
+      ssl: { require: true, rejectUnauthorized: false },
+    },
+  },
+};
+
+const developmentSettings: Partial<MikroOrmModuleSyncOptions> = {
+  host: "localhost",
+  port: 5432,
+  dbName: "new_linghandmade_db",
+  debug: true,
+};
+
+const setting = process.env.NODE_ENV === "production" ? productionSettings : developmentSettings;
+
+const ormconfig: MikroOrmModuleSyncOptions = {
+  ...setting,
+  type: "postgresql",
   baseDir: __dirname,
   entities: ["../**/*.entity.js"],
   entitiesTs: ["../**/*.entity.ts"],
   highlighter: new SqlHighlighter(),
-  debug: process.env.NODE_ENV === "development",
-  // driverOptions: {
-  //   connection: {
-  //     ssl:
-  //       process.env.NODE_ENV === "production"
-  //         ? {
-  //             require: true,
-  //             rejectUnauthorized: false,
-  //           }
-  //         : null,
-  //   },
-  // },
   migrations: {
     path: __dirname + "/../migrations",
     dropTables: false,
+    disableForeignKeys: false,
   },
 };
 
