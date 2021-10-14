@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 
 import { OrderService } from "./order.service";
@@ -8,7 +8,7 @@ import { OrderController } from "./order.controller";
 import { DatabaseModule } from "../database/database.module";
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Order]), UserModule, DatabaseModule],
+  imports: [MikroOrmModule.forFeature([Order]), forwardRef(() => UserModule), DatabaseModule],
   controllers: [OrderController],
   providers: [OrderService],
   exports: [OrderService],

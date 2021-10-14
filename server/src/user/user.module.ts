@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { MikroOrmModule } from "@mikro-orm/nestjs";
 
 import { CartController } from "./cart/cart.controller";
@@ -10,9 +10,15 @@ import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
 import { StripeModule } from "../stripe/stripe.module";
 import { DatabaseModule } from "../database/database.module";
+import { OrderModule } from "../order/order.module";
 
 @Module({
-  imports: [MikroOrmModule.forFeature([User, Product, UserInCartProducts]), StripeModule, DatabaseModule],
+  imports: [
+    MikroOrmModule.forFeature([User, Product, UserInCartProducts]),
+    StripeModule,
+    DatabaseModule,
+    forwardRef(() => OrderModule),
+  ],
   controllers: [CartController, UserController],
   providers: [CartService, UserService],
   exports: [CartService, UserService],

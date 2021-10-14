@@ -4,12 +4,14 @@ import { UserRepository } from "./repositories/user.repository";
 import { PaginationDto } from "../shared/pagination.dto";
 import { StripeService } from "../stripe/stripe.service";
 import { DatabaseService } from "../database/database.service";
-import { User } from "../user/entities/user.entity";
+import { OrderService } from "../order/order.service";
+import { User } from "./entities/user.entity";
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly orderService: OrderService,
     private readonly stripeService: StripeService,
     private readonly databaseService: DatabaseService,
   ) {}
@@ -36,5 +38,9 @@ export class UserService {
 
     await this.userRepository.persistAndFlush(user);
     return user;
+  }
+
+  async getOrders(user: User) {
+    return this.orderService.findByUser(user);
   }
 }

@@ -35,6 +35,10 @@ export class OrderService {
     }
   }
 
+  async findByUser(user: User) {
+    return this.orderRepository.find({ user });
+  }
+
   async create({ name, address, phoneNumber }: CreateOrderDto, user: User) {
     const cartItems = await this.cartService.getCartItems(user.id);
 
