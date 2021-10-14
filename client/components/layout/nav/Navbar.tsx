@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const { isLoading, isError, data: user } = useQuery<User>("user", getMe);
+  const { isLoading, isError, data: user } = useQuery<User>("user", () => getMe());
 
   const router = useRouter();
 
@@ -74,7 +74,9 @@ const Navbar: React.FC = () => {
                   style={{ marginRight: "20px", cursor: "pointer" }}
                 />
               </Link>
-              <FontAwesomeIcon icon={faUser} />
+              <Link href={"/user"}>
+                <FontAwesomeIcon icon={faUser} style={{ cursor: "pointer" }} />
+              </Link>
               <p>{user.username}</p>
             </div>
           )}
