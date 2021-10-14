@@ -5,6 +5,7 @@ import { dehydrate } from "react-query/hydration";
 
 import UserProfile from "../../components/ui/user/UserProfile";
 import getMe from "../../queries/getMe";
+import getOrders from "../../queries/getOrders";
 import { User } from "../../types/user";
 
 const UserPage: React.FC = () => {
@@ -18,7 +19,6 @@ const UserPage: React.FC = () => {
 
       <style jsx>{`
         .user-container {
-          max-height: calc(100vh - var(--navbarHeight));
           padding: 60px 6%;
         }
       `}</style>
@@ -30,6 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery("user", () => getMe(ctx));
+  await queryClient.prefetchQuery("orders", () => getOrders(ctx));
 
   return {
     props: {
