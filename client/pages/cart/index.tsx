@@ -62,11 +62,10 @@ const CartPage: React.FC = () => {
     <>
       <main>
         <div className="cart-items-container">
-          {cartItems
-            .sort((a, b) => a.product.name.localeCompare(b.product.name))
-            .map((cartItem) => (
-              <CartItem cartItem={cartItem} key={cartItem.product.id} />
-            ))}
+          {(cartItems && cartItems.length === 0) ||
+            cartItems
+              .sort((a, b) => a.product.name.localeCompare(b.product.name))
+              .map((cartItem) => <CartItem cartItem={cartItem} key={cartItem.product.id} />)}
           <div className="cart-item-container total-price-container">
             <p className="total">Total</p>
             <span>
